@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <!-- Class = "UINavigationItem"; title = "Airspace Advisories"; ObjectID = "yk1-9H-q3n"; Note = "ADVISORIES_TITLE|Title for view that shows a list of airspace advisories"; AirMapUIObjectId = "yk1-9H-q3n.title"; -->
+  <string name="airmap_airspace_advisories">空域情報</string>
+  <!-- Label for advisories that are stup to receive digital notice -->
+  <string name="accepts_digital_notice">デジタル通知を受付可</string>
+  <!-- Displayed when an advisory has not provided a contact phone -->
+  <string name="no_known_number">電話番号がありません</string>
+  <!-- Label and format for displaying the end time of temporary flight restriction -->
+  <string name="advisory_tfr_ends_format">終了: %1$s</string>
+  <!-- Never ending duration for a TFR -->
+  <string name="advisory_tfr_permanent">永久</string>
+  <!-- Label and format for displaying the start time of temporary flight restriction -->
+  <string name="airmap_starts">開始: %1$s</string>
+  <!-- Format and unit for wildfire advisory in the area unit acres -->
+  <string name="advisory_wildfire_size_format_acres">%1$s エーカー</string>
+  <!-- Format and unit for wildfire advisory in the area unit hectares -->
+  <string name="advisory_wildfire_size_format_hectares">%1$s ヘクタール</string>
+  <!-- Label for wildfire advisory cells where size is unknown -->
+  <string name="unknown_size">サイズは不明</string>
+  <!-- Call to action when a user has not selected an aircraft -->
+  <string name="aircraft_select_aircraft">機体を選択</string>
+  <!-- Title to display for the view creating a new aircraft -->
+  <string name="airmap_title_activity_create_aircraft">機体を作成</string>
+  <!-- Title to display for the view when updating an existing aircraft -->
+  <string name="airmap_edit_aircraft">機体をアップデート</string>
+  <!-- Name for airspace type Aerial Recreational Area -->
+  <string name="airspace_type_aerial_rec_area">航空レクリエーショナルエリア</string>
+  <!-- Name for airspace type Airport -->
+  <string name="airspace_type_airport">空港</string>
+  <!-- Name for airspace type City -->
+  <string name="airspace_type_city">町</string>
+  <!-- Name for airspace type Controlled Airspace -->
+  <string name="airspace_type_controlled">管理空域</string>
+  <!-- Name for airspace type Custom -->
+  <string name="airspace_type_custom">カスタム</string>
+  <!-- Name for airspace type Emergency -->
+  <string name="airspace_type_emergency">緊急</string>
+  <!-- Name for airspace type Fire -->
+  <string name="airspace_type_fire">火災</string>
+  <!-- Name for airspace type Hazard Area -->
+  <string name="airspace_type_hazard_area">危険区域</string>
+  <!-- Name for airspace type Heliport -->
+  <string name="airspace_type_heliport">ヘリポート</string>
+  <!-- Name for airspace type Hospital -->
+  <string name="airspace_type_hospital">病院</string>
+  <!-- Name for airspace type National Park -->
+  <string name="airspace_type_national_park">国立公園</string>
+  <!-- Name for airspace type Power Plant -->
+  <string name="airspace_type_power_plant">発電所</string>
+  <!-- Name for airspace type Prison -->
+  <string name="airspace_type_prison">刑務所</string>
+  <!-- Name for airspace type School -->
+  <string name="airspace_type_school">学校</string>
+  <!-- Name for airspace type Special Use Airspace -->
+  <string name="airspace_type_special_use">特殊利用空域</string>
+  <!-- Name for airspace type Stadium -->
+  <string name="airspace_type_stadium">スタジアム</string>
+  <!-- Name for airspace type FAA Temporary Flight Restriction -->
+  <string name="airspace_type_tfr_faa">一時的な飛行制限</string>
+  <!-- Name for airspace type University -->
+  <string name="airspace_type_university">大学</string>
+  <!-- Name for airspace type WildFire -->
+  <string name="airspace_type_wildfire">山火事</string>
+  <!-- Login message when a user's account has been blacklisted. -->
+  <string name="invalid_email_domain">あなたのアカウントはブラックリストに入れられました。security@airmap.comまでご連絡ください。</string>
+  <!-- Login message when a user must verify their email address -->
+  <string name="verify_email_log_in_again">メールアドレスを確認する必要があります。受信箱をご確認ください。</string>
+  <!-- Login message when a user failed to authenticate -->
+  <string name="auth_error_unauthorized">許可されていません</string>
+  <!-- Navigation title for failed login attempt -->
+  <string name="auth_failed_login_title">アラート</string>
+  <!-- Title for table section header of available permits the user may apply for -->
+  <string name="available_permits">申請可能な許可証</string>
+  <!-- Title for table section header of existing permits the user has -->
+  <string name="existing_permits">すでにお持ちの許可証</string>
+  <!-- Title for table section header of permits which are not available to the user -->
+  <string name="unavailable_permits">申請できない許可証</string>
+  <!-- Header copy describing the permits listed below -->
+  <string name="select_a_permit_description">既にお客様がお持ちの許可証または申請可能な許可証で、この飛行エリアを飛行できる条件を満たしているものは以下の通りです。</string>
+  <!-- Header copy describing that the flight area overlaps with multiple areas, each with differing permit requirements. No one single permit is able to satisfy all requirements. -->
+  <string name="no_available_permits_for_flight">この事業エリアを飛行するには、1回利用の許可証しか使用できません。お客様の飛行経路は複数のエリアにまたがっているため、別の許可証が必要です。</string>
+  <!-- Class = "UINavigationItem"; title = "Select Permit"; ObjectID = "pFU-ok-j6g"; Note = "AVAILABLE_PERMITS_TITLE|Title for the list of available permits a user can choose from"; AirMapUIObjectId = "pFU-ok-j6g.title"; -->
+  <string name="select_a_permit">許可証を選択</string>
+  <!-- Title for the row that describes if the permit can be used more than once. -->
+  <string name="single_use">1回の利用</string>
+  <!-- Title for the row that shows the temporal validity or expiration of the permit -->
+  <string name="available_permit_row_title_validity">有効期間</string>
+  <!-- Value for when single use is false -->
+  <string name="available_permit_row_value_single_use_false">いいえ</string>
+  <!-- Value for when single use is true -->
+  <string name="available_permit_row_value_single_use_true">はい</string>
+  <!-- Title for the Custom Properties section of the permit detail view. '*' denotes a required field -->
+  <string name="available_permit_section_header_custom_properties">フォーム領域 (*必須)</string>
+  <!-- Title for the Description section of the permit detail view -->
+  <string name="description">説明</string>
+  <!-- Title for the Details section of the permit detail view -->
+  <string name="permit_details">詳細</string>
+  <!-- Abbreviation for East -->
+  <string name="cardinal_direction_e">東</string>
+  <!-- Abbreviation for East North East -->
+  <string name="cardinal_direction_ene">東北東</string>
+  <!-- Abbreviation for East South East -->
+  <string name="cardinal_direction_ese">東南東</string>
+  <!-- Abbreviation for North -->
+  <string name="cardinal_direction_n">北</string>
+  <!-- Abbreviation for North East -->
+  <string name="cardinal_direction_ne">北東</string>
+  <!-- Abbreviation for North North East -->
+  <string name="cardinal_direction_nnne">北北東</string>
+  <!-- Abbreviation for North North West -->
+  <string name="cardinal_direction_nnw">北北西</string>
+  <!-- Abbreviation for North West -->
+  <string name="cardinal_direction_nw">北西</string>
+  <!-- Abbreviation for South -->
+  <string name="cardinal_direction_s">南</string>
+  <!-- Abbreviation for South East -->
+  <string name="cardinal_direction_se">南東</string>
+  <!-- Abbreviation for South South East -->
+  <string name="cardinal_direction_sse">南南東</string>
+  <!-- Abbreviation for South South West -->
+  <string name="cardinal_direction_ssw">南南西</string>
+  <!-- Abbreviation for South West -->
+  <string name="cardinal_direction_sw">南西</string>
+  <!-- Abbreviation for West -->
+  <string name="cardinal_direction_w">西</string>
+  <!-- Abbreviation for West North West -->
+  <string name="cardinal_direction_wnw">西北西</string>
+  <!-- Abbreviation for West South West -->
+  <string name="cardinal_direction_wsw">西南西</string>
+  <!-- Class = "UILabel"; text = "Make & Model"; ObjectID = "XDN-d5-eoX"; Note = "CREATE_AIRCRAFT_MAKE_AND_MODEL|Label for the row label that displays the Make and Model of an aircraft"; AirMapUIObjectId = "XDN-d5-eoX.text"; -->
+  <string name="create_aircraft_make_and_model">型とモデル</string>
+  <!-- Class = "UITextField"; placeholder = "Nickname"; ObjectID = "blN-px-yT6"; Note = "CREATE_AIRCRAFT_NICKNAME|Placeholder label for the textfield where a user inputs the nickname for an aircraft"; AirMapUIObjectId = "blN-px-yT6.placeholder"; -->
+  <string name="airmap_nickname">ニックネーム</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "K03-vU-4zj"; Note = "CREATE_AIRCRAFT_SAVE_BUTTON|Title for the button that saves a user's changes to a new or existing aircraft"; AirMapUIObjectId = "K03-vU-4zj.normalTitle"; -->
+  <string name="create_aircraft_save_button">保存</string>
+  <!-- Class = "UINavigationItem"; title = "Create Aircraft"; ObjectID = "Z9F-I6-niw"; Note = "CREATE_AIRCRAFT_TITLE|Title for the view where you can create a new aircraft"; AirMapUIObjectId = "Z9F-I6-niw.title"; -->
+  <string name="create_aircraft">機体を作成</string>
+  <!-- A generic server error message with an associated error code -->
+  <string name="error_generic_format">サーバーエラーが発生しました。(%s)</string>
+  <!-- Response serialization failure error -->
+  <string name="error_serialization">サーバーが処理できませんでした。</string>
+  <!-- Server failure error -->
+  <string name="error_server">サーバーはリクエストを処理できませんでした。</string>
+  <!-- Authorization failure error -->
+  <string name="error_unauthorized">承認されていません。ログイン資格をご確認ください。</string>
+  <!-- Class = "UINavigationItem"; title = "FAQs"; ObjectID = "W7d-Gh-IMB"; Note = "FAQS_TITLE|Title for view that shows answers to frequently asked questions (FAQs)."; AirMapUIObjectId = "W7d-Gh-IMB.title"; -->
+  <string name="faqs">よくある質問</string>
+  <!-- Label for text input button -->
+  <string name="flight_data_cell_button_done">完了</string>
+  <!-- Label for start time when the start is immediate -->
+  <string name="now">今</string>
+  <!-- Class = "UIButton"; normalTitle = "Area"; ObjectID = "Yyg-xF-uSz"; Note = "FLIGHT_DRAWING_MODE_AREA|Label for button that enables area-based flight planning"; AirMapUIObjectId = "Yyg-xF-uSz.normalTitle"; -->
+  <string name="airmap_polygon">エリア</string>
+  <!-- Class = "UIButton"; normalTitle = "Path"; ObjectID = "IAP-O7-VzM"; Note = "FLIGHT_DRAWING_MODE_PATH|Label for button that enables path-based flight planning"; AirMapUIObjectId = "IAP-O7-VzM.normalTitle"; -->
+  <string name="airmap_path">経路</string>
+  <!-- Class = "UIButton"; normalTitle = "Point"; ObjectID = "Fti-S4-xfH"; Note = "FLIGHT_DRAWING_MODE_POINT|Label for button that enables point-based flight planning"; AirMapUIObjectId = "Fti-S4-xfH.normalTitle"; -->
+  <string name="airmap_circle">ポイント</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "kPh-hd-dib"; Note = "FLIGHT_DRAWING_NEXT_BUTTON|Label for button that allows a user to advance to the next step of flight planning"; AirMapUIObjectId = "kPh-hd-dib.normalTitle"; -->
+  <string name="flight_drawing_next_button">次</string>
+  <!-- The radius around a point-based flight's center -->
+  <string name="airmap_buffer">半径</string>
+  <!-- Class = "UINavigationItem"; title = "Create Flight"; ObjectID = "ViV-2h-qM5"; Note = "FLIGHT_DRAWING_TITLE|Title for view that allows a user to draw out a flight plan"; AirMapUIObjectId = "ViV-2h-qM5.title"; -->
+  <string name="flight_drawing_title">フライトを作成</string>
+  <!-- Call to action to fine-tune the geometry of a flight. -->
+  <string name="airmap_done_drawing_tip">点をドラッグして移動してください。新しい点を追加するには、中間点をドラッグしてください。</string>
+  <!-- Call to action to drag a point to the trash to delete. -->
+  <string name="airmap_delete_tip">削除するには点をゴミ箱へドラッグしてください</string>
+  <!-- Call to action to draw an area-based flight. -->
+  <string name="airmap_draw_freehand_area">フリーハンドでエリアを描く</string>
+  <!-- Call to action to draw a path-based flight. -->
+  <string name="airmap_draw_freehand_path">フリーハンドで経路を描く</string>
+  <!-- Call to action to drag the center position of a point-based flight. -->
+  <string name="flight_drawing_tooltip_cta_postiion_point">中心点をドラッグして飛行エリアを設定してください。</string>
+  <!-- Call to action to tap the icon to begin drawing a flight area. -->
+  <string name="airmap_freehand_tip_area">手のアイコンをタップすると、エリアをフリーハンドで描くことができます。</string>
+  <!-- Call to action to tap the icon to begin drawing a flight path. -->
+  <string name="airmap_freehand_tip_path">手のアイコンをタップすると、経路をフリーハンドで描くことができます。</string>
+  <!-- Displayed when the user has drawn an invalid shaping, overlapping with conflicting permitted zones -->
+  <string name="airmap_flight_area_overlap_permit_conflict">飛行エリアは、許可証の条件が異なるゾーンに重ねることはできません。</string>
+  <!-- Call to action to fix self-intersecting geometries of an area-based flight. -->
+  <string name="airmap_error_overlap">無効な飛行エリアです。重複のないよう飛行エリアを調節してください。</string>
+  <!-- The width of a path-based flight extending outward from the centerline -->
+  <string name="airmap_width">幅</string>
+  <!-- Title for the button to advance to the next screen -->
+  <string name="airmap_next">次</string>
+  <!-- Title for the button to save and create the flight -->
+  <string name="airmap_save">保存</string>
+  <!-- Call to action title for the user to select an aircraft -->
+  <string name="flight_plan_row_title_aircraft">機体を選択</string>
+  <!-- Title for the row displaying flight plan altitude -->
+  <string name="airmap_max_altitude">高度</string>
+  <!-- Title for the row displaying flight plan duration -->
+  <string name="airmap_duration">飛行時間</string>
+  <!-- Call to action title for the user to select a pilot profile -->
+  <string name="select_pilot_profile">パイロットのプロフィールを選択</string>
+  <!-- Title for the row displaying flight plan start time -->
+  <string name="starts">開始</string>
+  <!-- Title for the section displaying the pilot and aircraft details -->
+  <string name="pilot_and_aircraft_header">パイロットと機体</string>
+  <!-- Title for the section displaying flight plan details -->
+  <string name="flight_details">フライト</string>
+  <!-- Title for the section displaying social sharing features -->
+  <string name="airmap_share_my_flight">マイフライトを共有</string>
+  <!-- Title for the section displaying flight plan start time & duration -->
+  <string name="date_and_time">日付と時間</string>
+  <!-- Class = "UINavigationItem"; title = "Manufacturers"; ObjectID = "a84-JL-ndb"; Note = "MANUFACTURERS_TITLE|Title for the view that displays a list of all aircraft manufacturers"; AirMapUIObjectId = "a84-JL-ndb.title"; -->
+  <string name="manufacturers_title">製造会社</string>
+  <!-- Class = "UINavigationItem"; title = "Models"; ObjectID = "9xB-Yl-FrO"; Note = "MODELS_TITLE|Title for the view that displays a list of all aircraft models"; AirMapUIObjectId = "9xB-Yl-FrO.title"; -->
+  <string name="models_title">モデル</string>
+  <!-- Class = "UIButton"; normalTitle = "Done"; ObjectID = "Iz2-Va-oce"; Note = "PERMIT_DETAILS_DONE_BUTTON|Title for the button that dismisses the keyboard when a user is done editing a text field"; AirMapUIObjectId = "Iz2-Va-oce.normalTitle"; -->
+  <string name="done">終了</string>
+  <!-- Class = "UIButton"; normalTitle = "Select Permit"; ObjectID = "RX7-4I-r3s"; Note = "PERMIT_DETAILS_SELECT_PERMIT_BUTTON|Title for the button that selects the currently displayed permit and dismisses the view"; AirMapUIObjectId = "RX7-4I-r3s.normalTitle"; -->
+  <string name="airmap_select_permit">許可証を選択</string>
+  <!-- Class = "UINavigationItem"; title = "Permit"; ObjectID = "uxj-wa-owq"; Note = "PERMIT_DETAILS_TITLE|Title for the view that displays permit details"; AirMapUIObjectId = "uxj-wa-owq.title"; -->
+  <string name="permit_details_title">許可証</string>
+  <!-- Table section title for other selectable countries -->
+  <string name="phone_country_section_other_country">他</string>
+  <!-- Table section title for the currently selected country -->
+  <string name="phone_country_section_selected_country">選択されている国</string>
+  <!-- Class = "UINavigationItem"; title = "Select Country"; ObjectID = "dcW-Vd-KfC"; Note = "PHONE_COUNTRY_TITLE|Title for the view that allows a user to select their phone numbers country"; AirMapUIObjectId = "dcW-Vd-KfC.title"; -->
+  <string name="phone_country_title">国を選択</string>
+  <!-- Class = "UILabel"; text = "SMS Code"; ObjectID = "p8q-LE-2ew"; Note = "PHONE_VERIFICATION_CODE_HEADER|Header text for view where a user can input their SMS verification code"; AirMapUIObjectId = "p8q-LE-2ew.text"; -->
+  <string name="phone_verification_code_header">SMS コード</string>
+  <!-- Class = "UITextField"; placeholder = "Code"; ObjectID = "dDO-AY-LlB"; Note = "PHONE_VERIFICATION_CODE_PLACEHOLDER|Placeholder label for the textfield where a user can input their SMS verification code"; AirMapUIObjectId = "dDO-AY-LlB.placeholder"; -->
+  <string name="phone_verification_code_placeholder">コード</string>
+  <!-- Class = "UINavigationItem"; title = "Verify Phone Number"; ObjectID = "MVj-Qg-sch"; Note = "PHONE_VERIFICATION_CODE_TITLE|Title for the view where a user can verify an SMS token"; AirMapUIObjectId = "MVj-Qg-sch.title"; -->
+  <string name="phone_verification_code_title">電話番号を確認</string>
+  <!-- Class = "UILabel"; text = "By providing your number, you agree to receive texts about your flights at this number. Carrier message & data rates may apply.\n\nAirMap will send you a text message when your digital notice has been successfully submitted.\n"; ObjectID = "2Na-rR-yZi"; Note = "PHONE_VERIFICATION_HEADER|Copy describing the process of verifying your phone number"; AirMapUIObjectId = "2Na-rR-yZi.text"; -->
+  <string name="airmap_phone_number_disclaimer">電話番号を入力すると、お客様のフライトに関するテキストメッセージをこの番号で受信することに同意したものと見なされます。電話会社のメッセージおよびデータ料金がかかる場合があります。\n\nAirMapは、お客様のデジタル通知が無事送信されましたらテキストメッセージを送信します。\n</string>
+  <!-- Class = "UITextField"; placeholder = "Phone Number"; ObjectID = "vme-QM-SG8"; Note = "PHONE_VERIFICATION_PHONE|Placeholder label for the text field where a user types their phone number"; AirMapUIObjectId = "vme-QM-SG8.placeholder"; -->
+  <string name="phone_verification_phone">電話番号</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "lre-WH-pt9"; Note = "PHONE_VERIFICATION_SAVE_BUTTON|Title for button that allows the user to submit the SMS code for verification"; AirMapUIObjectId = "lre-WH-pt9.normalTitle"; -->
+  <string name="phone_verification_save_button">送信</string>
+  <!-- Class = "UINavigationItem"; title = "Phone Number Verification"; ObjectID = "4g7-2z-c9g"; Note = "PHONE_VERIFICATION_TITLE|Title for view that allows a user to verify their phone number"; AirMapUIObjectId = "4g7-2z-c9g.title"; -->
+  <string name="phone_number_verification">電話番号の確認</string>
+  <!-- Format for pilot permit expiration -->
+  <string name="pilot_permit_expiration_format">有効期限 %1$s</string>
+  <!-- Table row label for FAA registration number -->
+  <string name="pilot_profile_faa_registration">連邦航空局登録番号</string>
+  <!-- Label for the pilot profile email -->
+  <string name="email">Eメール</string>
+  <!-- Label for the pilot profile first name -->
+  <string name="first_name">名</string>
+  <!-- Label for the pilot profile last name -->
+  <string name="last_name">姓</string>
+  <!-- Label for the pilot profile phone -->
+  <string name="pilot_profile_label_phone">電話</string>
+  <!-- Label for the pilot profile username -->
+  <string name="pilot_profile_label_username">ユーザー名</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "kCX-rY-nIt"; Note = "PILOT_PROFILE_SAVE_BUTTON|Title for the button that saves any changes to a user's profile"; AirMapUIObjectId = "kCX-rY-nIt.normalTitle"; -->
+  <string name="pilot_profile_save_button">保存</string>
+  <!-- Section header for the pilot profile additional info section -->
+  <string name="pilot_profile_section_additional">追加情報</string>
+  <!-- Section header for the pilot profile personal info section -->
+  <string name="airmap_personal_information">個人情報</string>
+  <!-- Format for displaying a user's number of aircraft and flights -->
+  <string name="pilot_profile_statistics_format">機体数 %1$s、飛行回数 %2$s</string>
+  <!-- Class = "UINavigationItem"; title = "Pilot Profile"; ObjectID = "q0o-oq-I1W"; Note = "PILOT_PROFILE_TITLE|Title for view where a user can modify their user profile"; AirMapUIObjectId = "q0o-oq-I1W.title"; -->
+  <string name="pilot_profile_title">パイロットのプロフィール</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "2jl-c2-qqx"; Note = "REQUIRED_PERMITS_NEXT_BUTTON|Button label that allows the user to advance to the next step of flight creation"; AirMapUIObjectId = "2jl-c2-qqx.normalTitle"; -->
+  <string name="required_permits_next_button">次</string>
+  <!-- Call to action row text for selecting a different permit than the one displayed above -->
+  <string name="airmap_select_different_permit">別の許可証を選択</string>
+  <!-- Call to action row text for selecting a permit -->
+  <string name="airmap_select_a_permit">許可証を選択</string>
+  <!-- Class = "UILabel"; text = "Operating in this flight area requires a permit from each of the following authorities:"; ObjectID = "HLI-qV-iML"; Note = "REQUIRED_PERMITS_TABLE_HEADER|Copy that explains to the user that they are required to satisfy the permit requirements listed below."; AirMapUIObjectId = "HLI-qV-iML.text"; -->
+  <string name="requires_permits_from_authorities">このエリアを飛行するには、以下の各機関から許可を受ける必要があります:</string>
+  <!-- Class = "UINavigationItem"; title = "Permits"; ObjectID = "747-Q2-1CI"; Note = "REQUIRED_PERMITS_TITLE|Title for the view where a user can select from a list of required permits"; AirMapUIObjectId = "747-Q2-1CI.title"; -->
+  <string name="permits">許可証</string>
+  <!-- Title for the flight plan review view -->
+  <string name="review_flight_plane_title">フライトプラン</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "tCa-zT-0iZ"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_NEXT_BUTTON|Button that allows a user to advance to the next step of flight planning"; AirMapUIObjectId = "tCa-zT-0iZ.normalTitle"; -->
+  <string name="review_flight_plan_details_next_button">次</string>
+  <!-- 'Yes' Value for the public flight row -->
+  <string name="review_flight_plan_details_public_flight_value_true">はい</string>
+  <!-- Label for the Buffer or radius surrounding a point or path -->
+  <string name="review_flight_plan_details_radius">半径</string>
+  <!-- Label for the aircraft row -->
+  <string name="airmap_aircraft_stats">機体</string>
+  <!-- Label for the maximum altitude for a flight -->
+  <string name="review_flight_plan_details_row_title_altitude">高度</string>
+  <!-- Label for a flight's duration -->
+  <string name="review_flight_plan_details_row_title_duration">終了</string>
+  <!-- Label for a flight's end time -->
+  <string name="review_flight_plan_details_row_title_ends">終了</string>
+  <!-- Label for the flight review 'is public' row -->
+  <string name="review_flight_plan_details_row_title_public">公開</string>
+  <!-- Class = "UILabel"; text = "Starts"; ObjectID = "Dy4-Qg-lC0"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_ROW_TITLE_STARTS|Label for row that displays the start time of a flight"; AirMapUIObjectId = "Dy4-Qg-lC0.text"; -->
+  <string name="review_flight_plan_details_row_title_starts">開始</string>
+  <!-- Header label for the flight review aircraft section -->
+  <string name="review_flight_plan_details_section_header_aircraft">機体</string>
+  <!-- Header label for the flight review details section -->
+  <string name="review_flight_plan_details_section_header_details">詳細</string>
+  <!-- Header label for the flight review social sharing section -->
+  <string name="review_flight_plan_details_section_header_social">マイフライトを共有</string>
+  <!-- Time for flights that start immediately -->
+  <string name="review_flight_plan_details_start_time_now">今</string>
+  <!-- Class = "UINavigationItem"; title = "Create Flight"; ObjectID = "HM6-qn-wuK"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_TITLE|Title for view that allows a user to adjust the details of a new flight"; AirMapUIObjectId = "HM6-qn-wuK.title"; -->
+  <string name="airmap_title_activity_create_flight">フライトを作成</string>
+  <!-- Class = "UIButton"; normalTitle = "End Flight"; ObjectID = "2Eq-Fz-bOO"; Note = "REVIEW_FLIGHT_PLAN_END_BUTTON|Label for button that ends an active flight"; AirMapUIObjectId = "2Eq-Fz-bOO.normalTitle"; -->
+  <string name="end_flight">フライトを終了</string>
+  <!-- Displayed for authorities that are setup to receive digital notice -->
+  <string name="review_flight_plan_notices_tab_accepts_notice">デジタル通知を受付可</string>
+  <!-- Displayed for authorities that are NOT setup to receive digital notice -->
+  <string name="review_flight_plan_notices_tab_does_not_accept_notice">このエリアでは以下の機関がデジタル通知を受け付けていません</string>
+  <!-- Displayed in the flight plan review notices tab when there are no notices to display -->
+  <string name="review_flight_plan_notices_tab_section_header_no_notices">このフライトには通知がありません。</string>
+  <!-- Class = "UILabel"; text = "Digital Notice Accepted"; ObjectID = "39m-XX-eZ2"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_ACCEPTED|Header for section that shows what organizations accept digital notice"; AirMapUIObjectId = "39m-XX-eZ2.text"; -->
+  <string name="airmap_digital_notice_accepted">デジタル通知を受け付ける機関</string>
+  <!-- Class = "UILabel"; text = "The following authorities in this area do not accept digital notice"; ObjectID = "lll-ta-VAP"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_NOT_ACCEPTED|Header for section that shows what organizations do not accept digital notice"; AirMapUIObjectId = "lll-ta-VAP.text"; -->
+  <string name="airmap_not_accept_notice">このエリアでは以下の機関がデジタル通知を受け付けていません</string>
+  <!-- Class = "UIButton"; normalTitle = "Review"; ObjectID = "V59-8d-Sdh"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_REVIEW_BUTON|Title for the button that allows the user to advance to the next step to review their flight plan"; AirMapUIObjectId = "V59-8d-Sdh.normalTitle"; -->
+  <string name="airmap_review">確認</string>
+  <!-- Class = "UINavigationItem"; title = "Flight Notice"; ObjectID = "Uk3-p4-sdr"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_TITLE|Title for view that displays digital notice that can be submitted to supported organizations"; AirMapUIObjectId = "Uk3-p4-sdr.title"; -->
+  <string name="airmap_flight_notice">フライト通知</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "4YZ-kG-zkZ"; Note = "REVIEW_FLIGHT_PLAN_SUBMIT_BUTTON|Label for button that submits and creates a new flight"; AirMapUIObjectId = "4YZ-kG-zkZ.normalTitle"; -->
+  <string name="submit">送信</string>
+  <!-- Title for the Review Flight, digital notices tab -->
+  <string name="review_flight_plan_tab_title_digital_notice">通知</string>
+  <!-- Title for the Review Flight, flight Details tab -->
+  <string name="review_flight_plan_tab_title_flight">フライト</string>
+  <!-- Title for the Review Flight, permits tab -->
+  <string name="review_flight_plan_tab_title_permits">許可証</string>
+  <!-- Class = "UINavigationItem"; title = "Review Flight Plan"; ObjectID = "7qo-VN-M2p"; Note = "REVIEW_FLIGHT_PLAN_TITLE|Title for view where user can review a flight plan"; AirMapUIObjectId = "7qo-VN-M2p.title"; -->
+  <string name="review_flight_plan_title">フライトプランを確認</string>
+  <!-- Title for the Local Rules view when a locality name is unavailable -->
+  <string name="rules_generic_title">現地の規則</string>
+  <!-- Class = "UINavigationItem"; title = "Select Aircraft"; ObjectID = "7vR-GS-NPr"; Note = "SELECT_AIRCRAFT_TITLE|Title for the view where you can select an aircraft for a flight"; AirMapUIObjectId = "7vR-GS-NPr.title"; -->
+  <string name="select_aircraft">機体を選択</string>
+  <!-- Class = "UILabel"; text = "SMS Code"; ObjectID = "oG7-qM-t5D"; Note = "SMS_LOGIN_CODE_HEADER|Header text for view where a user can input their SMS verification code"; AirMapUIObjectId = "oG7-qM-t5D.text"; -->
+  <string name="sms_login_code_header">SMS コード</string>
+  <!-- Class = "UITextField"; placeholder = "Code"; ObjectID = "L0X-0f-Pm9"; Note = "SMS_LOGIN_CODE_PLACEHOLDER|Placeholder label for the textfield where a user can input their SMS verification code"; AirMapUIObjectId = "L0X-0f-Pm9.placeholder"; -->
+  <string name="sms_login_code_placeholder">コード</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "ERY-u7-YqH"; Note = "SMS_LOGIN_CODE_SUBMIT_BUTTON|Title for button that allows a user to submit an SMS code for verification"; AirMapUIObjectId = "ERY-u7-YqH.normalTitle"; -->
+  <string name="sms_login_code_submit_button">送信</string>
+  <!-- Class = "UINavigationItem"; title = "Verify Code"; ObjectID = "7C4-bp-tif"; Note = "SMS_LOGIN_CODE_TITLE|Title for the view where a user enters their SMS verification code"; AirMapUIObjectId = "7C4-bp-tif.title"; -->
+  <string name="sms_login_code_title">コードを確認</string>
+  <!-- Class = "UITextField"; placeholder = "Phone Number"; ObjectID = "61d-PT-JN7"; Note = "SMS_LOGIN_PHONE_NUMBER_PLACEHOLDER|Label for field that the user types their phone number into"; AirMapUIObjectId = "61d-PT-JN7.placeholder"; -->
+  <string name="sms_login_phone_number_placeholder">電話番号</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "cdb-du-WXE"; Note = "SMS_LOGIN_SAVE_BUTTON|Label for button that allows the user to submit their phone number for verification"; AirMapUIObjectId = "cdb-du-WXE.normalTitle"; -->
+  <string name="sms_login_save_button">保存</string>
+  <!-- Class = "UINavigationItem"; title = "Login"; ObjectID = "CJG-Jj-2c2"; Note = "SMS_LOGIN_TITLE|Title for view that allows a user to login via SMS"; AirMapUIObjectId = "CJG-Jj-2c2.title"; -->
+  <string name="sms_login_title">ログイン</string>
+  <!-- Description for status advisory color Green -->
+  <string name="informational">情報</string>
+  <!-- Description for status advisory color Red -->
+  <string name="flight_strictly_regulated">フライトは厳しく制限</string>
+  <!-- Description for status advisory color Yellow -->
+  <string name="advisories">注意</string>
+  <!-- Name for map layer Aerial Recreational Areas -->
+  <string name="tile_layer_aerial_rec_areas">航空レクリエーショナルエリア</string>
+  <!-- Name for map layer Commercial Airports -->
+  <string name="tile_layer_airports">空港</string>
+  <!-- Name for map layer Cities -->
+  <string name="tile_layer_cities">町</string>
+  <!-- Name for map layer Class B Airspace -->
+  <string name="tile_layer_class_b">クラス B 管理空域</string>
+  <!-- Name for map layer Class C Airspace -->
+  <string name="tile_layer_class_c">クラス C 管理空域</string>
+  <!-- Name for map layer Class D Airspace -->
+  <string name="tile_layer_class_d">クラス D 管理空域</string>
+  <!-- Name for map layer Class E Airspace -->
+  <string name="tile_layer_class_e">クラス E 管理空域</string>
+  <!-- Name for map layer Controlled Airspace -->
+  <string name="tile_layer_controlled_airspace">管理空域 (B、C、D、E)</string>
+  <!-- Name for map layer Custom -->
+  <string name="tile_layer_custom">カスタム</string>
+  <!-- Name for map layer First Responder Activity -->
+  <string name="tile_layer_emergencies">緊急対応活動</string>
+  <!-- Name for map layer Fires -->
+  <string name="tile_layer_fires">火災</string>
+  <!-- Name for map layer Hazard Areas -->
+  <string name="tile_layer_hazard_areas">危険区域</string>
+  <!-- Name for map layer Heliports -->
+  <string name="tile_layer_heliports">ヘリポート</string>
+  <!-- Name for map layer Hospitals -->
+  <string name="tile_layer_hospitals">病院</string>
+  <!-- Name for map layer National Parks -->
+  <string name="tile_layer_national_parks">国立公園</string>
+  <!-- Name for map layer NOAA Marine Protection Areas -->
+  <string name="tile_layer_noaa">米国海洋大気庁海洋保護区域</string>
+  <!-- Name for map layer Power Plants -->
+  <string name="tile_layer_power_plants">発電所</string>
+  <!-- Name for map layer Prisons -->
+  <string name="tile_layer_prisons">刑務所</string>
+  <!-- Name for map layer Private Airports -->
+  <string name="tile_layer_private_airports">民間空港</string>
+  <!-- Name for map layer Prohibited Airspace -->
+  <string name="tile_layer_prohibited">禁止空域</string>
+  <!-- Name for map layer Restricted Airspace -->
+  <string name="tile_layer_restricted_airspace">規制空域</string>
+  <!-- Name for map layer Schools -->
+  <string name="tile_layer_schools">学校</string>
+  <!-- Name for map layer FAA Temporary Flight Restrictions -->
+  <string name="tile_layer_tfr_faa">一時的な飛行制限</string>
+  <!-- Name for map layer Universities -->
+  <string name="tile_layer_universities">大学</string>
+  <!-- Format for traffic alerts. 1) aircraft id, 2) altitude, 3) distance, 4) direction, 5) time -->
+  <string name="traffic_alert_with_aircraft_id_and_distance_format">交通 %1$s\n高度 %2$s\n%3$s %4$s %5$s</string>
+  <!-- Format for traffic alerts. 1) aircraft id, 2) altitude, 3) ground speed -->
+  <string name="traffic_alert_with_aircraft_id_format">交通 %1$s\n高度 %2$s\n%3$s</string>
+  <!-- Name for the imperial system of measurement -->
+  <string name="units_imperial">英国単位</string>
+  <!-- Name for the metric system of measurement -->
+  <string name="units_metric">メートル法</string>
+  <!-- Unit and format for displaying nautical miles -->
+  <string name="units_nautical_mile_format">%s 海里</string>
+  <!-- Unit and format for displaying speed in knots -->
+  <string name="units_speed_format_knots">%s ノット</string>
+  <!-- Unit and format for displaying speed in meters per second -->
+  <string name="units_speed_format_meters_per_second">秒速 %s メートル</string>
+  <!-- Unit and format for displaying speed in miles per hour -->
+  <string name="units_speed_format_miles_per_hour">時速 %s マイル</string>
+  <!-- Unit and format for displaying a speed range in meters per second -->
+  <string name="units_speed_range_format_meters_per_second">秒速 %1$s-%2$s メートル</string>
+  <!-- Unit and format for displaying a speed range in miles per hour -->
+  <string name="units_speed_range_format_miles_per_hour">時速 %1$s-%2$s マイル</string>
+  <!-- Unit and format for displaying temperature in Celcius -->
+  <string name="units_temperature_celcius_format">%1$s °C</string>
+  <!-- Unit and format for displaying temperature in Fahrenheit -->
+  <string name="units_temperature_fahrenheit_format">%1$s °F</string>
+</resources>

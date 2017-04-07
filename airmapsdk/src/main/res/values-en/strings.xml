@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <!-- Class = "UINavigationItem"; title = "Airspace Advisories"; ObjectID = "yk1-9H-q3n"; Note = "ADVISORIES_TITLE|Title for view that shows a list of airspace advisories"; AirMapUIObjectId = "yk1-9H-q3n.title"; -->
+  <string name="airmap_airspace_advisories">Airspace Advisories</string>
+  <!-- Label for advisories that are stup to receive digital notice -->
+  <string name="accepts_digital_notice">Accepts Digital Notice</string>
+  <!-- Displayed when an advisory has not provided a contact phone -->
+  <string name="no_known_number">No Phone Number Provided</string>
+  <!-- Label and format for displaying the end time of temporary flight restriction -->
+  <string name="advisory_tfr_ends_format">Ends: %1$s</string>
+  <!-- Never ending duration for a TFR -->
+  <string name="advisory_tfr_permanent">Permanent</string>
+  <!-- Label and format for displaying the start time of temporary flight restriction -->
+  <string name="airmap_starts">Starts: %1$s</string>
+  <!-- Format and unit for wildfire advisory in the area unit acres -->
+  <string name="advisory_wildfire_size_format_acres">%1$s Acres</string>
+  <!-- Format and unit for wildfire advisory in the area unit hectares -->
+  <string name="advisory_wildfire_size_format_hectares">%1$s Hectares</string>
+  <!-- Label for wildfire advisory cells where size is unknown -->
+  <string name="unknown_size">Size Unknown</string>
+  <!-- Call to action when a user has not selected an aircraft -->
+  <string name="aircraft_select_aircraft">Select Aircraft</string>
+  <!-- Title to display for the view creating a new aircraft -->
+  <string name="airmap_title_activity_create_aircraft">Create Aircraft</string>
+  <!-- Title to display for the view when updating an existing aircraft -->
+  <string name="airmap_edit_aircraft">Update Aircraft</string>
+  <!-- Name for airspace type Aerial Recreational Area -->
+  <string name="airspace_type_aerial_rec_area">Aerial Recreational Area</string>
+  <!-- Name for airspace type Airport -->
+  <string name="airspace_type_airport">Airport</string>
+  <!-- Name for airspace type City -->
+  <string name="airspace_type_city">City</string>
+  <!-- Name for airspace type Controlled Airspace -->
+  <string name="airspace_type_controlled">Controlled Airspace</string>
+  <!-- Name for airspace type Custom -->
+  <string name="airspace_type_custom">Custom</string>
+  <!-- Name for airspace type Emergency -->
+  <string name="airspace_type_emergency">Emergency</string>
+  <!-- Name for airspace type Fire -->
+  <string name="airspace_type_fire">Fire</string>
+  <!-- Name for airspace type Hazard Area -->
+  <string name="airspace_type_hazard_area">Hazard Area</string>
+  <!-- Name for airspace type Heliport -->
+  <string name="airspace_type_heliport">Heliport</string>
+  <!-- Name for airspace type Hospital -->
+  <string name="airspace_type_hospital">Hospital</string>
+  <!-- Name for airspace type National Park -->
+  <string name="airspace_type_national_park">National Park</string>
+  <!-- Name for airspace type Power Plant -->
+  <string name="airspace_type_power_plant">Power Plant</string>
+  <!-- Name for airspace type Prison -->
+  <string name="airspace_type_prison">Prison</string>
+  <!-- Name for airspace type School -->
+  <string name="airspace_type_school">School</string>
+  <!-- Name for airspace type Special Use Airspace -->
+  <string name="airspace_type_special_use">Special Use Airspace</string>
+  <!-- Name for airspace type Stadium -->
+  <string name="airspace_type_stadium">Stadium</string>
+  <!-- Name for airspace type FAA Temporary Flight Restriction -->
+  <string name="airspace_type_tfr_faa">Temporary Flight Restriction</string>
+  <!-- Name for airspace type University -->
+  <string name="airspace_type_university">University</string>
+  <!-- Name for airspace type WildFire -->
+  <string name="airspace_type_wildfire">Wildfire</string>
+  <!-- Login message when a user's account has been blacklisted. -->
+  <string name="invalid_email_domain">Your account has been blacklisted. Please contact security@airmap.com</string>
+  <!-- Login message when a user must verify their email address -->
+  <string name="verify_email_log_in_again">Your email address needs to be verified. Please check your inbox.</string>
+  <!-- Login message when a user failed to authenticate -->
+  <string name="auth_error_unauthorized">Unauthorized</string>
+  <!-- Navigation title for failed login attempt -->
+  <string name="auth_failed_login_title">Alert</string>
+  <!-- Title for table section header of available permits the user may apply for -->
+  <string name="available_permits">Available Permits</string>
+  <!-- Title for table section header of existing permits the user has -->
+  <string name="existing_permits">Existing Permits</string>
+  <!-- Title for table section header of permits which are not available to the user -->
+  <string name="unavailable_permits">Unavailable Permits</string>
+  <!-- Header copy describing the permits listed below -->
+  <string name="select_a_permit_description">The following existing &amp; available permits meets the requirements for operation in the flight area.</string>
+  <!-- Header copy describing that the flight area overlaps with multiple areas, each with differing permit requirements. No one single permit is able to satisfy all requirements. -->
+  <string name="no_available_permits_for_flight">Only a single permit can be used to fly in this operating area. Your flight path intersects with multiple areas requiring different permits.</string>
+  <!-- Class = "UINavigationItem"; title = "Select Permit"; ObjectID = "pFU-ok-j6g"; Note = "AVAILABLE_PERMITS_TITLE|Title for the list of available permits a user can choose from"; AirMapUIObjectId = "pFU-ok-j6g.title"; -->
+  <string name="select_a_permit">Select Permit</string>
+  <!-- Title for the row that describes if the permit can be used more than once. -->
+  <string name="single_use">Single use</string>
+  <!-- Title for the row that shows the temporal validity or expiration of the permit -->
+  <string name="available_permit_row_title_validity">Valid for</string>
+  <!-- Value for when single use is false -->
+  <string name="available_permit_row_value_single_use_false">No</string>
+  <!-- Value for when single use is true -->
+  <string name="available_permit_row_value_single_use_true">Yes</string>
+  <!-- Title for the Custom Properties section of the permit detail view. '*' denotes a required field -->
+  <string name="available_permit_section_header_custom_properties">Form Fields (* Required)</string>
+  <!-- Title for the Description section of the permit detail view -->
+  <string name="description">Description</string>
+  <!-- Title for the Details section of the permit detail view -->
+  <string name="permit_details">Details</string>
+  <!-- Abbreviation for East -->
+  <string name="cardinal_direction_e">E</string>
+  <!-- Abbreviation for East North East -->
+  <string name="cardinal_direction_ene">ENE</string>
+  <!-- Abbreviation for East South East -->
+  <string name="cardinal_direction_ese">ESE</string>
+  <!-- Abbreviation for North -->
+  <string name="cardinal_direction_n">N</string>
+  <!-- Abbreviation for North East -->
+  <string name="cardinal_direction_ne">NE</string>
+  <!-- Abbreviation for North North East -->
+  <string name="cardinal_direction_nnne">NNE</string>
+  <!-- Abbreviation for North North West -->
+  <string name="cardinal_direction_nnw">NNW</string>
+  <!-- Abbreviation for North West -->
+  <string name="cardinal_direction_nw">NW</string>
+  <!-- Abbreviation for South -->
+  <string name="cardinal_direction_s">S</string>
+  <!-- Abbreviation for South East -->
+  <string name="cardinal_direction_se">SE</string>
+  <!-- Abbreviation for South South East -->
+  <string name="cardinal_direction_sse">SSE</string>
+  <!-- Abbreviation for South South West -->
+  <string name="cardinal_direction_ssw">SSW</string>
+  <!-- Abbreviation for South West -->
+  <string name="cardinal_direction_sw">SW</string>
+  <!-- Abbreviation for West -->
+  <string name="cardinal_direction_w">W</string>
+  <!-- Abbreviation for West North West -->
+  <string name="cardinal_direction_wnw">WNW</string>
+  <!-- Abbreviation for West South West -->
+  <string name="cardinal_direction_wsw">WSW</string>
+  <!-- Class = "UILabel"; text = "Make & Model"; ObjectID = "XDN-d5-eoX"; Note = "CREATE_AIRCRAFT_MAKE_AND_MODEL|Label for the row label that displays the Make and Model of an aircraft"; AirMapUIObjectId = "XDN-d5-eoX.text"; -->
+  <string name="create_aircraft_make_and_model">Make &amp; Model</string>
+  <!-- Class = "UITextField"; placeholder = "Nickname"; ObjectID = "blN-px-yT6"; Note = "CREATE_AIRCRAFT_NICKNAME|Placeholder label for the textfield where a user inputs the nickname for an aircraft"; AirMapUIObjectId = "blN-px-yT6.placeholder"; -->
+  <string name="airmap_nickname">Nickname</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "K03-vU-4zj"; Note = "CREATE_AIRCRAFT_SAVE_BUTTON|Title for the button that saves a user's changes to a new or existing aircraft"; AirMapUIObjectId = "K03-vU-4zj.normalTitle"; -->
+  <string name="create_aircraft_save_button">Save</string>
+  <!-- Class = "UINavigationItem"; title = "Create Aircraft"; ObjectID = "Z9F-I6-niw"; Note = "CREATE_AIRCRAFT_TITLE|Title for the view where you can create a new aircraft"; AirMapUIObjectId = "Z9F-I6-niw.title"; -->
+  <string name="create_aircraft">Create Aircraft</string>
+  <!-- A generic server error message with an associated error code -->
+  <string name="error_generic_format">The server returned an error. (%s)</string>
+  <!-- Response serialization failure error -->
+  <string name="error_serialization">The server returned an unprocessible response.</string>
+  <!-- Server failure error -->
+  <string name="error_server">The server could not complete your request.</string>
+  <!-- Authorization failure error -->
+  <string name="error_unauthorized">Unauthorized. Please check login credentials.</string>
+  <!-- Class = "UINavigationItem"; title = "FAQs"; ObjectID = "W7d-Gh-IMB"; Note = "FAQS_TITLE|Title for view that shows answers to frequently asked questions (FAQs)."; AirMapUIObjectId = "W7d-Gh-IMB.title"; -->
+  <string name="faqs">FAQs</string>
+  <!-- Label for text input button -->
+  <string name="flight_data_cell_button_done">DONE</string>
+  <!-- Label for start time when the start is immediate -->
+  <string name="now">Now</string>
+  <!-- Class = "UIButton"; normalTitle = "Area"; ObjectID = "Yyg-xF-uSz"; Note = "FLIGHT_DRAWING_MODE_AREA|Label for button that enables area-based flight planning"; AirMapUIObjectId = "Yyg-xF-uSz.normalTitle"; -->
+  <string name="airmap_polygon">Area</string>
+  <!-- Class = "UIButton"; normalTitle = "Path"; ObjectID = "IAP-O7-VzM"; Note = "FLIGHT_DRAWING_MODE_PATH|Label for button that enables path-based flight planning"; AirMapUIObjectId = "IAP-O7-VzM.normalTitle"; -->
+  <string name="airmap_path">Path</string>
+  <!-- Class = "UIButton"; normalTitle = "Point"; ObjectID = "Fti-S4-xfH"; Note = "FLIGHT_DRAWING_MODE_POINT|Label for button that enables point-based flight planning"; AirMapUIObjectId = "Fti-S4-xfH.normalTitle"; -->
+  <string name="airmap_circle">Point</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "kPh-hd-dib"; Note = "FLIGHT_DRAWING_NEXT_BUTTON|Label for button that allows a user to advance to the next step of flight planning"; AirMapUIObjectId = "kPh-hd-dib.normalTitle"; -->
+  <string name="flight_drawing_next_button">Next</string>
+  <!-- The radius around a point-based flight's center -->
+  <string name="airmap_buffer">Radius</string>
+  <!-- Class = "UINavigationItem"; title = "Create Flight"; ObjectID = "ViV-2h-qM5"; Note = "FLIGHT_DRAWING_TITLE|Title for view that allows a user to draw out a flight plan"; AirMapUIObjectId = "ViV-2h-qM5.title"; -->
+  <string name="flight_drawing_title">Create Flight</string>
+  <!-- Call to action to fine-tune the geometry of a flight. -->
+  <string name="airmap_done_drawing_tip">Drag any point to move. Drag any midpoint to add a new point.</string>
+  <!-- Call to action to drag a point to the trash to delete. -->
+  <string name="airmap_delete_tip">Drag point to trash to delete</string>
+  <!-- Call to action to draw an area-based flight. -->
+  <string name="airmap_draw_freehand_area">Draw a freehand area</string>
+  <!-- Call to action to draw a path-based flight. -->
+  <string name="airmap_draw_freehand_path">Draw a freehand path</string>
+  <!-- Call to action to drag the center position of a point-based flight. -->
+  <string name="flight_drawing_tooltip_cta_postiion_point">Drag the center point to position your flight area.</string>
+  <!-- Call to action to tap the icon to begin drawing a flight area. -->
+  <string name="airmap_freehand_tip_area">Tap the hand icon to freehand draw any area.</string>
+  <!-- Call to action to tap the icon to begin drawing a flight path. -->
+  <string name="airmap_freehand_tip_path">Tap the hand icon to freehand draw any path.</string>
+  <!-- Displayed when the user has drawn an invalid shaping, overlapping with conflicting permitted zones -->
+  <string name="airmap_flight_area_overlap_permit_conflict">Flight area cannot overlap with conflicting permit requirement zones.</string>
+  <!-- Call to action to fix self-intersecting geometries of an area-based flight. -->
+  <string name="airmap_error_overlap">Invalid flight area. Adjust flight area so that it does not overlap with itself.</string>
+  <!-- The width of a path-based flight extending outward from the centerline -->
+  <string name="airmap_width">Width</string>
+  <!-- Title for the button to advance to the next screen -->
+  <string name="airmap_next">Next</string>
+  <!-- Title for the button to save and create the flight -->
+  <string name="airmap_save">Save</string>
+  <!-- Call to action title for the user to select an aircraft -->
+  <string name="flight_plan_row_title_aircraft">Select Aircraft</string>
+  <!-- Title for the row displaying flight plan altitude -->
+  <string name="airmap_max_altitude">Altitude</string>
+  <!-- Title for the row displaying flight plan duration -->
+  <string name="airmap_duration">Duration</string>
+  <!-- Call to action title for the user to select a pilot profile -->
+  <string name="select_pilot_profile">Select Pilot Profile</string>
+  <!-- Title for the row displaying flight plan start time -->
+  <string name="starts">Starts</string>
+  <!-- Title for the section displaying the pilot and aircraft details -->
+  <string name="pilot_and_aircraft_header">Pilot &amp; Aircraft</string>
+  <!-- Title for the section displaying flight plan details -->
+  <string name="flight_details">Flight</string>
+  <!-- Title for the section displaying social sharing features -->
+  <string name="airmap_share_my_flight">Share My Flight</string>
+  <!-- Title for the section displaying flight plan start time & duration -->
+  <string name="date_and_time">Date &amp; Time</string>
+  <!-- Class = "UINavigationItem"; title = "Manufacturers"; ObjectID = "a84-JL-ndb"; Note = "MANUFACTURERS_TITLE|Title for the view that displays a list of all aircraft manufacturers"; AirMapUIObjectId = "a84-JL-ndb.title"; -->
+  <string name="manufacturers_title">Manufacturers</string>
+  <!-- Class = "UINavigationItem"; title = "Models"; ObjectID = "9xB-Yl-FrO"; Note = "MODELS_TITLE|Title for the view that displays a list of all aircraft models"; AirMapUIObjectId = "9xB-Yl-FrO.title"; -->
+  <string name="models_title">Models</string>
+  <!-- Class = "UIButton"; normalTitle = "Done"; ObjectID = "Iz2-Va-oce"; Note = "PERMIT_DETAILS_DONE_BUTTON|Title for the button that dismisses the keyboard when a user is done editing a text field"; AirMapUIObjectId = "Iz2-Va-oce.normalTitle"; -->
+  <string name="done">Done</string>
+  <!-- Class = "UIButton"; normalTitle = "Select Permit"; ObjectID = "RX7-4I-r3s"; Note = "PERMIT_DETAILS_SELECT_PERMIT_BUTTON|Title for the button that selects the currently displayed permit and dismisses the view"; AirMapUIObjectId = "RX7-4I-r3s.normalTitle"; -->
+  <string name="airmap_select_permit">Select Permit</string>
+  <!-- Class = "UINavigationItem"; title = "Permit"; ObjectID = "uxj-wa-owq"; Note = "PERMIT_DETAILS_TITLE|Title for the view that displays permit details"; AirMapUIObjectId = "uxj-wa-owq.title"; -->
+  <string name="permit_details_title">Permit</string>
+  <!-- Table section title for other selectable countries -->
+  <string name="phone_country_section_other_country">Other</string>
+  <!-- Table section title for the currently selected country -->
+  <string name="phone_country_section_selected_country">Selected Country</string>
+  <!-- Class = "UINavigationItem"; title = "Select Country"; ObjectID = "dcW-Vd-KfC"; Note = "PHONE_COUNTRY_TITLE|Title for the view that allows a user to select their phone numbers country"; AirMapUIObjectId = "dcW-Vd-KfC.title"; -->
+  <string name="phone_country_title">Select Country</string>
+  <!-- Class = "UILabel"; text = "SMS Code"; ObjectID = "p8q-LE-2ew"; Note = "PHONE_VERIFICATION_CODE_HEADER|Header text for view where a user can input their SMS verification code"; AirMapUIObjectId = "p8q-LE-2ew.text"; -->
+  <string name="phone_verification_code_header">SMS Code</string>
+  <!-- Class = "UITextField"; placeholder = "Code"; ObjectID = "dDO-AY-LlB"; Note = "PHONE_VERIFICATION_CODE_PLACEHOLDER|Placeholder label for the textfield where a user can input their SMS verification code"; AirMapUIObjectId = "dDO-AY-LlB.placeholder"; -->
+  <string name="phone_verification_code_placeholder">Code</string>
+  <!-- Class = "UINavigationItem"; title = "Verify Phone Number"; ObjectID = "MVj-Qg-sch"; Note = "PHONE_VERIFICATION_CODE_TITLE|Title for the view where a user can verify an SMS token"; AirMapUIObjectId = "MVj-Qg-sch.title"; -->
+  <string name="phone_verification_code_title">Verify Phone Number</string>
+  <!-- Class = "UILabel"; text = "By providing your number, you agree to receive texts about your flights at this number. Carrier message & data rates may apply.\n\nAirMap will send you a text message when your digital notice has been successfully submitted.\n"; ObjectID = "2Na-rR-yZi"; Note = "PHONE_VERIFICATION_HEADER|Copy describing the process of verifying your phone number"; AirMapUIObjectId = "2Na-rR-yZi.text"; -->
+  <string name="airmap_phone_number_disclaimer">By providing your number, you agree to receive texts about your flights at this number. Carrier message &amp; data rates may apply.\n\nAirMap will send you a text message when your digital notice has been successfully submitted.\n</string>
+  <!-- Class = "UITextField"; placeholder = "Phone Number"; ObjectID = "vme-QM-SG8"; Note = "PHONE_VERIFICATION_PHONE|Placeholder label for the text field where a user types their phone number"; AirMapUIObjectId = "vme-QM-SG8.placeholder"; -->
+  <string name="phone_verification_phone">Phone Number</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "lre-WH-pt9"; Note = "PHONE_VERIFICATION_SAVE_BUTTON|Title for button that allows the user to submit the SMS code for verification"; AirMapUIObjectId = "lre-WH-pt9.normalTitle"; -->
+  <string name="phone_verification_save_button">Submit</string>
+  <!-- Class = "UINavigationItem"; title = "Phone Number Verification"; ObjectID = "4g7-2z-c9g"; Note = "PHONE_VERIFICATION_TITLE|Title for view that allows a user to verify their phone number"; AirMapUIObjectId = "4g7-2z-c9g.title"; -->
+  <string name="phone_number_verification">Phone Number Verification</string>
+  <!-- Format for pilot permit expiration -->
+  <string name="pilot_permit_expiration_format">Expires %1$s</string>
+  <!-- Table row label for FAA registration number -->
+  <string name="pilot_profile_faa_registration">FAA Registration Number</string>
+  <!-- Label for the pilot profile email -->
+  <string name="email">Email</string>
+  <!-- Label for the pilot profile first name -->
+  <string name="first_name">First Name</string>
+  <!-- Label for the pilot profile last name -->
+  <string name="last_name">Last Name</string>
+  <!-- Label for the pilot profile phone -->
+  <string name="pilot_profile_label_phone">Phone</string>
+  <!-- Label for the pilot profile username -->
+  <string name="pilot_profile_label_username">Username</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "kCX-rY-nIt"; Note = "PILOT_PROFILE_SAVE_BUTTON|Title for the button that saves any changes to a user's profile"; AirMapUIObjectId = "kCX-rY-nIt.normalTitle"; -->
+  <string name="pilot_profile_save_button">Save</string>
+  <!-- Section header for the pilot profile additional info section -->
+  <string name="pilot_profile_section_additional">Additional Info</string>
+  <!-- Section header for the pilot profile personal info section -->
+  <string name="airmap_personal_information">Personal Info</string>
+  <!-- Format for displaying a user's number of aircraft and flights -->
+  <string name="pilot_profile_statistics_format">%1$s Aircraft, %2$s Flights</string>
+  <!-- Class = "UINavigationItem"; title = "Pilot Profile"; ObjectID = "q0o-oq-I1W"; Note = "PILOT_PROFILE_TITLE|Title for view where a user can modify their user profile"; AirMapUIObjectId = "q0o-oq-I1W.title"; -->
+  <string name="pilot_profile_title">Pilot Profile</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "2jl-c2-qqx"; Note = "REQUIRED_PERMITS_NEXT_BUTTON|Button label that allows the user to advance to the next step of flight creation"; AirMapUIObjectId = "2jl-c2-qqx.normalTitle"; -->
+  <string name="required_permits_next_button">Next</string>
+  <!-- Call to action row text for selecting a different permit than the one displayed above -->
+  <string name="airmap_select_different_permit">Select a different permit</string>
+  <!-- Call to action row text for selecting a permit -->
+  <string name="airmap_select_a_permit">Select permit</string>
+  <!-- Class = "UILabel"; text = "Operating in this flight area requires a permit from each of the following authorities:"; ObjectID = "HLI-qV-iML"; Note = "REQUIRED_PERMITS_TABLE_HEADER|Copy that explains to the user that they are required to satisfy the permit requirements listed below."; AirMapUIObjectId = "HLI-qV-iML.text"; -->
+  <string name="requires_permits_from_authorities">Operating in this flight area requires a permit from each of the following authorities:</string>
+  <!-- Class = "UINavigationItem"; title = "Permits"; ObjectID = "747-Q2-1CI"; Note = "REQUIRED_PERMITS_TITLE|Title for the view where a user can select from a list of required permits"; AirMapUIObjectId = "747-Q2-1CI.title"; -->
+  <string name="permits">Permits</string>
+  <!-- Title for the flight plan review view -->
+  <string name="review_flight_plane_title">Flight Plan</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "tCa-zT-0iZ"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_NEXT_BUTTON|Button that allows a user to advance to the next step of flight planning"; AirMapUIObjectId = "tCa-zT-0iZ.normalTitle"; -->
+  <string name="review_flight_plan_details_next_button">Next</string>
+  <!-- 'Yes' Value for the public flight row -->
+  <string name="review_flight_plan_details_public_flight_value_true">Yes</string>
+  <!-- Label for the Buffer or radius surrounding a point or path -->
+  <string name="review_flight_plan_details_radius">Radius</string>
+  <!-- Label for the aircraft row -->
+  <string name="airmap_aircraft_stats">Aircraft</string>
+  <!-- Label for the maximum altitude for a flight -->
+  <string name="review_flight_plan_details_row_title_altitude">Altitude</string>
+  <!-- Label for a flight's duration -->
+  <string name="review_flight_plan_details_row_title_duration">Ends</string>
+  <!-- Label for a flight's end time -->
+  <string name="review_flight_plan_details_row_title_ends">Ends</string>
+  <!-- Label for the flight review 'is public' row -->
+  <string name="review_flight_plan_details_row_title_public">Public</string>
+  <!-- Class = "UILabel"; text = "Starts"; ObjectID = "Dy4-Qg-lC0"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_ROW_TITLE_STARTS|Label for row that displays the start time of a flight"; AirMapUIObjectId = "Dy4-Qg-lC0.text"; -->
+  <string name="review_flight_plan_details_row_title_starts">Starts</string>
+  <!-- Header label for the flight review aircraft section -->
+  <string name="review_flight_plan_details_section_header_aircraft">Aircraft</string>
+  <!-- Header label for the flight review details section -->
+  <string name="review_flight_plan_details_section_header_details">Details</string>
+  <!-- Header label for the flight review social sharing section -->
+  <string name="review_flight_plan_details_section_header_social">Share My Flight</string>
+  <!-- Time for flights that start immediately -->
+  <string name="review_flight_plan_details_start_time_now">Now</string>
+  <!-- Class = "UINavigationItem"; title = "Create Flight"; ObjectID = "HM6-qn-wuK"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_TITLE|Title for view that allows a user to adjust the details of a new flight"; AirMapUIObjectId = "HM6-qn-wuK.title"; -->
+  <string name="airmap_title_activity_create_flight">Create Flight</string>
+  <!-- Class = "UIButton"; normalTitle = "End Flight"; ObjectID = "2Eq-Fz-bOO"; Note = "REVIEW_FLIGHT_PLAN_END_BUTTON|Label for button that ends an active flight"; AirMapUIObjectId = "2Eq-Fz-bOO.normalTitle"; -->
+  <string name="end_flight">End Flight</string>
+  <!-- Displayed for authorities that are setup to receive digital notice -->
+  <string name="review_flight_plan_notices_tab_accepts_notice">Accepts Digital Notice</string>
+  <!-- Displayed for authorities that are NOT setup to receive digital notice -->
+  <string name="review_flight_plan_notices_tab_does_not_accept_notice">The following authorities in this area do not accept digital notice</string>
+  <!-- Displayed in the flight plan review notices tab when there are no notices to display -->
+  <string name="review_flight_plan_notices_tab_section_header_no_notices">There are no notices for this flight.</string>
+  <!-- Class = "UILabel"; text = "Digital Notice Accepted"; ObjectID = "39m-XX-eZ2"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_ACCEPTED|Header for section that shows what organizations accept digital notice"; AirMapUIObjectId = "39m-XX-eZ2.text"; -->
+  <string name="airmap_digital_notice_accepted">Digital Notice Accepted</string>
+  <!-- Class = "UILabel"; text = "The following authorities in this area do not accept digital notice"; ObjectID = "lll-ta-VAP"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_NOT_ACCEPTED|Header for section that shows what organizations do not accept digital notice"; AirMapUIObjectId = "lll-ta-VAP.text"; -->
+  <string name="airmap_not_accept_notice">The following authorities in this area do not accept digital notice</string>
+  <!-- Class = "UIButton"; normalTitle = "Review"; ObjectID = "V59-8d-Sdh"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_REVIEW_BUTON|Title for the button that allows the user to advance to the next step to review their flight plan"; AirMapUIObjectId = "V59-8d-Sdh.normalTitle"; -->
+  <string name="airmap_review">Review</string>
+  <!-- Class = "UINavigationItem"; title = "Flight Notice"; ObjectID = "Uk3-p4-sdr"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_TITLE|Title for view that displays digital notice that can be submitted to supported organizations"; AirMapUIObjectId = "Uk3-p4-sdr.title"; -->
+  <string name="airmap_flight_notice">Flight Notice</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "4YZ-kG-zkZ"; Note = "REVIEW_FLIGHT_PLAN_SUBMIT_BUTTON|Label for button that submits and creates a new flight"; AirMapUIObjectId = "4YZ-kG-zkZ.normalTitle"; -->
+  <string name="submit">Submit</string>
+  <!-- Title for the Review Flight, digital notices tab -->
+  <string name="review_flight_plan_tab_title_digital_notice">Notices</string>
+  <!-- Title for the Review Flight, flight Details tab -->
+  <string name="review_flight_plan_tab_title_flight">Flight</string>
+  <!-- Title for the Review Flight, permits tab -->
+  <string name="review_flight_plan_tab_title_permits">Permits</string>
+  <!-- Class = "UINavigationItem"; title = "Review Flight Plan"; ObjectID = "7qo-VN-M2p"; Note = "REVIEW_FLIGHT_PLAN_TITLE|Title for view where user can review a flight plan"; AirMapUIObjectId = "7qo-VN-M2p.title"; -->
+  <string name="review_flight_plan_title">Review Flight Plan</string>
+  <!-- Title for the Local Rules view when a locality name is unavailable -->
+  <string name="rules_generic_title">Locality Rules</string>
+  <!-- Class = "UINavigationItem"; title = "Select Aircraft"; ObjectID = "7vR-GS-NPr"; Note = "SELECT_AIRCRAFT_TITLE|Title for the view where you can select an aircraft for a flight"; AirMapUIObjectId = "7vR-GS-NPr.title"; -->
+  <string name="select_aircraft">Select Aircraft</string>
+  <!-- Class = "UILabel"; text = "SMS Code"; ObjectID = "oG7-qM-t5D"; Note = "SMS_LOGIN_CODE_HEADER|Header text for view where a user can input their SMS verification code"; AirMapUIObjectId = "oG7-qM-t5D.text"; -->
+  <string name="sms_login_code_header">SMS Code</string>
+  <!-- Class = "UITextField"; placeholder = "Code"; ObjectID = "L0X-0f-Pm9"; Note = "SMS_LOGIN_CODE_PLACEHOLDER|Placeholder label for the textfield where a user can input their SMS verification code"; AirMapUIObjectId = "L0X-0f-Pm9.placeholder"; -->
+  <string name="sms_login_code_placeholder">Code</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "ERY-u7-YqH"; Note = "SMS_LOGIN_CODE_SUBMIT_BUTTON|Title for button that allows a user to submit an SMS code for verification"; AirMapUIObjectId = "ERY-u7-YqH.normalTitle"; -->
+  <string name="sms_login_code_submit_button">Submit</string>
+  <!-- Class = "UINavigationItem"; title = "Verify Code"; ObjectID = "7C4-bp-tif"; Note = "SMS_LOGIN_CODE_TITLE|Title for the view where a user enters their SMS verification code"; AirMapUIObjectId = "7C4-bp-tif.title"; -->
+  <string name="sms_login_code_title">Verify Code</string>
+  <!-- Class = "UITextField"; placeholder = "Phone Number"; ObjectID = "61d-PT-JN7"; Note = "SMS_LOGIN_PHONE_NUMBER_PLACEHOLDER|Label for field that the user types their phone number into"; AirMapUIObjectId = "61d-PT-JN7.placeholder"; -->
+  <string name="sms_login_phone_number_placeholder">Phone Number</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "cdb-du-WXE"; Note = "SMS_LOGIN_SAVE_BUTTON|Label for button that allows the user to submit their phone number for verification"; AirMapUIObjectId = "cdb-du-WXE.normalTitle"; -->
+  <string name="sms_login_save_button">Save</string>
+  <!-- Class = "UINavigationItem"; title = "Login"; ObjectID = "CJG-Jj-2c2"; Note = "SMS_LOGIN_TITLE|Title for view that allows a user to login via SMS"; AirMapUIObjectId = "CJG-Jj-2c2.title"; -->
+  <string name="sms_login_title">Login</string>
+  <!-- Description for status advisory color Green -->
+  <string name="informational">Informational</string>
+  <!-- Description for status advisory color Red -->
+  <string name="flight_strictly_regulated">Flight Strictly Regulated</string>
+  <!-- Description for status advisory color Yellow -->
+  <string name="advisories">Advisories</string>
+  <!-- Name for map layer Aerial Recreational Areas -->
+  <string name="tile_layer_aerial_rec_areas">Aerial Recreational Areas</string>
+  <!-- Name for map layer Commercial Airports -->
+  <string name="tile_layer_airports">Airports</string>
+  <!-- Name for map layer Cities -->
+  <string name="tile_layer_cities">Cities</string>
+  <!-- Name for map layer Class B Airspace -->
+  <string name="tile_layer_class_b">Class B Controlled Airspace</string>
+  <!-- Name for map layer Class C Airspace -->
+  <string name="tile_layer_class_c">Class C Controlled Airspace</string>
+  <!-- Name for map layer Class D Airspace -->
+  <string name="tile_layer_class_d">Class D Controlled Airspace</string>
+  <!-- Name for map layer Class E Airspace -->
+  <string name="tile_layer_class_e">Class E Controlled Airspace</string>
+  <!-- Name for map layer Controlled Airspace -->
+  <string name="tile_layer_controlled_airspace">Controlled Airspace (B, C, D &amp; E)</string>
+  <!-- Name for map layer Custom -->
+  <string name="tile_layer_custom">Custom</string>
+  <!-- Name for map layer First Responder Activity -->
+  <string name="tile_layer_emergencies">First Responder Activity</string>
+  <!-- Name for map layer Fires -->
+  <string name="tile_layer_fires">Fires</string>
+  <!-- Name for map layer Hazard Areas -->
+  <string name="tile_layer_hazard_areas">Hazard Areas</string>
+  <!-- Name for map layer Heliports -->
+  <string name="tile_layer_heliports">Heliports</string>
+  <!-- Name for map layer Hospitals -->
+  <string name="tile_layer_hospitals">Hospitals</string>
+  <!-- Name for map layer National Parks -->
+  <string name="tile_layer_national_parks">National Parks</string>
+  <!-- Name for map layer NOAA Marine Protection Areas -->
+  <string name="tile_layer_noaa">NOAA Marine Protection Areas</string>
+  <!-- Name for map layer Power Plants -->
+  <string name="tile_layer_power_plants">Power Plants</string>
+  <!-- Name for map layer Prisons -->
+  <string name="tile_layer_prisons">Prisons</string>
+  <!-- Name for map layer Private Airports -->
+  <string name="tile_layer_private_airports">Private Airports</string>
+  <!-- Name for map layer Prohibited Airspace -->
+  <string name="tile_layer_prohibited">Prohibited Airspace</string>
+  <!-- Name for map layer Restricted Airspace -->
+  <string name="tile_layer_restricted_airspace">Restricted Airspace</string>
+  <!-- Name for map layer Schools -->
+  <string name="tile_layer_schools">Schools</string>
+  <!-- Name for map layer FAA Temporary Flight Restrictions -->
+  <string name="tile_layer_tfr_faa">Temporary Flight Restrictions</string>
+  <!-- Name for map layer Universities -->
+  <string name="tile_layer_universities">Universities</string>
+  <!-- Format for traffic alerts. 1) aircraft id, 2) altitude, 3) distance, 4) direction, 5) time -->
+  <string name="traffic_alert_with_aircraft_id_and_distance_format">Traffic %1$s\nAltitude %2$s\n%3$s %4$s %5$s</string>
+  <!-- Format for traffic alerts. 1) aircraft id, 2) altitude, 3) ground speed -->
+  <string name="traffic_alert_with_aircraft_id_format">Traffic %1$s\nAltitude %2$s\n%3$s</string>
+  <!-- Name for the imperial system of measurement -->
+  <string name="units_imperial">Imperial</string>
+  <!-- Name for the metric system of measurement -->
+  <string name="units_metric">Metric</string>
+  <!-- Unit and format for displaying nautical miles -->
+  <string name="units_nautical_mile_format">%s NM</string>
+  <!-- Unit and format for displaying speed in knots -->
+  <string name="units_speed_format_knots">%s kts</string>
+  <!-- Unit and format for displaying speed in meters per second -->
+  <string name="units_speed_format_meters_per_second">%s m/s</string>
+  <!-- Unit and format for displaying speed in miles per hour -->
+  <string name="units_speed_format_miles_per_hour">%s mph</string>
+  <!-- Unit and format for displaying a speed range in meters per second -->
+  <string name="units_speed_range_format_meters_per_second">%1$s-%2$s m/s</string>
+  <!-- Unit and format for displaying a speed range in miles per hour -->
+  <string name="units_speed_range_format_miles_per_hour">%1$s-%2$s mph</string>
+  <!-- Unit and format for displaying temperature in Celcius -->
+  <string name="units_temperature_celcius_format">%1$s°C</string>
+  <!-- Unit and format for displaying temperature in Fahrenheit -->
+  <string name="units_temperature_fahrenheit_format">%1$s°F</string>
+</resources>

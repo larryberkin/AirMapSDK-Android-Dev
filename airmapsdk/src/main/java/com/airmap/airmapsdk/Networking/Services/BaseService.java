@@ -11,7 +11,7 @@ class BaseService {
 
     //URLs should end with a /
     //TODO: Change all the debug servers to production upon release
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     //Base Urls
     protected static final String baseUrl = "https://api.airmap.com/";
