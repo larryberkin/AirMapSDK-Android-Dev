@@ -45,7 +45,9 @@ public class WebActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) { //Using this deprecated version for backwards compatibility on older API levels
-                Snackbar.make(webView, description, Snackbar.LENGTH_SHORT).show();
+                if (webView != null) {
+                    Snackbar.make(webView, description, Snackbar.LENGTH_SHORT).show();
+                }
             }
 
 

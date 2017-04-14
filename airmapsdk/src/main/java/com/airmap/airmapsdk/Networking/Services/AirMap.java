@@ -636,7 +636,8 @@ public class AirMap {
      */
     public static void createFlight(@NonNull Activity activity, int requestCode,
                                     @NonNull Coordinate coordinate, @Nullable HashMap<String, String> extras,
-                                    @Nullable List<MappingService.AirMapLayerType> layers) {
+                                    @Nullable List<MappingService.AirMapLayerType> layers,
+                                    @Nullable MappingService.AirMapMapTheme theme) {
         if (activity != null && coordinate != null) {
             Intent intent = new Intent(activity, CreateFlightActivity.class);
             intent.putExtra(CreateFlightActivity.COORDINATE, coordinate);
@@ -649,6 +650,9 @@ public class AirMap {
                     stringLayers.add(layer.toString());
                 }
                 intent.putStringArrayListExtra(CreateFlightActivity.KEY_LAYERS, stringLayers);
+            }
+            if (theme != null) {
+                intent.putExtra(CreateFlightActivity.KEY_THEME, theme);
             }
             activity.startActivityForResult(intent, requestCode);
         }
@@ -668,7 +672,8 @@ public class AirMap {
      */
     public static void createFlight(@NonNull Fragment fragment, int requestCode,
                                     @NonNull Coordinate coordinate, @Nullable HashMap<String, String> extras,
-                                    @Nullable List<MappingService.AirMapLayerType> layers) {
+                                    @Nullable List<MappingService.AirMapLayerType> layers,
+                                    @Nullable MappingService.AirMapMapTheme theme) {
         if (fragment != null && coordinate != null) {
             Intent intent = new Intent(fragment.getActivity(), CreateFlightActivity.class);
             intent.putExtra(CreateFlightActivity.COORDINATE, coordinate);
@@ -681,6 +686,9 @@ public class AirMap {
                     stringLayers.add(layer.toString());
                 }
                 intent.putStringArrayListExtra(CreateFlightActivity.KEY_LAYERS, stringLayers);
+            }
+            if (theme != null) {
+                intent.putExtra(CreateFlightActivity.KEY_THEME, theme);
             }
             fragment.startActivityForResult(intent, requestCode);
         }
@@ -700,7 +708,8 @@ public class AirMap {
      */
     public static void createFlight(@NonNull android.support.v4.app.Fragment fragment, int requestCode,
                                     @NonNull Coordinate coordinate, @Nullable HashMap<String, String> extras,
-                                    @Nullable List<MappingService.AirMapLayerType> layers) {
+                                    @Nullable List<MappingService.AirMapLayerType> layers,
+                                    @Nullable MappingService.AirMapMapTheme theme) {
         if (fragment != null && coordinate != null) {
             Intent intent = new Intent(fragment.getContext(), CreateFlightActivity.class);
             intent.putExtra(CreateFlightActivity.COORDINATE, coordinate);
@@ -713,6 +722,9 @@ public class AirMap {
                     stringLayers.add(layer.toString());
                 }
                 intent.putStringArrayListExtra(CreateFlightActivity.KEY_LAYERS, stringLayers);
+            }
+            if (theme != null) {
+                intent.putExtra(CreateFlightActivity.KEY_THEME, theme);
             }
             fragment.startActivityForResult(intent, requestCode);
         }

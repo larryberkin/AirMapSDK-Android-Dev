@@ -8,7 +8,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,6 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -35,8 +33,6 @@ import com.airmap.airmapsdk.Analytics;
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.models.aircraft.AirMapAircraft;
-import com.airmap.airmapsdk.models.aircraft.AirMapAircraftManufacturer;
-import com.airmap.airmapsdk.models.aircraft.AirMapAircraftModel;
 import com.airmap.airmapsdk.models.airspace.AirMapAirspace;
 import com.airmap.airmapsdk.models.flight.AirMapFlight;
 import com.airmap.airmapsdk.models.permits.AirMapAvailablePermit;
@@ -54,6 +50,7 @@ import com.airmap.airmapsdk.networking.services.MappingService;
 import com.airmap.airmapsdk.ui.activities.CreateEditAircraftActivity;
 import com.airmap.airmapsdk.ui.activities.CreateFlightActivity;
 import com.airmap.airmapsdk.ui.activities.ProfileActivity;
+import com.airmap.airmapsdk.ui.activities.WebActivity;
 import com.airmap.airmapsdk.ui.adapters.AircraftAdapter;
 import com.airmap.airmapsdk.util.AnnotationsFactory;
 import com.airmap.airmapsdk.util.Constants;
@@ -78,6 +75,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.airmap.airmapsdk.util.Constants.URL_EXTRA;
 import static com.airmap.airmapsdk.util.Utils.getDurationPresets;
 import static com.airmap.airmapsdk.util.Utils.indexOfDurationPreset;
 import static com.airmap.airmapsdk.util.Utils.indexOfMeterPreset;
@@ -170,10 +168,9 @@ public class FlightDetailsFragment extends Fragment implements OnMapReadyCallbac
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(Constants.INFO_URL));
+                Intent intent = new Intent(getContext(), WebActivity.class);
+                intent.putExtra(URL_EXTRA, Constants.INFO_URL);
                 startActivity(intent);
-
             }
         });
         return view;
@@ -205,7 +202,7 @@ public class FlightDetailsFragment extends Fragment implements OnMapReadyCallbac
         map = mapboxMap;
 
         if (mListener != null && isFragmentActive()) {
-            String url = AirMap.getTileSourceUrl(mListener.getMapLayers(), MappingService.AirMapMapTheme.Standard);
+            String url = AirMap.getTileSourceUrl(mListener.getMapLayers(), mListener.getMapTheme());
             map.setStyleUrl(url);
             AirMapFlight flight = mListener.getFlight();
             MultiPoint multiPoint;
@@ -1009,5 +1006,7 @@ public class FlightDetailsFragment extends Fragment implements OnMapReadyCallbac
         List<LatLng>[] getPathBuffers();
 
         List<MappingService.AirMapLayerType> getMapLayers();
+
+        MappingService.AirMapMapTheme getMapTheme();
     }
 }

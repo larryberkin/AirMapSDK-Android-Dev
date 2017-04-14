@@ -297,7 +297,7 @@ public class AirMapClient {
             }
         });
         //TODO: Check for active connections before reassigning client
-        client = builder.connectTimeout(15, TimeUnit.SECONDS).build();
+        client = builder.connectTimeout(15, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS).build();
     }
 
     /**
