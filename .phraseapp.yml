@@ -3,7 +3,7 @@ phraseapp:
   project_id: 8e1da11a577bc4eb2ca0a2b4011d165d
   push:
     sources:
-    - file: airmapsdk/src/main/res/values-en/androidstrings.xml #android only
+    - file: airmapsdk/src/main/res/values/androidstrings.xml #android only
       params:
         tags: "android"
         file_format: xml
