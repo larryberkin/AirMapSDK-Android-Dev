@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="airmap_flights">フライト</string>
+  <string name="airmap_flights">フライト情報</string>
   <string name="airmap_pilot_information">パイロット情報</string>
   <string name="airmap_title_activity_custom_properties">カスタムプロパティ</string>
   <string name="airmap_title_activity_profile">パイロットのプロフィール</string>
@@ -12,13 +12,13 @@
   </plurals>
   <string name="duration_in_minutes">%1$s 分</string>
   <string name="email_verification_required">Eメールの確認が必要です</string>
-  <string name="enter_verification_token">お客様の電話番号へ送信した確認番号を入力してください</string>
+  <string name="enter_verification_token">お客様の電話番号へ連絡した確認番号を入力してください</string>
   <string name="error_creating_flight">フライト作成に失敗しました</string>
-  <string name="error_getting_mfrs">製造会社の取得に失敗しました</string>
+  <string name="error_getting_mfrs">ドローンメーカーの取得に失敗しました</string>
   <string name="error_getting_permit">許可証取得に失敗しました</string>
   <string name="error_getting_profile">プロフィール取得に失敗しました</string>
-  <string name="error_getting_wallet">許可ウォレット取得に失敗しました</string>
-  <string name="error_models_for_mfrs">選択された製造会社のモデル取得に失敗しました</string>
+  <string name="error_getting_wallet">許可証入れ取得に失敗しました</string>
+  <string name="error_models_for_mfrs">選択されたドローンメーカーのモデル取得に失敗しました</string>
   <string name="error_resending_email">確認メールの再送に失敗しました</string>
   <string name="error_updating_profile">プロフィール更新に失敗しました</string>
   <string name="error_verifying_number">番号確認に失敗しました</string>
@@ -26,21 +26,21 @@
   <string name="learn_more">さらに詳しく</string>
   <string name="login">ログイン</string>
   <string name="na">該当なし</string>
-  <string name="no_dialer_found">デバイスにダイヤル装置が見つかりません</string>
-  <string name="only_schedule_present_future">フライトは、現在または未来のみスケジュールすることができます</string>
+  <string name="no_dialer_found">このデバイスでは、電話機能を利用できません</string>
+  <string name="only_schedule_present_future">現在または未来のフライトのみ作成することができます</string>
   <string name="permit_status">状況: %1$s</string>
   <string name="phone_number">電話番号</string>
   <string name="price_label">料金:\t\t</string>
   <string name="read_full_rules">全規則を読む</string>
-  <string name="required_field">必須領域です</string>
-  <string name="required_field_must_be_complete">先へ進むには全ての必須領域を記入してください。</string>
+  <string name="required_field">入力必須です</string>
+  <string name="required_field_must_be_complete">先へ進むには、全ての入力必須フィールドへの入力が必要です。</string>
   <string name="resend_email">Eメールを再送信</string>
   <string name="retry">再試行</string>
-  <string name="rules_hint">このエリアでの事業に関係する連邦、州、地方自治体の法律を知る</string>
-  <string name="select_manufacturer">製造会社を選択</string>
+  <string name="rules_hint">このエリアでのフライトに関係する連邦、州、地方自治体の法律を確認する</string>
+  <string name="select_manufacturer">ドローンメーカーを選択</string>
   <string name="select_model">モデルを選択</string>
   <string name="sent_email">Eメールを送信しました</string>
-  <string name="successfully_updated">アップデートが完了しました</string>
+  <string name="successfully_updated">アップデートに成功しました</string>
   <string name="successfully_verified_number">新しい番号を確認しました</string>
   <string name="tile_layer_other_cautionary_areas">その他の注意区域</string>
   <string name="tile_layer_wildfires">山火事</string>
