@@ -128,7 +128,7 @@ public class FlightNoticeFragment extends Fragment {
 
     private void setupDigitalNoticeList() {
         AirMapStatus status = mListener.getFlightStatus();
-        if (digitalNoticeNames.isEmpty() || !status.getApplicablePermits().isEmpty()) {
+        if (digitalNoticeNames.isEmpty() && status.getApplicablePermits().isEmpty()) {
             submitNoticeSwitch.setVisibility(View.GONE);
         }
 
@@ -170,7 +170,7 @@ public class FlightNoticeFragment extends Fragment {
 
     //If there are no digital notices or non-digital airports that need notice, go to next fragment
     private void continueToNextFragmentIfNecessary() {
-        if (notDigitalLabelTextView.getVisibility() == View.GONE && submitNoticeSwitch.getVisibility() == View.GONE) {
+        if (digitalNotices.isEmpty() && notDigitalNotices.isEmpty()) {
             onNextButton();
         }
     }

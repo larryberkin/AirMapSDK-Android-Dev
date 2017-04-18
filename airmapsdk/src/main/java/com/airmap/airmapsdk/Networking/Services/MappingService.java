@@ -116,6 +116,8 @@ public class MappingService extends BaseService {
                     return Prisons;
                 case "universities":
                     return Universities;
+                case "aerial_recreational_areas,custom,hazard_areas,hospitals,power_plants,prisons,schools,universities,cities":
+                    return Other;
                 default:
                     return null;
             }

@@ -131,7 +131,7 @@ public class SelectPermitsAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewHolder instanceof InstructionsViewHolder) {
             final InstructionsViewHolder holder = (InstructionsViewHolder) viewHolder;
             holder.titleTextView.setText(R.string.select_a_permit);
-            holder.descriptionTextView.setText(R.string.you_have_selected_permits_of_total_required);
+            holder.descriptionTextView.setText(R.string.select_a_permit_description);
         } else if (viewHolder instanceof HeaderViewHolder) {
             final HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
             holder.titleTextView.setText(((Header) getItem(position)).name);

@@ -112,7 +112,8 @@ public class ListPermitsFragment extends Fragment {
             }
         }
 
-        String summary = getString(R.string.you_have_selected_permits_of_total_required, adapter.getSelectedPermits().size(), adapter.getItemCount());
+//        String summary = getString(R.string.you_have_selected_permits_of_total_required, adapter.getSelectedPermits().size(), adapter.getItemCount());
+        String summary = getString(R.string.requires_permits_from_authorities);
         summaryTextView.setText(summary);
     }
 

@@ -116,7 +116,9 @@ public class CreateFlightActivity extends AppCompatActivity implements
             if (getIntent().getStringArrayListExtra(KEY_LAYERS) != null) {
                 ArrayList<String> stringLayers = getIntent().getStringArrayListExtra(KEY_LAYERS);
                 for (String stringLayer : stringLayers) {
-                    mapLayers.add(MappingService.AirMapLayerType.fromString(stringLayer));
+                    if (MappingService.AirMapLayerType.fromString(stringLayer) != null) {
+                        mapLayers.add(MappingService.AirMapLayerType.fromString(stringLayer));
+                    }
                 }
             }
             if (getIntent().getSerializableExtra(KEY_THEME) != null) {
@@ -472,25 +474,14 @@ public class CreateFlightActivity extends AppCompatActivity implements
             }
         }
 
-        if (!notices.isEmpty()) {
-            for (int i = 0; i < adapter.getCount(); i++) {
-                Fragment fragment = adapter.getItem(i);
-                if (fragment instanceof FlightNoticeFragment) {
-                    viewPager.setCurrentItem(i, true);
-                    return;
-                }
+        for (int i = 0; i < adapter.getCount(); i++) {
+            Fragment fragment = adapter.getItem(i);
+            if (fragment instanceof FlightNoticeFragment) {
+                viewPager.setCurrentItem(i, true);
+                return;
             }
-            adapter.add(FlightNoticeFragment.newInstance());
-        } else {
-            for (int i = 0; i < adapter.getCount(); i++) {
-                Fragment fragment = adapter.getItem(i);
-                if (fragment instanceof ReviewFlightFragment) {
-                    viewPager.setCurrentItem(i, true);
-                    return;
-                }
-            }
-            adapter.add(ReviewFlightFragment.newInstance());
         }
+        adapter.add(FlightNoticeFragment.newInstance());
         goToLastPage();
     }
 

@@ -125,7 +125,7 @@ public class ReviewNoticeFragment extends Fragment {
     }
 
     private void setupDigitalNoticeList() {
-        if (digitalNoticeNames.isEmpty() || !status.getApplicablePermits().isEmpty()) {
+        if (digitalNoticeNames.isEmpty() && status.getApplicablePermits().isEmpty()) {
             submitNoticeSwitch.setVisibility(View.GONE);
         }
 
