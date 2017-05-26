@@ -1,6 +1,7 @@
 package com.airmap.airmapsdk.networking.callbacks;
 
-import com.airmap.airmapsdk.Auth;
+import com.airmap.airmapsdk.AirMapException;
+import com.airmap.airmapsdk.models.pilot.AirMapPilot;
 
 /**
  * Internal use
@@ -8,11 +9,6 @@ import com.airmap.airmapsdk.Auth;
  * Copyright © 2016 AirMap, Inc. All rights reserved.
  */
 public interface LoginCallback {
-    void onSuccess(Auth.AuthCredential authCredential);
-
-    void onEmailVerificationNeeded(String resendLink);
-
-    void onErrorDomainBlackList();
-
-    void onContinue();
+    void onSuccess(AirMapPilot pilot);
+    void onError(AirMapException e);
 }

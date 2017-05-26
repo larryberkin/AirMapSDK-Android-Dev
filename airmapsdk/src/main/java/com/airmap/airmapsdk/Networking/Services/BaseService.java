@@ -83,6 +83,7 @@ class BaseService {
     protected static final String welcomeUrl = welcomeBaseUrl + "locale/";
 
     //Auth
+    protected static final String loginUrl = "https://sso.airmap.io/delegation";
     protected static final String authVersion = DEBUG ? Utils.getDebugUrl() : "v1/";
     protected static final String authBaseUrl = baseUrl + "auth/" + authVersion;
     protected static final String anonymousLoginUrl = authBaseUrl + "anonymous/token";

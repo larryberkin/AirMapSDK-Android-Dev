@@ -64,11 +64,6 @@
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-                android:name=".ui.activities.LoginActivity"
-                android:label="@string/login"
-                android:launchMode="singleTop"
-                android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
                 android:name=".ui.activities.WebActivity"
@@ -87,6 +82,24 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.auth0.android.lock.LockActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AirMap.Lock.Theme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sso.airmap.io"
+                    android:pathPrefix="/android/${applicationId}/callback"
+                    android:scheme="airmap" />
+            </intent-filter>
+        </activity>
 
     </application>
 

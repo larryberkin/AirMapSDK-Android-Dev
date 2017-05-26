@@ -1,31 +1,26 @@
 package com.airmap.airmapsdk;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
-import com.airmap.airmapsdk.networking.callbacks.LoginCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.networking.services.AuthService;
+import com.airmap.airmapsdk.util.AirMapAuthenticationCallback;
 import com.airmap.airmapsdk.util.PreferenceUtils;
 import com.airmap.airmapsdk.util.SecuredPreferenceException;
 import com.airmap.airmapsdk.util.Utils;
+import com.auth0.android.Auth0;
+import com.auth0.android.lock.Lock;
 
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.NumericDate;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Date;
-
-import okhttp3.HttpUrl;
 
 /**
  * Created by Vansh Gandhi on 8/10/16.
@@ -39,114 +34,25 @@ public class Auth {
         Unknown,
     }
 
-    /**
-     * Generates an authCredentials object from a url
-     *
-     * @param url The url to parse
-     * @return AuthCredentials
-     */
-    private static AuthCredential authCredentialsFromUrl(String url) {
-        if (isValidLoginSchema(url)) {
-            url = url.replace(Utils.getCallbackUrl() + "#", Utils.getCallbackUrl() + "?"); // Auth0 returns a #
-            HttpUrl parsed = HttpUrl.parse(url);
+    public static void loginOrSignup(Activity activity, AirMapAuthenticationCallback callback) {
+        Auth0 auth0 = new Auth0(Utils.getClientId(), "sso.airmap.io");
 
-            try {
-                String idToken = parsed.queryParameter("id_token");
-                AuthCredential authCredentials = new AuthCredential();
-                authCredentials.setAccessToken(idToken);
-                authCredentials.setTokenType(parsed.queryParameter("token_type"));
-                authCredentials.setRefreshToken(parsed.queryParameter("refresh_token"));
+        Lock lock = Lock.newBuilder(auth0, callback)
+                .hideMainScreenTitle(true)
+                .setTermsURL("https://www.airmap.com/terms")
+                .setPrivacyURL("https://www.airmap.com/privacy")
+                .withScope("openid offline_access")
+                .withScheme("airmap")
+                .closable(true)
+                .build(activity);
 
-                JwtConsumer consumer = new JwtConsumerBuilder()
-                        .setSkipAllValidators()
-                        .setDisableRequireSignature()
-                        .setSkipSignatureVerification()
-                        .build();
-                JwtClaims claims = consumer.processToClaims(idToken);
-                authCredentials.setUserId(claims.getSubject());
-                authCredentials.setExpiresAt(new Date(claims.getExpirationTime().getValueInMillis()));
-                return authCredentials;
-            } catch (InvalidJwtException | MalformedClaimException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+        callback.setLock(lock);
+
+        activity.startActivity(lock.newIntent(activity));
     }
 
     /**
-     * Generates an AuthErrors object from a url
-     *
-     * @param url The url to parse
-     * @return AuthErrors
-     */
-    public static AuthErrors authErrorsFromUrl(String url) {
-        if (!isValidLoginSchema(url)) {
-            return null;
-        }
-        String callbackUrl;
-        try {
-            JSONObject auth0 = AirMap.getConfig().getJSONObject("auth0");
-            callbackUrl = auth0.getString("callback_url");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw new RuntimeException("No callbackUrl found in airmap.config.json");
-        }
-        url = url.replace(callbackUrl + "#", callbackUrl + "?"); // Auth0 returns a #
-        HttpUrl parsed = HttpUrl.parse(url);
-        String error = parsed.queryParameter("error"); // check for error == unauthorized
-        if (error == null || !error.equals("unauthorized")) {
-            return null;
-        }
-        try {
-            String errorDescription = parsed.queryParameter("error_description");
-            errorDescription = URLDecoder.decode(errorDescription, "UTF-8");
-            JSONObject jsonObject = new JSONObject(errorDescription);
-            return new AuthErrors(jsonObject);
-
-        } catch (JSONException | UnsupportedEncodingException e) {
-            return null;
-        }
-    }
-
-
-    /**
-     * Checks for Auth Errors or AuthCredentials, if Valid, Saves AuthCredentials
-     */
-    public static boolean login(String url, Context context, LoginCallback callback) {
-        AuthErrors authError = authErrorsFromUrl(url);
-        if (authError != null) {
-            switch (authError.type) {
-                case EmailVerification:
-                    callback.onEmailVerificationNeeded(authError.resendLink);
-                    return true;
-                case DomainBlackList:
-                    callback.onErrorDomainBlackList();
-                    return true;
-            }
-            return false;
-        }
-
-        AuthCredential authCredentials = authCredentialsFromUrl(url);
-        if (authCredentials != null) {
-            AirMap.setAuthToken(authCredentials.getAccessToken());
-            if (authCredentials.getRefreshToken() != null && !authCredentials.getRefreshToken().isEmpty()) {
-                try {
-                    PreferenceUtils.getPreferences(context).edit()
-                            .putString(Utils.REFRESH_TOKEN_KEY, authCredentials.getRefreshToken()).apply();
-                } catch (SecuredPreferenceException e) {
-                    AirMapLog.e("Auth", "Unable to save refresh token to secure prefs", e);
-                }
-            }
-            callback.onSuccess(authCredentials);
-            return true;
-        }
-        callback.onContinue();
-        return false;
-    }
-
-
-    /**
-     * Refreshes the saved access token
+     * Refreshes the saved access token. Non-blocking
      */
     public static void refreshAccessToken(final Context context, final AirMapCallback<Void> callback) {
         AirMapLog.i("AuthServices", "Trying to refresh token");
@@ -171,110 +77,41 @@ public class Auth {
     }
 
     /**
-     * Concatenates and returns a Login Url
-     *
-     * @return String
+     * Refresh Access Token. Blocking
      */
-    public static String getLoginUrl() {
-        return "https://sso.airmap.io/authorize?response_type=token&client_id=" + Utils.getClientId() + "&redirect_uri=" + Utils.getCallbackUrl() + "&scope=openid+offline_access";
+    public static void refreshAccessToken(final Context context) {
+        AirMapLog.i("AuthServices", "Trying to refresh token");
+
+        String refreshToken = null;
+        try {
+            SharedPreferences preferences = PreferenceUtils.getPreferences(context);
+            refreshToken = preferences.getString(Utils.REFRESH_TOKEN_KEY, "");
+        } catch (SecuredPreferenceException e) {
+            AirMapLog.e("Auth", "Unable to get refresh token from secure prefs", e);
+        }
+
+        // return if refresh token is empty
+        if (TextUtils.isEmpty(refreshToken)) {
+            // throw ?
+            return;
+        }
+
+        AuthService.refreshAccessToken(refreshToken);
     }
 
-    private static boolean isValidLoginSchema(String url) {
-        if (url.equals(getLoginUrl())) {
-            return false;
-        }
-        return url.contains(Utils.getCallbackUrl());
-    }
-
-
-    public static class AuthCredential implements Serializable {
-
-        private String accessToken;
-        private String refreshToken;
-        private Date expiresAt;
-        private String tokenType;
-        private String userId;
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public void setAccessToken(String accessToken) {
-            this.accessToken = accessToken;
-        }
-
-        public String getAccessToken() {
-            return accessToken;
-        }
-
-        public String getRefreshToken() {
-            return refreshToken;
-        }
-
-        public void setRefreshToken(String refreshToken) {
-            this.refreshToken = refreshToken;
-        }
-
-        public Date getExpiresAt() {
-            return expiresAt;
-        }
-
-        public void setExpiresAt(Date expiresAt) {
-            this.expiresAt = expiresAt;
-        }
-
-        public String getTokenType() {
-            return tokenType;
-        }
-
-        public void setTokenType(String tokenType) {
-            this.tokenType = tokenType;
-        }
-    }
-
-    public static class AuthErrors implements Serializable {
-        ErrorType type;
-        String resendLink;
-
-        public AuthErrors(org.json.JSONObject jsonObject) {
-            this.type = getErrorTypeFromString(jsonObject.optString("type"));
-            this.resendLink = jsonObject.optString("resend_link", null);
-        }
-
-        public AuthErrors(ErrorType type, String resendLink) {
-            this.type = type;
-            this.resendLink = resendLink;
-        }
-
-        public ErrorType getType() {
-            return type;
-        }
-
-        public void setType(ErrorType type) {
-            this.type = type;
-        }
-
-        public String getResendLink() {
-            return resendLink;
-        }
-
-        public void setResendLink(String resendLink) {
-            this.resendLink = resendLink;
-        }
-    }
-
-    private static ErrorType getErrorTypeFromString(String type) {
-        switch (type) {
-            case "domain_blacklist":
-                return ErrorType.DomainBlackList;
-            case "email_verification":
-                return ErrorType.EmailVerification;
-            default:
-                return ErrorType.Unknown;
+    public static boolean isTokenExpired() {
+        try {
+            String token = AirMap.getAuthToken();
+            JwtConsumer consumer = new JwtConsumerBuilder()
+                    .setSkipAllValidators()
+                    .setDisableRequireSignature()
+                    .setSkipSignatureVerification()
+                    .build();
+            JwtClaims claims = consumer.processToClaims(token);
+            return claims.getExpirationTime().isBefore(NumericDate.now());
+        } catch (InvalidJwtException | MalformedClaimException e) {
+            e.printStackTrace();
+            return true;
         }
     }
 }

@@ -5,24 +5,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.models.flight.AirMapFlight;
 import com.airmap.airmapsdk.models.permits.AirMapPermitIssuer;
 import com.airmap.airmapsdk.models.status.AirMapStatus;
 import com.airmap.airmapsdk.models.status.AirMapStatusAdvisory;
 import com.airmap.airmapsdk.models.status.AirMapStatusRequirementNotice;
-import com.airmap.airmapsdk.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -155,7 +153,12 @@ public class ReviewNoticeFragment extends Fragment {
                     String number = notDigitalNotices.get(position).getPhoneNumber();
                     if (number != null && number.length() >= 10) {
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
-                        startActivity(intent);
+                        try {
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            // No phone app installed
+                            e.printStackTrace();
+                        }
                     }
                 }
             });

@@ -1,9 +1,10 @@
 package com.airmap.airmapsdk.networking.services;
 
+import android.text.TextUtils;
+
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
+import com.airmap.airmapsdk.Auth;
 import com.airmap.airmapsdk.models.AirMapBaseModel;
-import com.airmap.airmapsdk.models.comm.AirMapComm;
 import com.airmap.airmapsdk.util.Utils;
 
 import org.json.JSONException;
@@ -39,41 +40,13 @@ public class AirMapClient {
 
     private static final String TAG = "AirMapClient";
 
-    private String authToken;
-    private String xApiKey;
-
     private OkHttpClient client;
 
     /**
      * Initialize the client
-     *
-     * @param apiKey The API key
-     * @param token  The Auth token
      */
-    public AirMapClient(final String apiKey, final String token) {
-        this.authToken = token;
-        this.xApiKey = apiKey;
-        clearAndResetHeaders(); //Will initialize OkHttpClient client
-    }
-
-    /**
-     * Set the Auth Token
-     *
-     * @param token The updated token
-     */
-    public void setAuthToken(String token) {
-        this.authToken = token;
-        clearAndResetHeaders();
-    }
-
-    /**
-     * Set API key
-     *
-     * @param apiKey The updated API key
-     */
-    public void setApiKey(String apiKey) {
-        this.xApiKey = apiKey;
-        clearAndResetHeaders();
+    public AirMapClient() {
+        resetClient(); //Will initialize OkHttpClient client, add cert pinning, and interceptors
     }
 
     /**
@@ -104,6 +77,21 @@ public class AirMapClient {
     }
 
     /**
+     * Make a blocking GET call
+     *
+     * @param url The full url to GET
+     * @return the string contents of the response body
+     */
+    public String get(String url) throws IOException {
+        Request request = new Builder().url(url).get().tag(url).build();
+        Call call = client.newCall(request);
+        Response response = call.execute();
+        String responseString = response.body().string();
+        response.body().close();
+        return responseString;
+    }
+
+    /**
      * Make a POST call with params
      *
      * @param url      The full url to POST
@@ -120,8 +108,8 @@ public class AirMapClient {
     /**
      * Make a POST call with params
      *
-     * @param url      The full url to POST
-     * @param params   The params to add to the request
+     * @param url    The full url to POST
+     * @param params The params to add to the request
      */
     public Observable post(String url, Map<String, String> params) {
         try {
@@ -136,7 +124,7 @@ public class AirMapClient {
     /**
      * Make a POST call without params
      *
-     * @param url      The full url to POST
+     * @param url The full url to POST
      */
     public <T extends AirMapBaseModel> Observable<T> post(final String url, final Class<T> classToInstantiate) {
         return Observable.defer(new Func0<Observable<T>>() {
@@ -268,24 +256,52 @@ public class AirMapClient {
     /**
      * Clears Interceptor Headers and adds Authorization + x-Api-Key
      */
-    public void clearAndResetHeaders() {
+    public void resetClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (AirMap.isCertificatePinningEnabled()) {
             builder.certificatePinner(getCertificatePinner());
         }
+
+        // This interceptor refreshes the access token if needed
         builder.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Builder newRequest = chain.request().newBuilder();
-                if (xApiKey != null && !xApiKey.isEmpty()) {
-                    newRequest.addHeader("x-Api-Key", xApiKey);
+                // Don't intercept if refresh token not yet expired or for actual refresh token request
+                if (!Auth.isTokenExpired() || chain.request().url().toString().startsWith(BaseService.loginUrl)) {
+                    return chain.proceed(chain.request());
                 }
-                if (authToken != null && !authToken.isEmpty()) {
-                    newRequest.addHeader("Authorization", "Bearer " + authToken);
+                AirMap.refreshAccessToken();
+                Builder newRequest = chain.request().newBuilder();
+                String authToken = AirMap.getAuthToken();
+                if (!TextUtils.isEmpty(authToken)) {
+                    newRequest.header("Authorization", "Bearer " + authToken);
                 }
                 return chain.proceed(newRequest.build());
             }
         });
+
+        // This interceptor adds the api and auth headers
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                // Only attach our API Key and Auth token if we're going to AirMap
+                if (chain.request().url().host().equals("api.airmap.com")) {
+                    Builder newRequest = chain.request().newBuilder();
+                    String authToken = AirMap.getAuthToken();
+                    String xApiKey = AirMap.getApiKey();
+                    if (!TextUtils.isEmpty(xApiKey)) {
+                        newRequest.header("x-Api-Key", xApiKey);
+                    }
+                    if (!TextUtils.isEmpty(authToken)) {
+                        newRequest.header("Authorization", "Bearer " + authToken);
+                    }
+                    return chain.proceed(newRequest.build());
+                }
+                return chain.proceed(chain.request());
+            }
+        });
+
+        // This interceptor will show the login screen if we get an unauthorized
         builder.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {

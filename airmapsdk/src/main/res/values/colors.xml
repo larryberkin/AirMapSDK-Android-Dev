@@ -21,4 +21,9 @@
     <color name="yellow">#ffeb3b</color>
     <color name="redDark">#D32F2F</color>
     <color name="red">#FF0000</color>
+
+    <color name="airmap_aqua">#88DBDF</color>
+    <color name="light_grey">#E6E6E6</color>
+    <color name="airmap_navy">#333F48</color>
+    <color name="airmap_navy_dark">#2A313C</color>
 </resources>

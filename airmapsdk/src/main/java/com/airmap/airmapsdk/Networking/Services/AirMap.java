@@ -27,12 +27,13 @@ import com.airmap.airmapsdk.models.status.AirMapStatus;
 import com.airmap.airmapsdk.models.welcome.AirMapWelcomeResult;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.AirMapTrafficListener;
+import com.airmap.airmapsdk.networking.callbacks.LoginCallback;
 import com.airmap.airmapsdk.networking.callbacks.LoginListener;
 import com.airmap.airmapsdk.ui.activities.CreateEditAircraftActivity;
 import com.airmap.airmapsdk.ui.activities.CreateFlightActivity;
-import com.airmap.airmapsdk.ui.activities.LoginActivity;
 import com.airmap.airmapsdk.ui.activities.PilotProfileActivity;
 import com.airmap.airmapsdk.ui.activities.ProfileActivity;
+import com.airmap.airmapsdk.util.AirMapAuthenticationCallback;
 import com.airmap.airmapsdk.util.Utils;
 
 import org.jose4j.jwt.JwtClaims;
@@ -47,6 +48,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -164,7 +166,7 @@ public class AirMap {
             e.printStackTrace();
             throw new RuntimeException("Please ensure you have your airmap.config.json file in your /assets directory");
         }
-        client = new AirMapClient(apiKey, auth);
+        client = new AirMapClient();
     }
 
     /**
@@ -242,12 +244,11 @@ public class AirMap {
      * Needs to be called whenever the auth token changes
      * If the auth token has changed, this allows it to be reflected in the web services
      *
-     * @param auth The new auth token
+     * @param newAuthToken The new auth token
      */
-    public static void setAuthToken(String auth) {
-        authToken = auth;
-        client.setAuthToken(authToken);
-        getAirMapTrafficService().setAuthToken(auth);
+    public static void setAuthToken(String newAuthToken) {
+        authToken = newAuthToken;
+        getAirMapTrafficService().setAuthToken(newAuthToken);
         decodeToken(authToken);
     }
 
@@ -255,10 +256,10 @@ public class AirMap {
      * Needs to be called whenever the API key changes
      * If the API key has changed, this allows it to be reflected in the web services
      *
-     * @param apiKey The new API key
+     * @param newApiKey The new API key
      */
-    protected void setApiKey(String apiKey) {
-        client.setApiKey(apiKey);
+    protected static void setApiKey(String newApiKey) {
+        apiKey = newApiKey;
     }
 
     /**
@@ -307,7 +308,7 @@ public class AirMap {
     public void logout() {
         setAuthToken(null);
         userId = null;
-        getClient().clearAndResetHeaders();
+        getClient().resetClient();
     }
 
     /**
@@ -352,7 +353,7 @@ public class AirMap {
 
     public static void enableCertificatePinning(boolean enable) {
         AirMap.certificatePinning = enable;
-        getClient().clearAndResetHeaders();
+        getClient().resetClient();
     }
 
     /**
@@ -386,48 +387,26 @@ public class AirMap {
      * Show the login screen
      *
      * @param activity    Activity to create the UI with and to deliver results to
-     * @param requestCode The request code to start the activity with
+     * @param callback    AirMap authentication callback
      */
-    public static void showLogin(Activity activity, int requestCode) {
-        if (activity != null) {
-            Intent intent = new Intent(activity, LoginActivity.class);
-            activity.startActivityForResult(intent, requestCode);
-        }
+    public static void showLogin(Activity activity, LoginCallback callback) {
+        Auth.loginOrSignup(activity, new AirMapAuthenticationCallback(activity, callback));
     }
 
     /**
-     * Show the login screen
-     *
-     * @param fragment    Fragment to create the UI with and to deliver results to
-     * @param requestCode The request code to start the activity with
-     */
-    public static void showLogin(Fragment fragment, int requestCode) {
-        if (fragment != null) {
-            Intent intent = new Intent(fragment.getActivity(), LoginActivity.class);
-            fragment.startActivityForResult(intent, requestCode);
-        }
-    }
-
-    /**
-     * Show the login screen
-     *
-     * @param fragment    Fragment to create the UI with and to deliver results to
-     * @param requestCode The request code to start the activity with
-     */
-    public static void showLogin(android.support.v4.app.Fragment fragment, int requestCode) {
-        if (fragment != null) {
-            Intent intent = new Intent(fragment.getContext(), LoginActivity.class);
-            fragment.startActivityForResult(intent, requestCode);
-        }
-    }
-
-    /**
-     * Refreshes the pilot's authentication token
+     * Refreshes the pilot's authentication token. Non-blocking
      *
      * @param callback The callback that is invoked on success or error
      */
     public static void refreshAccessToken(@Nullable AirMapCallback<Void> callback) {
         Auth.refreshAccessToken(getInstance().getContext(), callback);
+    }
+
+    /**
+     * Refreshes the pilot's authentication token. Blocking
+     */
+    public static void refreshAccessToken() {
+        Auth.refreshAccessToken(getInstance().getContext());
     }
 
     /**
@@ -647,7 +626,11 @@ public class AirMap {
             if (layers != null) {
                 ArrayList<String> stringLayers = new ArrayList<>();
                 for (MappingService.AirMapLayerType layer : layers) {
-                    stringLayers.add(layer.toString());
+                    if (layer.toString().contains(",")) {
+                        Collections.addAll(stringLayers, layer.toString().split(","));
+                    } else {
+                        stringLayers.add(layer.toString());
+                    }
                 }
                 intent.putStringArrayListExtra(CreateFlightActivity.KEY_LAYERS, stringLayers);
             }
@@ -844,6 +827,8 @@ public class AirMap {
     public static void getPilot(@NonNull String pilotId, @Nullable AirMapCallback<AirMapPilot> callback) {
         if (pilotId != null) {
             PilotService.getPilot(pilotId, callback);
+        } else {
+            callback.onError(new AirMapException("No pilot id"));
         }
     }
 

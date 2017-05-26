@@ -309,7 +309,7 @@
   <!-- Class = "UILabel"; text = "Digital Notice Accepted"; ObjectID = "39m-XX-eZ2"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_ACCEPTED|Header for section that shows what organizations accept digital notice"; AirMapUIObjectId = "39m-XX-eZ2.text"; -->
   <string name="airmap_digital_notice_accepted">Digital Notice Accepted</string>
   <!-- Class = "UILabel"; text = "The following authorities in this area do not accept digital notice"; ObjectID = "lll-ta-VAP"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_NOT_ACCEPTED|Header for section that shows what organizations do not accept digital notice"; AirMapUIObjectId = "lll-ta-VAP.text"; -->
-  <string name="airmap_not_accept_notice">The following authorities in this area do not accept digital notice</string>
+  <string name="airmap_not_accept_notice">The following authorities in this area do not accept digital notice. For more information regarding notification, please see our FAQ.</string>
   <!-- Class = "UIButton"; normalTitle = "Review"; ObjectID = "V59-8d-Sdh"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_REVIEW_BUTON|Title for the button that allows the user to advance to the next step to review their flight plan"; AirMapUIObjectId = "V59-8d-Sdh.normalTitle"; -->
   <string name="airmap_review">Review</string>
   <!-- Class = "UINavigationItem"; title = "Flight Notice"; ObjectID = "Uk3-p4-sdr"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_TITLE|Title for view that displays digital notice that can be submitted to supported organizations"; AirMapUIObjectId = "Uk3-p4-sdr.title"; -->
@@ -420,4 +420,5 @@
   <string name="units_temperature_celcius_format">%1$s°C</string>
   <!-- Unit and format for displaying temperature in Fahrenheit -->
   <string name="units_temperature_fahrenheit_format">%1$s°F</string>
+  <string name="no_phone_number_provided">No Phone Number Provided</string>
 </resources>

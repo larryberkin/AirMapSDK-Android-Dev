@@ -21,4 +21,13 @@
     </style>
 
     <style name="AppTheme.TextHintAppearance" parent="TextAppearance.Design.Hint" />
+
+    <style name="AirMap.Lock.Theme" parent="Lock.Theme">
+        <item name="colorAccent">@color/airmap_aqua</item>
+        <item name="colorPrimaryDark">@color/airmap_navy</item>
+        <item name="Auth0.HeaderLogo">@drawable/airmap_login_logo</item>
+        <item name="Auth0.HeaderBackground">@color/light_grey</item>
+        <item name="Auth0.PrimaryColor">@color/airmap_aqua</item>
+        <item name="Auth0.DarkPrimaryColor">@color/airmap_navy</item>
+    </style>
 </resources>

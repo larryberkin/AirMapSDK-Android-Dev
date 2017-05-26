@@ -32,6 +32,8 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:drawableEnd="@drawable/ic_info"
                 android:text="@string/airmap_not_accept_notice"/>
 
         <ListView

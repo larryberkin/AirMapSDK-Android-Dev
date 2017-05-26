@@ -21,9 +21,10 @@ import com.airmap.airmapsdk.models.pilot.AirMapPilot;
 import com.airmap.airmapsdk.models.traffic.AirMapTraffic;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.AirMapTrafficListener;
+import com.airmap.airmapsdk.networking.callbacks.LoginCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
+import com.airmap.airmapsdk.networking.services.MappingService;
 import com.airmap.airmapsdk.ui.activities.CreateFlightActivity;
-import com.airmap.airmapsdk.ui.activities.LoginActivity;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -60,20 +61,41 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //AirMap.init is called in the onCreate of MyApplication
-        AirMap.showLogin(this, REQUEST_LOGIN); //Show the login screen and have the user log in
 
-        //Anonymous login
-//        AirMap.performAnonymousLogin("vansh", new AirMapCallback<Void>() {
-//            @Override
-//            public void onSuccess(Void response) {
-//                Log.v("Anon Login", "Token is: " + AirMap.getAuthToken());
-//            }
-//
-//            @Override
-//            public void onError(AirMapException e) {
-//                Log.e("Anon Login", e.getDetailedMessage(), e);
-//            }
-//        });
+        //Show the login screen and have the user log in
+        AirMap.showLogin(this, new LoginCallback() {
+            @Override
+            public void onSuccess(AirMapPilot pilot) {
+                showToast("Hi, " + pilot.getFirstName() + "!");
+                trafficFab.show(); //Show the button now that the user is logged in
+                AirMap.getPublicFlights(null, null, null, new AirMapCallback<List<AirMapFlight>>() { //Get all public flights and display them on the map
+                    @Override
+                    public void onSuccess(List<AirMapFlight> response) {
+                        if (map != null) { //Make sure the map has been initialized already
+                            for (AirMapFlight publicFlight : response) {
+                                //Add a map annotation with the location of the flight
+                                map.addMarker(new MarkerOptions()
+                                        .icon(IconFactory.getInstance(MainActivity.this).fromResource(R.drawable.airmap_flight_marker))
+                                        .position(getLatLngFromCoordinate(publicFlight.getCoordinate())));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(AirMapException e) {
+                        Log.e("MainActivity", "Error getting flights");
+                    }
+                });
+            }
+
+            @Override
+            public void onError(AirMapException e) {
+                Toast.makeText(MainActivity.this, "Login Failed :(", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        anonymousLogin();
+
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -94,29 +116,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_LOGIN && resultCode == RESULT_OK) { //Check if login was successful
-            AirMapPilot pilot = (AirMapPilot) data.getSerializableExtra(LoginActivity.PILOT); //Get the pilot from the data
-            showToast("Hi, " + pilot.getFirstName() + "!");
-            trafficFab.show(); //Show the button now that the user is logged in
-            AirMap.getPublicFlights(null, null, null, new AirMapCallback<List<AirMapFlight>>() { //Get all public flights and display them on the map
-                @Override
-                public void onSuccess(List<AirMapFlight> response) {
-                    if (map != null) { //Make sure the map has been initialized already
-                        for (AirMapFlight publicFlight : response) {
-                            //Add a map annotation with the location of the flight
-                            map.addMarker(new MarkerOptions()
-                                    .icon(IconFactory.getInstance(MainActivity.this).fromResource(R.drawable.airmap_flight_marker))
-                                    .position(getLatLngFromCoordinate(publicFlight.getCoordinate())));
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(AirMapException e) {
-                    Log.e("MainActivity", "Error getting flights");
-                }
-            });
-        } else if (requestCode == REQUEST_FLIGHT && resultCode == RESULT_OK) { //Check if flight creation was successful
+        if (requestCode == REQUEST_FLIGHT && resultCode == RESULT_OK) { //Check if flight creation was successful
             AirMapFlight flight = (AirMapFlight) data.getSerializableExtra(CreateFlightActivity.FLIGHT); //Get the flight from the data
             map.addMarker(new MarkerOptions() //Add the flight to the map
                     .position(getLatLngFromCoordinate(flight.getCoordinate()))
@@ -239,7 +239,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapLongClick(@NonNull LatLng point) {
-        AirMap.createFlight(this, REQUEST_FLIGHT, getCoordinateFromLatLng(point), null, null); //The created flight will be returned in onActivityResult
+        //The created flight will be returned in onActivityResult
+        AirMap.createFlight(this, REQUEST_FLIGHT, getCoordinateFromLatLng(point), null, null, MappingService.AirMapMapTheme.Standard);
     }
 
 
@@ -367,5 +368,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+    }
+
+    private void anonymousLogin() {
+        AirMap.performAnonymousLogin("your_user_id", new AirMapCallback<Void>() {
+            @Override
+            public void onSuccess(Void response) {
+                Log.v("Anon Login", "Token is: " + AirMap.getAuthToken());
+            }
+
+            @Override
+            public void onError(AirMapException e) {
+                Log.e("Anon Login", e.getDetailedMessage(), e);
+            }
+        });
     }
 }

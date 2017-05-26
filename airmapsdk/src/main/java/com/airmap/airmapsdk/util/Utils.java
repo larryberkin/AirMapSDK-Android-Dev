@@ -371,15 +371,6 @@ public class Utils {
         }
     }
 
-    public static String getCallbackUrl() {
-        try {
-            JSONObject auth0 = AirMap.getConfig().getJSONObject("auth0");
-            return auth0.getString("callback_url");
-        } catch (JSONException e) {
-            throw new RuntimeException("client_id and/or callback_url not found in airmap.config.json");
-        }
-    }
-
     public static String getClientId() {
         try {
             JSONObject auth0 = AirMap.getConfig().getJSONObject("auth0");

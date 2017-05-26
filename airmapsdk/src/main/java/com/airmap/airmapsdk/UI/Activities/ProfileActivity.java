@@ -8,7 +8,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -36,6 +35,8 @@ import com.bumptech.glide.Glide;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.telephony.PhoneNumberUtils.formatNumber;
 
 /**
  * Activity for viewing your own profile (not another person's profile)
@@ -164,7 +165,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         lastNameEditText.setText(profile.getLastName());
         emailEditText.setText(profile.getEmail());
         if (!TextUtils.isEmpty(profile.getPhone())) {
-            phoneEditText.setText(PhoneNumberUtils.formatNumber(profile.getPhone())); //If we don't check, the EditText might show "null"
+            phoneEditText.setText(formatNumber(profile.getPhone())); //If we don't check, the EditText might show "null"
         }
         populateExtras();
         NumberFormat format = NumberFormat.getIntegerInstance();
@@ -247,10 +248,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         phoneEditText.post(new Runnable() {
                             @Override
                             public void run() {
-                                phoneEditText.setText(PhoneNumberUtils.formatNumber(phone)); //Update the UI with the new phone number
+                                phoneEditText.setText(phone); //Update the UI with the new phone number
+                                showVerifyDialog();
                             }
                         });
-                        showVerifyDialog();
                     }
 
                     @Override

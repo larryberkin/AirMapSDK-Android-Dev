@@ -90,6 +90,7 @@ public class MappingService extends BaseService {
                 case "airports_commercial,airports_commercial_private":
                 case "airports_commercial":
                     return AirportsCommercial;
+                case "airports_recreational":
                 case "airports_recreational,airports_recreational_private":
                     return AirportsRecreational;
                 case "airports_commercial_private":
