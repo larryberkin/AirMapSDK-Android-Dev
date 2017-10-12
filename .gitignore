@@ -12,3 +12,4 @@ Preparing\ for\ Jcenter.md
 airmapsdk/src/androidTest/assets/
 airmapsdk/src/main/assets/node_modules/
 .idea/markdown-navigator/
+airmapsdk/.externalNativeBuild

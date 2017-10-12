@@ -15,6 +15,16 @@ android {
         versionCode 1
         versionName "$libVersion"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                arguments "-DBUILD_TARGET_ANDROID=TRUE", "-DANDROID_ABI=x86"
+            }
+        }
+        ndk {
+            // Specifies the ABI configurations of your native
+            // libraries Gradle should build and package with your APK.
+            abiFilters 'x86'
+        }
     }
     buildTypes {
         release {
@@ -25,6 +35,11 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+    externalNativeBuild {
+        cmake {
+            path '../../../airmapd/CMakeLists.txt'
+        }
     }
 }
 
