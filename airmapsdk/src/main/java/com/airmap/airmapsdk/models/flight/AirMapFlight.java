@@ -59,6 +59,7 @@ public class AirMapFlight implements Serializable, AirMapBaseModel {
     }
 
     private String flightId;
+    private String flightPlanId;
     private String pilotId;
     private AirMapPilot pilot;
     private Coordinate coordinate;
@@ -91,6 +92,7 @@ public class AirMapFlight implements Serializable, AirMapBaseModel {
     public AirMapFlight constructFromJson(JSONObject json) {
         if (json != null) {
             setFlightId(json.optString("id"));
+            setFlightPlanId(json.optString("flight_plan_id"));
             setCoordinate(new Coordinate(json.optDouble("latitude", 0), json.optDouble("longitude", 0)));
             setMaxAltitude(json.optDouble("max_altitude"));
             setCity(json.optString("city"));
@@ -244,6 +246,14 @@ public class AirMapFlight implements Serializable, AirMapBaseModel {
     public AirMapFlight setFlightId(String flightId) {
         this.flightId = flightId;
         return this;
+    }
+
+    public String getFlightPlanId() {
+        return flightPlanId;
+    }
+
+    public void setFlightPlanId(String flightPlanId) {
+        this.flightPlanId = flightPlanId;
     }
 
     public String getPilotId() {

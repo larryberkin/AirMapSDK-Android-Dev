@@ -26,6 +26,7 @@ import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.models.status.AirMapAdvisory;
 import com.airmap.airmapsdk.models.status.AirMapStatus;
 import com.airmap.airmapsdk.models.status.properties.AirMapAirportProperties;
+import com.airmap.airmapsdk.models.status.properties.AirMapControlledAirspaceProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapHeliportProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapNotamProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapPowerPlantProperties;
@@ -130,7 +131,10 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Mappi
                         AirMapWildfireProperties wildfire = advisory.getWildfireProperties();
                         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
                         String unknownSize = holder.itemView.getContext().getString(R.string.unknown_size);
-                        description = dateFormat.format(wildfire.getEffectiveDate())  + " - " + (wildfire.getSize() == -1 ? unknownSize : String.format(Locale.US, "%d acres", wildfire.getSize()));
+
+                        if (wildfire != null && wildfire.getEffectiveDate() != null) {
+                            description = dateFormat.format(wildfire.getEffectiveDate())  + " - " + (wildfire.getSize() == -1 ? unknownSize : String.format(Locale.US, "%d acres", wildfire.getSize()));
+                        }
                         break;
                     }
                     case Airport: {
@@ -184,6 +188,15 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Mappi
                                     holder.itemView.getContext().startActivity(intent);
                                 }
                             });
+                        }
+                        break;
+                    }
+                    case ControlledAirspace: {
+                        AirMapControlledAirspaceProperties controlledAirspaceProperties = advisory.getControlledAirspaceProperties();
+
+                        if (controlledAirspaceProperties.isLaanc() && controlledAirspaceProperties.isAuthorization()) {
+                            description = holder.itemView.getContext().getString(R.string.airspace_laanc_authorization_automated);
+                            ((AdvisoryViewHolder) holder).infoTextView.setTextColor(ContextCompat.getColor(((AdvisoryViewHolder) holder).infoTextView.getContext(), R.color.airmap_aqua));
                         }
                         break;
                     }

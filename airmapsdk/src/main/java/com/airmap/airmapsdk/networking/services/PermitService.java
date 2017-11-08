@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Call;
+
 /**
  * Created by Vansh Gandhi on 7/21/16.
  * Copyright © 2016 AirMap, Inc. All rights reserved.
@@ -27,14 +29,14 @@ class PermitService extends BaseService {
      * @param organizationId The organization of the permit
      * @param listener       The callback that is invoked on success or error
      */
-    public static void getPermits(@Nullable List<String> permitIds, @Nullable String organizationId,
-                                  AirMapCallback<List<AirMapAvailablePermit>> listener) {
+    static Call getPermits(@Nullable List<String> permitIds, @Nullable String organizationId,
+                           AirMapCallback<List<AirMapAvailablePermit>> listener) {
         Map<String, String> params = new HashMap<>();
         if (permitIds != null && !permitIds.isEmpty()) {
             params.put("ids", TextUtils.join(",", permitIds));
         }
         params.put("organization_id", organizationId);
-        AirMap.getClient().get(permitBaseUrl, params, new GenericListOkHttpCallback(listener, AirMapAvailablePermit.class));
+        return AirMap.getClient().get(permitBaseUrl, params, new GenericListOkHttpCallback(listener, AirMapAvailablePermit.class));
     }
 
     /**
@@ -43,8 +45,8 @@ class PermitService extends BaseService {
      * @param permit   The permit to apply for
      * @param listener The callback that is invoked on success or error
      */
-    public static void applyForPermit(AirMapAvailablePermit permit, AirMapCallback<AirMapPilotPermit> listener) {
+    static Call applyForPermit(AirMapAvailablePermit permit, AirMapCallback<AirMapPilotPermit> listener) {
         String url = String.format(permitApplyUrl, permit.getId());
-        AirMap.getClient().postWithJsonBody(url, permit.getAsParams(), new GenericOkHttpCallback(listener, AirMapPilotPermit.class));
+        return AirMap.getClient().postWithJsonBody(url, permit.getAsParams(), new GenericOkHttpCallback(listener, AirMapPilotPermit.class));
     }
 }

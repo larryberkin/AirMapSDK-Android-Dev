@@ -12,8 +12,11 @@ import java.io.Serializable;
  */
 @SuppressWarnings("unused")
 public class AirMapControlledAirspaceProperties implements Serializable, AirMapBaseModel {
+
     private String classAirspace;
     private String airportIdentifier;
+    private boolean laanc;
+    private boolean authorization;
 
     /**
      * Initialize an AirMapControlledAirspaceProperties from JSON
@@ -24,15 +27,13 @@ public class AirMapControlledAirspaceProperties implements Serializable, AirMapB
         constructFromJson(propertiesJson);
     }
 
-    public AirMapControlledAirspaceProperties() {
-
-    }
-
     @Override
     public AirMapControlledAirspaceProperties constructFromJson(JSONObject json) {
         if (json != null) {
             setClassAirspace(json.optString("classAirspace"));
             setAirportIdentifier(json.optString("airportIdentifier"));
+            setLaanc(json.optBoolean("laanc"));
+            setAuthorization(json.optBoolean("authorization"));
         }
         return this;
     }
@@ -53,5 +54,21 @@ public class AirMapControlledAirspaceProperties implements Serializable, AirMapB
     public AirMapControlledAirspaceProperties setAirportIdentifier(String airportIdentifier) {
         this.airportIdentifier = airportIdentifier;
         return this;
+    }
+
+    public boolean isLaanc() {
+        return laanc;
+    }
+
+    public void setLaanc(boolean laanc) {
+        this.laanc = laanc;
+    }
+
+    public boolean isAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(boolean authorization) {
+        this.authorization = authorization;
     }
 }

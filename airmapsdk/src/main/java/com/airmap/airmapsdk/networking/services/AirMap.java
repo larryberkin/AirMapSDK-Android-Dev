@@ -59,7 +59,7 @@ import okhttp3.Call;
  * Copyright © 2016 AirMap, Inc. All rights reserved.
  */
 @SuppressWarnings({"unused", "ConstantConditions"})
-public class AirMap {
+public final class AirMap {
     private Context context;
     private static String authToken;
     private static String apiKey;
@@ -395,8 +395,8 @@ public class AirMap {
     /**
      * Show the login screen
      *
-     * @param activity    Activity to create the UI with and to deliver results to
-     * @param callback    AirMap authentication callback
+     * @param activity Activity to create the UI with and to deliver results to
+     * @param callback AirMap authentication callback
      */
     public static void showLogin(Activity activity, LoginCallback callback) {
         Auth.loginOrSignup(activity, new AirMapAuthenticationCallback(activity, callback));
@@ -426,8 +426,8 @@ public class AirMap {
      * Logs in anonymously. The auth token of the anonymous user can be obtained, if required,
      * through {@link AirMap#getAuthToken()}
      */
-    public static void performAnonymousLogin(@NonNull String userId, @Nullable AirMapCallback<Void> callback) {
-        AuthService.performAnonymousLogin(userId, callback);
+    public static Call performAnonymousLogin(@NonNull String userId, @Nullable AirMapCallback<Void> callback) {
+        return AuthService.performAnonymousLogin(userId, callback);
     }
 
     //Aircraft
@@ -437,8 +437,8 @@ public class AirMap {
      *
      * @param callback The callback that is called on success or error
      */
-    public static void getManufacturers(@Nullable AirMapCallback<List<AirMapAircraftManufacturer>> callback) {
-        AircraftService.getManufacturers(callback);
+    public static Call getManufacturers(@Nullable AirMapCallback<List<AirMapAircraftManufacturer>> callback) {
+        return AircraftService.getManufacturers(callback);
     }
 
     /**
@@ -446,8 +446,8 @@ public class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static void getModels(@Nullable AirMapCallback<List<AirMapAircraftModel>> callback) {
-        AircraftService.getModels(callback);
+    public static Call getModels(@Nullable AirMapCallback<List<AirMapAircraftModel>> callback) {
+        return AircraftService.getModels(callback);
     }
 
     /**
@@ -456,8 +456,8 @@ public class AirMap {
      * @param manufacturerId The id of the manufacturer to get models for
      * @param callback       The callback that is invoked on success or error
      */
-    public static void getModels(@Nullable String manufacturerId, @Nullable AirMapCallback<List<AirMapAircraftModel>> callback) {
-        AircraftService.getModels(manufacturerId, callback);
+    public static Call getModels(@Nullable String manufacturerId, @Nullable AirMapCallback<List<AirMapAircraftModel>> callback) {
+        return AircraftService.getModels(manufacturerId, callback);
     }
 
     /**
@@ -466,9 +466,14 @@ public class AirMap {
      * @param modelId  The ID of the model to get
      * @param callback The callback that is invoked on success or error
      */
-    public static void getModel(@NonNull String modelId, @Nullable AirMapCallback<AirMapAircraftModel> callback) {
+    public static Call getModel(@NonNull String modelId, @Nullable AirMapCallback<AirMapAircraftModel> callback) {
         if (modelId != null) {
-            AircraftService.getModel(modelId, callback);
+            return AircraftService.getModel(modelId, callback);
+        } else {
+            if (callback != null) {
+                callback.error(new AirMapException("modelId cannot be null"));
+            }
+            return null;
         }
     }
 
@@ -483,21 +488,17 @@ public class AirMap {
      * @param startBefore     Search for flights that start before this time
      * @param endAfter        Search for flights that end after this time
      * @param endBefore       Search for flights that end before this time
+     * @param startsAfterNow  Search for flights starting after now (the startsAfter Date will be ignored)
+     * @param startsBeforeNow Search for flights starting before now (the startsBefore Date will be ignored)
+     * @param endsAfterNow    Search for flights ending after now (the endsAfter Date will be ignored)
+     * @param endsBeforeNow   Search for flights ending before now (the endsBefore Date will be ignored)
      * @param country         Search for flights within this country (Length: 3, case insensitive)
-     * @param startsAfterNow  Search for flights starting after now (the startsAfter Date will be
-     *                        ignored)
-     * @param startsBeforeNow Search for flights starting before now (the startsBefore Date will be
-     *                        ignored)
-     * @param endsAfterNow    Search for flights ending after now (the endsAfter Date will be
-     *                        ignored)
-     * @param endsBeforeNow   Search for flights ending before now (the endsBefore Date will be
-     *                        ignored)
      * @param city            Search for flights within this city
      * @param state           Search for flights within this state
      * @param enhanced        Returns enhanced flight, pilot, and aircraft information
      * @param callback        The callback that is invoked on success or error
      */
-    public static void getFlights(@Nullable Integer limit, @Nullable String pilotId,
+    public static Call getFlights(@Nullable Integer limit, @Nullable String pilotId,
                                   @Nullable Date startAfter, @Nullable Date startBefore,
                                   @Nullable Date endAfter, @Nullable Date endBefore,
                                   @Nullable Boolean startsAfterNow, @Nullable Boolean startsBeforeNow,
@@ -505,7 +506,7 @@ public class AirMap {
                                   @Nullable String country, @Nullable String city,
                                   @Nullable String state, @Nullable Boolean enhanced,
                                   @Nullable AirMapCallback<List<AirMapFlight>> callback) {
-        FlightService.getFlights(limit, pilotId, startAfter, startBefore, endAfter, endBefore,
+        return FlightService.getFlights(limit, pilotId, startAfter, startBefore, endAfter, endBefore,
                 startsAfterNow, startsBeforeNow, endsAfterNow, endsBeforeNow, country, city, state,
                 enhanced, callback);
     }
@@ -518,9 +519,9 @@ public class AirMap {
      * @param to       Search for flights to this date
      * @param callback The callback that is invoked on success or error
      */
-    public static void getPublicFlights(@Nullable Integer limit, @Nullable Date from, @Nullable Date to,
+    public static Call getPublicFlights(@Nullable Integer limit, @Nullable Date from, @Nullable Date to,
                                         @Nullable AirMapCallback<List<AirMapFlight>> callback) {
-        FlightService.getPublicFlights(limit, from, to, callback);
+        return FlightService.getPublicFlights(limit, from, to, callback);
     }
 
     /**
@@ -528,7 +529,7 @@ public class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static void getCurrentFlight(final @Nullable AirMapCallback<AirMapFlight> callback) {
+    public static Call getCurrentFlight(final @Nullable AirMapCallback<AirMapFlight> callback) {
         AirMapCallback<List<AirMapFlight>> proxy = new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(List<AirMapFlight> response) {
@@ -549,11 +550,12 @@ public class AirMap {
             }
         };
         if (AirMap.getUserId() != null) {
-            FlightService.getFlights(null, AirMap.getUserId(), null, null, null, null, null, true, true, null, null, null, null, true, proxy);
+            return FlightService.getFlights(null, AirMap.getUserId(), null, null, null, null, null, true, true, null, null, null, null, true, proxy);
         } else {
             if (callback != null) {
                 callback.success(null);
             }
+            return null;
         }
     }
 
@@ -565,10 +567,8 @@ public class AirMap {
      *                 instead of just IDs
      * @param callback The callback that is invoked on success or error
      */
-    public static void getFlight(@NonNull String flightId, boolean enhance, @Nullable AirMapCallback<AirMapFlight> callback) {
-        if (flightId != null) {
-            FlightService.getFlight(flightId, enhance, callback);
-        }
+    public static Call getFlight(@NonNull String flightId, boolean enhance, @Nullable AirMapCallback<AirMapFlight> callback) {
+        return FlightService.getFlight(flightId, enhance, callback);
     }
 
     /**
@@ -577,8 +577,8 @@ public class AirMap {
      * @param flightId The ID of the flight to get
      * @param callback The callback that is invoked on success or error
      */
-    public static void getFlight(@NonNull String flightId, @Nullable AirMapCallback<AirMapFlight> callback) {
-        getFlight(flightId, false, callback);
+    public static Call getFlight(@NonNull String flightId, @Nullable AirMapCallback<AirMapFlight> callback) {
+        return getFlight(flightId, false, callback);
     }
 
     /**
@@ -587,10 +587,8 @@ public class AirMap {
      * @param pilot    The pilot to get flights for
      * @param callback The callback that is invoked on success or error
      */
-    public static void getFlights(@NonNull AirMapPilot pilot, @Nullable AirMapCallback<List<AirMapFlight>> callback) {
-        if (pilot != null) {
-            FlightService.getFlights(null, pilot.getPilotId(), null, null, null, null, null, null, null, null, null, null, null, true, callback);
-        }
+    public static Call getFlights(@NonNull AirMapPilot pilot, @Nullable AirMapCallback<List<AirMapFlight>> callback) {
+        return FlightService.getFlights(null, pilot.getPilotId(), null, null, null, null, null, null, null, null, null, null, null, true, callback);
     }
 
     /**
@@ -598,8 +596,8 @@ public class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static void getFlights(@Nullable AirMapCallback<List<AirMapFlight>> callback) {
-        FlightService.getFlights(null, AirMap.getUserId(), null, null, null, null, null, null, null, null, null, null, null, true, callback);
+    public static Call getFlights(@Nullable AirMapCallback<List<AirMapFlight>> callback) {
+        return FlightService.getFlights(null, AirMap.getUserId(), null, null, null, null, null, null, null, null, null, null, null, true, callback);
     }
 
     public static Call createFlightPlan(AirMapFlightPlan flightPlan, AirMapCallback<AirMapFlightPlan> callback) {
@@ -614,8 +612,8 @@ public class AirMap {
         return FlightService.getFlightPlanByFlightId(flightId, callback);
     }
 
-    public static void submitFlightPlan(String flightPlanId, AirMapCallback<AirMapFlightPlan> callback) {
-        FlightService.submitFlightPlan(flightPlanId, true, callback);
+    public static Call submitFlightPlan(String flightPlanId, AirMapCallback<AirMapFlightPlan> callback) {
+        return FlightService.submitFlightPlan(flightPlanId, true, callback);
     }
 
     public static Call getWeather(Coordinate coordinate, Date startTime, Date endTime, AirMapCallback<AirMapWeather> callback) {
@@ -629,10 +627,8 @@ public class AirMap {
      * @param callback The callback that is invoked on success or error
      */
     @Deprecated
-    public static void createFlight(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapFlight> callback) {
-        if (flight != null) {
-            FlightService.createFlight(flight, callback);
-        }
+    public static Call createFlight(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapFlight> callback) {
+        return FlightService.createFlight(flight, callback);
     }
 
     /**
@@ -641,14 +637,12 @@ public class AirMap {
      * @param flight   The flight to close
      * @param callback The callback that is invoked on success or error
      */
-    public static void endFlight(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapFlight> callback) {
-        if (flight != null) {
-            FlightService.endFlight(flight, callback);
-        }
+    public static Call endFlight(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapFlight> callback) {
+        return FlightService.endFlight(flight, callback);
     }
 
-    public static void endFlight(@NonNull String flightId, @Nullable AirMapCallback<AirMapFlight> callback) {
-        FlightService.endFlight(flightId, callback);
+    public static Call endFlight(@NonNull String flightId, @Nullable AirMapCallback<AirMapFlight> callback) {
+        return FlightService.endFlight(flightId, callback);
     }
 
     /**
@@ -657,10 +651,8 @@ public class AirMap {
      * @param flight   The flight to delete
      * @param callback The callback that is invoked on success or error
      */
-    public static void deleteFlight(@NonNull AirMapFlight flight, @Nullable AirMapCallback<Void> callback) {
-        if (flight != null) {
-            FlightService.deleteFlight(flight, callback);
-        }
+    public static Call deleteFlight(@NonNull AirMapFlight flight, @Nullable AirMapCallback<Void> callback) {
+        return FlightService.deleteFlight(flight, callback);
     }
 
     /**
@@ -669,10 +661,8 @@ public class AirMap {
      * @param flight   The flight to get the comm key for
      * @param callback The callback that is invoked on success or error
      */
-    public static void startComm(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapComm> callback) {
-        if (flight != null) {
-            FlightService.getCommKey(flight, callback);
-        }
+    public static Call startComm(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapComm> callback) {
+        return FlightService.getCommKey(flight, callback);
     }
 
     /**
@@ -681,10 +671,8 @@ public class AirMap {
      * @param flight   The flight to stop receiving notifications for
      * @param callback The callback that is invoked on success or error
      */
-    public static void clearComm(@NonNull AirMapFlight flight, @Nullable AirMapCallback<Void> callback) {
-        if (flight != null) {
-            FlightService.clearCommKey(flight, callback);
-        }
+    public static Call clearComm(@NonNull AirMapFlight flight, @Nullable AirMapCallback<Void> callback) {
+        return FlightService.clearCommKey(flight, callback);
     }
 
     //Permits
@@ -697,8 +685,8 @@ public class AirMap {
      * @param organizationId The organization get permits for
      * @param callback       The callback that is invoked on success or error
      */
-    public static void getPermits(@Nullable List<String> permitIds, @Nullable String organizationId, @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
-        PermitService.getPermits(permitIds, organizationId, callback);
+    public static Call getPermits(@Nullable List<String> permitIds, @Nullable String organizationId, @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
+        return PermitService.getPermits(permitIds, organizationId, callback);
     }
 
     /**
@@ -709,13 +697,13 @@ public class AirMap {
      * @param organizationId The organization to get permits for
      * @param callback       The callback that is invoked on success or error
      */
-    public static void getPermits(@Nullable String permitId, @Nullable String organizationId,
+    public static Call getPermits(@Nullable String permitId, @Nullable String organizationId,
                                   @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
         List<String> permitIds = new ArrayList<>();
         if (permitId != null && !permitId.isEmpty()) {
             permitIds.add(permitId);
         }
-        getPermits(permitIds, organizationId, callback);
+        return getPermits(permitIds, organizationId, callback);
     }
 
     /**
@@ -724,10 +712,8 @@ public class AirMap {
      * @param permitId The ID of the permit to get
      * @param callback The callback that is invoked on success or error
      */
-    public static void getPermit(@NonNull String permitId, @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
-        if (permitId != null) {
-            getPermits(permitId, null, callback);
-        }
+    public static Call getPermit(@NonNull String permitId, @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
+        return getPermits(permitId, null, callback);
     }
 
     /**
@@ -736,10 +722,8 @@ public class AirMap {
      * @param permit   The permit to apply for
      * @param callback The callback that is invoked on success or error
      */
-    public static void applyForPermit(@NonNull AirMapAvailablePermit permit, @Nullable AirMapCallback<AirMapPilotPermit> callback) {
-        if (permit != null) {
-            PermitService.applyForPermit(permit, callback);
-        }
+    public static Call applyForPermit(@NonNull AirMapAvailablePermit permit, @Nullable AirMapCallback<AirMapPilotPermit> callback) {
+        return PermitService.applyForPermit(permit, callback);
     }
 
     //Pilot
@@ -749,12 +733,8 @@ public class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static void getPilot(@NonNull String pilotId, @Nullable AirMapCallback<AirMapPilot> callback) {
-        if (pilotId != null) {
-            PilotService.getPilot(pilotId, callback);
-        } else {
-            callback.error(new AirMapException("No pilot id"));
-        }
+    public static Call getPilot(@NonNull String pilotId, @Nullable AirMapCallback<AirMapPilot> callback) {
+        return PilotService.getPilot(pilotId, callback);
     }
 
     /**
@@ -762,8 +742,8 @@ public class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static void getPilot(@Nullable AirMapCallback<AirMapPilot> callback) {
-        getPilot(AirMap.getUserId(), callback);
+    public static Call getPilot(@Nullable AirMapCallback<AirMapPilot> callback) {
+        return getPilot(AirMap.getUserId(), callback);
     }
 
     /**
@@ -771,8 +751,8 @@ public class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static void getAuthenticatedPilotPermits(@Nullable AirMapCallback<List<AirMapPilotPermit>> callback) {
-        PilotService.getPermits(callback);
+    public static Call getAuthenticatedPilotPermits(@Nullable AirMapCallback<List<AirMapPilotPermit>> callback) {
+        return PilotService.getPermits(callback);
     }
 
     /**
@@ -781,10 +761,8 @@ public class AirMap {
      * @param permitId The ID of the permit to delete
      * @param callback The callback that is invoked on success or error
      */
-    public static void deletePermit(@NonNull String permitId, @Nullable AirMapCallback<Void> callback) {
-        if (permitId != null) {
-            PilotService.deletePermit(permitId, callback);
-        }
+    public static Call deletePermit(@NonNull String permitId, @Nullable AirMapCallback<Void> callback) {
+        return PilotService.deletePermit(permitId, callback);
     }
 
     /**
@@ -793,10 +771,8 @@ public class AirMap {
      * @param pilot    The updated version of the pilot
      * @param callback The callback that is invoked on success or error
      */
-    public static void updatePilot(@NonNull AirMapPilot pilot, @Nullable AirMapCallback<AirMapPilot> callback) {
-        if (pilot != null) {
-            PilotService.updatePilot(pilot, callback);
-        }
+    public static Call updatePilot(@NonNull AirMapPilot pilot, @Nullable AirMapCallback<AirMapPilot> callback) {
+        return PilotService.updatePilot(pilot, callback);
     }
 
     /**
@@ -805,10 +781,8 @@ public class AirMap {
      * @param phoneNumber The updated phone number
      * @param callback    The callback that is invoked on success or error
      */
-    public static void updatePhoneNumber(@NonNull String phoneNumber, @Nullable AirMapCallback<Void> callback) {
-        if (phoneNumber != null) {
-            PilotService.updatePhoneNumber(phoneNumber, callback);
-        }
+    public static Call updatePhoneNumber(@NonNull String phoneNumber, @Nullable AirMapCallback<Void> callback) {
+        return PilotService.updatePhoneNumber(phoneNumber, callback);
     }
 
     /**
@@ -816,8 +790,8 @@ public class AirMap {
      *
      * @param listener The callback that is invoked on success or error
      */
-    public static void sendVerificationToken(@Nullable AirMapCallback<Void> listener) {
-        PilotService.sendVerificationToken(listener);
+    public static Call sendVerificationToken(@Nullable AirMapCallback<Void> listener) {
+        return PilotService.sendVerificationToken(listener);
     }
 
     /**
@@ -826,10 +800,8 @@ public class AirMap {
      * @param token    The token that the pilot received in the text
      * @param callback The callback that is invoked on success or error
      */
-    public static void verifyPhoneToken(@NonNull String token, @Nullable AirMapCallback<Void> callback) {
-        if (token != null) {
-            PilotService.verifyToken(token, callback);
-        }
+    public static Call verifyPhoneToken(@NonNull String token, @Nullable AirMapCallback<Void> callback) {
+        return PilotService.verifyToken(token, callback);
     }
 
     /**
@@ -837,8 +809,8 @@ public class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static void getAircraft(@Nullable AirMapCallback<List<AirMapAircraft>> callback) {
-        PilotService.getAircraft(callback);
+    public static Call getAircraft(@Nullable AirMapCallback<List<AirMapAircraft>> callback) {
+        return PilotService.getAircraft(callback);
     }
 
     /**
@@ -847,10 +819,8 @@ public class AirMap {
      * @param aircraftId The ID of the aircraft to get
      * @param callback   The callback that is invoked on success or error
      */
-    public static void getAircraft(@NonNull String aircraftId, @Nullable AirMapCallback<AirMapAircraft> callback) {
-        if (aircraftId != null) {
-            PilotService.getAircraft(aircraftId, callback);
-        }
+    public static Call getAircraft(@NonNull String aircraftId, @Nullable AirMapCallback<AirMapAircraft> callback) {
+        return PilotService.getAircraft(aircraftId, callback);
     }
 
     /**
@@ -859,10 +829,8 @@ public class AirMap {
      * @param aircraft The aircraft to add to the pilot's profile
      * @param callback The callback that is invoked on success or error
      */
-    public static void createAircraft(@NonNull AirMapAircraft aircraft, @Nullable AirMapCallback<AirMapAircraft> callback) {
-        if (aircraft != null) {
-            PilotService.createAircraft(aircraft, callback);
-        }
+    public static Call createAircraft(@NonNull AirMapAircraft aircraft, @Nullable AirMapCallback<AirMapAircraft> callback) {
+        return PilotService.createAircraft(aircraft, callback);
     }
 
     /**
@@ -871,10 +839,8 @@ public class AirMap {
      * @param aircraft The aircraft with the updated nickname
      * @param callback The callback that is invoked on success or error
      */
-    public static void updateAircraft(@NonNull AirMapAircraft aircraft, @Nullable AirMapCallback<AirMapAircraft> callback) {
-        if (aircraft != null) {
-            PilotService.updateAircraft(aircraft, callback);
-        }
+    public static Call updateAircraft(@NonNull AirMapAircraft aircraft, @Nullable AirMapCallback<AirMapAircraft> callback) {
+        return PilotService.updateAircraft(aircraft, callback);
     }
 
     /**
@@ -883,10 +849,8 @@ public class AirMap {
      * @param aircraft The aircraft to delete
      * @param callback The callback that is invoked on success or error
      */
-    public static void deleteAircraft(@NonNull AirMapAircraft aircraft, @Nullable AirMapCallback<Void> callback) {
-        if (aircraft != null) {
-            PilotService.deleteAircraft(aircraft, callback);
-        }
+    public static Call deleteAircraft(@NonNull AirMapAircraft aircraft, @Nullable AirMapCallback<Void> callback) {
+        return PilotService.deleteAircraft(aircraft, callback);
     }
 
     /**
@@ -952,13 +916,13 @@ public class AirMap {
     /**
      * Get weather from status based on a Point and Radius
      *
-     * @param coordinate   The coordinate of the flight
-     * @param buffer       Number of meters to buffer a flight (the radius of the flight)
-     * @param callback     The callback that is invoked on success or error
+     * @param coordinate The coordinate of the flight
+     * @param buffer     Number of meters to buffer a flight (the radius of the flight)
+     * @param callback   The callback that is invoked on success or error
      */
     @Deprecated
     public static Call checkWeather(@NonNull Coordinate coordinate, @Nullable Double buffer,
-                                       @Nullable AirMapCallback<AirMapStatus> callback) {
+                                    @Nullable AirMapCallback<AirMapStatus> callback) {
         return StatusService.checkWeather(coordinate, buffer, callback);
     }
 
@@ -984,27 +948,65 @@ public class AirMap {
         return AirspaceService.getAirspace(airspaceIds, listener);
     }
 
+    /**
+     * Get all the rulesets that apply for a specific coordinate
+     *
+     * @param coordinate
+     * @param listener
+     * @return
+     */
     public static Call getRulesets(@NonNull Coordinate coordinate, @Nullable AirMapCallback<List<AirMapRuleset>> listener) {
         return RulesetService.getRulesets(coordinate, listener);
     }
 
+    /**
+     * Get all the rulesets that apply for a geometry (geoJSON)
+     *
+     * @param geometry
+     * @param listener
+     * @return
+     */
     public static Call getRulesets(@NonNull JSONObject geometry, @Nullable AirMapCallback<List<AirMapRuleset>> listener) {
         return RulesetService.getRulesets(geometry, listener);
     }
 
+    /**
+     * Get the full ruleset objects for a list of ruleset ids
+     *
+     * @param rulesetIds
+     * @param listener
+     * @return
+     */
     public static Call getRulesets(@NonNull List<String> rulesetIds, @Nullable AirMapCallback<List<AirMapRuleset>> listener) {
         return RulesetService.getRulesets(rulesetIds, listener);
     }
 
+    /**
+     * Get the entire list of rules of a ruleset
+     *
+     * @param rulesetId
+     * @param listener
+     * @return
+     */
     public static Call getRules(@NonNull String rulesetId, @Nullable AirMapCallback<AirMapRuleset> listener) {
         return RulesetService.getRules(rulesetId, listener);
     }
 
+    /**
+     * Get the briefing for a flight plan (either before or after flight has been submitted)
+     *
+     * @param flightPlanId
+     * @param callback
+     */
     public static void getFlightBrief(@NonNull String flightPlanId, @NonNull AirMapCallback<AirMapFlightBriefing> callback) {
         FlightService.getFlightBriefing(flightPlanId, callback);
     }
 
-    public static Call getAdvisories(@NonNull List<AirMapRuleset> rulesets, @NonNull List<Coordinate> geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String,Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
+    public static void getFlightPlanEvaluation(@NonNull List<String> rulesets, @NonNull JSONObject geometry, @Nullable Map<String, Object> flightFeatures, AirMapCallback<AirMapFlightBriefing> listener) {
+        RulesetService.getEvaluation(rulesets, geometry, flightFeatures, listener);
+    }
+
+    public static Call getAdvisories(@NonNull List<AirMapRuleset> rulesets, @NonNull List<Coordinate> geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String, Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
         List<String> rulesetIds = new ArrayList<>();
         for (AirMapRuleset ruleset : rulesets) {
             rulesetIds.add(ruleset.getId());
@@ -1013,7 +1015,7 @@ public class AirMap {
         return RulesetService.getAdvisories(rulesetIds, geometry, start, end, flightFeatures, listener);
     }
 
-    public static Call getAdvisories(@NonNull List<AirMapRuleset> rulesets, @NonNull JSONObject geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String,Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
+    public static Call getAdvisories(@NonNull List<AirMapRuleset> rulesets, @NonNull JSONObject geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String, Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
         List<String> rulesetIds = new ArrayList<>();
         for (AirMapRuleset ruleset : rulesets) {
             rulesetIds.add(ruleset.getId());
@@ -1059,8 +1061,8 @@ public class AirMap {
         return airMapMapMappingService.getRulesetTileUrlTemplate(rulesetId, layers);
     }
 
-    public static void getMapStylesJson(MappingService.AirMapMapTheme theme, AirMapCallback<JSONObject> listener) {
-        airMapMapMappingService.getStylesJson(theme, listener);
+    public static Call getMapStylesJson(MappingService.AirMapMapTheme theme, AirMapCallback<JSONObject> listener) {
+        return airMapMapMappingService.getStylesJson(theme, listener);
     }
 
     /**

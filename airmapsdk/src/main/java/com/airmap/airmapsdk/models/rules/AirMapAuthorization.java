@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class AirMapAuthorization implements AirMapBaseModel, Serializable{
 
     public enum Status {
-        NOT_REQUESTED, REJECTED_UPON_SUBMISSION, AUTHORIZED_UPON_SUBMISSION, MANUAL_AUTHORIZATION, ACCEPTED, REJECTED, PENDING;
+        NOT_REQUESTED, REJECTED_UPON_SUBMISSION, AUTHORIZED_UPON_SUBMISSION, MANUAL_AUTHORIZATION, ACCEPTED, REJECTED, PENDING, CANCELLED;
 
         public static Status fromText(String text) {
             switch (text) {
@@ -31,9 +31,11 @@ public class AirMapAuthorization implements AirMapBaseModel, Serializable{
                     return ACCEPTED;
                 case "rejected":
                     return REJECTED;
+                case "cancelled":
+                    return CANCELLED;
             }
 
-            return null;
+            return REJECTED;
         }
     }
 

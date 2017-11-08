@@ -55,14 +55,14 @@ class FlightService extends BaseService {
      * @param enhanced        Returns enhanced flight, pilot, and aircraft information
      * @param listener        The callback that is invoked on success or error
      */
-    public static void getFlights(@Nullable Integer limit, @Nullable String pilotId,
-                                  @Nullable Date startAfter, @Nullable Date startBefore,
-                                  @Nullable Date endAfter, @Nullable Date endBefore,
-                                  @Nullable Boolean startsAfterNow, @Nullable Boolean startsBeforeNow,
-                                  @Nullable Boolean endsAfterNow, @Nullable Boolean endsBeforeNow,
-                                  @Nullable String country, @Nullable String city,
-                                  @Nullable String state, @Nullable Boolean enhanced,
-                                  @Nullable AirMapCallback<List<AirMapFlight>> listener) {
+    static Call getFlights(@Nullable Integer limit, @Nullable String pilotId,
+                           @Nullable Date startAfter, @Nullable Date startBefore,
+                           @Nullable Date endAfter, @Nullable Date endBefore,
+                           @Nullable Boolean startsAfterNow, @Nullable Boolean startsBeforeNow,
+                           @Nullable Boolean endsAfterNow, @Nullable Boolean endsBeforeNow,
+                           @Nullable String country, @Nullable String city,
+                           @Nullable String state, @Nullable Boolean enhanced,
+                           @Nullable AirMapCallback<List<AirMapFlight>> listener) {
         Map<String, String> params = new HashMap<>();
         if (limit != null && limit > 0) {
             params.put("limit", limit.toString());
@@ -76,7 +76,7 @@ class FlightService extends BaseService {
         params.put("city", city);
         params.put("state", state);
         params.put("enhance", enhanced == null ? "false" : enhanced.toString());
-        AirMap.getClient().get(flightGetAllUrl, params, new ListFlightsCallback(listener, AirMapFlight.class));
+        return AirMap.getClient().get(flightGetAllUrl, params, new ListFlightsCallback(listener, AirMapFlight.class));
     }
 
     /**
@@ -88,15 +88,13 @@ class FlightService extends BaseService {
      * @param to       Search for flights to this date
      * @param listener The callback that is invoked on success or error
      */
-    //listPublicFlights
-    public static void getPublicFlights(Integer limit, final Date from, final Date to,
-                                        final AirMapCallback<List<AirMapFlight>> listener) {
+    static Call getPublicFlights(Integer limit, final Date from, final Date to, final AirMapCallback<List<AirMapFlight>> listener) {
         //endAfter is fromDate
         //startsBefore is toDate
 
         final boolean endAfterNow = from == null;
         final boolean startBeforeNow = to == null;
-        AirMap.getFlights(limit, null, null, to, from, null, null, startBeforeNow, endAfterNow, null, null, null, null, true, new AirMapCallback<List<AirMapFlight>>() {
+        return AirMap.getFlights(limit, null, null, to, from, null, null, startBeforeNow, endAfterNow, null, null, null, null, true, new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(final List<AirMapFlight> publicFlights) {
                 if (AirMap.hasValidAuthenticatedUser()) {
@@ -130,52 +128,47 @@ class FlightService extends BaseService {
      * Get a flight by ID
      *
      * @param flightId The ID of the flight to get
-     * @param enhance  If true, the response will include explicit profile and aircraft information
-     *                 instead of just IDs
+     * @param enhance  If true, the response will include explicit profile and aircraft information instead of just IDs
      * @param listener The callback that is invoked on success or error
      */
-    public static void getFlight(String flightId, boolean enhance, AirMapCallback<AirMapFlight> listener) {
+    static Call getFlight(String flightId, boolean enhance, AirMapCallback<AirMapFlight> listener) {
         String url = String.format(flightByIdUrl, flightId);
         Map<String, String> params = new HashMap<>();
         params.put("enhance", String.valueOf(enhance));
-        AirMap.getClient().get(url, params, new GenericOkHttpCallback(listener, AirMapFlight.class));
+        return AirMap.getClient().get(url, params, new GenericOkHttpCallback(listener, AirMapFlight.class));
     }
 
-    public static Call createFlightPlan(AirMapFlightPlan flightPlan, final AirMapCallback<AirMapFlightPlan> callback) {
+    static Call createFlightPlan(AirMapFlightPlan flightPlan, final AirMapCallback<AirMapFlightPlan> callback) {
         String url = flightPlanUrl;
         JSONObject params = flightPlan.getAsParams();
-        Call call = AirMap.getClient().postWithJsonBody(url, params, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
-        return call;
+        return AirMap.getClient().postWithJsonBody(url, params, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
     }
 
-    public static Call patchFlightPlan(AirMapFlightPlan flightPlan, final AirMapCallback<AirMapFlightPlan> callback) {
+    static Call patchFlightPlan(AirMapFlightPlan flightPlan, final AirMapCallback<AirMapFlightPlan> callback) {
         String url = String.format(flightPlanPatchUrl, flightPlan.getPlanId());
         JSONObject params = flightPlan.getAsParams();
-        Call call = AirMap.getClient().patchWithJsonBody(url, params, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
-        return call;
+        return AirMap.getClient().patchWithJsonBody(url, params, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
     }
 
-    public static void getFlightBriefing(String flightPlanId, AirMapCallback<AirMapFlightBriefing> callback) {
+    static Call getFlightBriefing(String flightPlanId, AirMapCallback<AirMapFlightBriefing> callback) {
         String url = String.format(flightPlanBriefingUrl, flightPlanId);
-        AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapFlightBriefing.class));
+        return AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapFlightBriefing.class));
     }
 
-    public static void submitFlightPlan(String flightPlanId, boolean isPublic, AirMapCallback<AirMapFlightPlan> callback) {
+    static Call submitFlightPlan(String flightPlanId, boolean isPublic, AirMapCallback<AirMapFlightPlan> callback) {
         String url = String.format(flightPlanSubmitUrl, flightPlanId);
         Map<String, String> params = new HashMap<>();
         params.put("public", Boolean.toString(isPublic));
-        AirMap.getClient().post(url, params, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
+        return AirMap.getClient().post(url, params, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
     }
 
-    public static Call getFlightPlanByFlightId(String flightId, final AirMapCallback<AirMapFlightPlan> callback) {
+    static Call getFlightPlanByFlightId(String flightId, final AirMapCallback<AirMapFlightPlan> callback) {
         String url = String.format(flightPlanByFlightIdUrl, flightId);
-        Call call = AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
-        return call;
+        return AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
     }
 
-    public static Call getFlightFeatures(String flightPlanId, AirMapCallback<List<AirMapFlightFeature>> callback) {
+    static Call getFlightFeatures(String flightPlanId, AirMapCallback<List<AirMapFlightFeature>> callback) {
         String url = String.format(flightFeaturesByPlanIdUrl, flightPlanId);
-
         return AirMap.getClient().get(url, new GenericListOkHttpCallback(callback, AirMapFlightFeature.class));
     }
 
@@ -186,10 +179,10 @@ class FlightService extends BaseService {
      * @param listener The callback that is invoked on success or error
      */
     @Deprecated
-    public static void createFlight(AirMapFlight flight, final AirMapCallback<AirMapFlight> listener) {
+    static Call createFlight(AirMapFlight flight, final AirMapCallback<AirMapFlight> listener) {
         String url = flightBaseUrl + flight.getGeometryType().toString();
         JSONObject params = flight.getAsParams();
-        AirMap.getClient().postWithJsonBody(url, params, new GenericOkHttpCallback(listener, AirMapFlight.class));
+        return AirMap.getClient().postWithJsonBody(url, params, new GenericOkHttpCallback(listener, AirMapFlight.class));
     }
 
     /**
@@ -198,19 +191,19 @@ class FlightService extends BaseService {
      * @param flight   The flight to end
      * @param listener The callback that is invoked on success or error
      */
-    public static void endFlight(AirMapFlight flight, AirMapCallback<AirMapFlight> listener) {
+    static Call endFlight(AirMapFlight flight, AirMapCallback<AirMapFlight> listener) {
         String url = String.format(flightEndUrl, flight.getFlightId());
-        AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapFlight.class));
+        return AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapFlight.class));
     }
 
-    public static void endFlight(String flightId, AirMapCallback<AirMapFlight> listener) {
+    static Call endFlight(String flightId, AirMapCallback<AirMapFlight> listener) {
         String url = String.format(flightEndUrl, flightId);
-        AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapFlight.class));
+        return AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapFlight.class));
     }
 
-    public static void deleteFlight(AirMapFlight flight, AirMapCallback<Void> listener) {
+    static Call deleteFlight(AirMapFlight flight, AirMapCallback<Void> listener) {
         String url = String.format(flightDeleteUrl, flight.getFlightId());
-        AirMap.getClient().post(url, new VoidCallback(listener));
+        return AirMap.getClient().post(url, new VoidCallback(listener));
     }
 
     /**
@@ -219,12 +212,12 @@ class FlightService extends BaseService {
      * @param flight   The flight to get the comm key for
      * @param listener The callback that is invoked on success or error
      */
-    public static void getCommKey(AirMapFlight flight, final AirMapCallback<AirMapComm> listener) {
+    static Call getCommKey(AirMapFlight flight, final AirMapCallback<AirMapComm> listener) {
         String url = String.format(flightStartCommUrl, flight.getFlightId());
-        AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapComm.class));
+        return AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapComm.class));
     }
 
-    public static Observable<AirMapComm> getCommKey(AirMapFlight flight) {
+    static Observable<AirMapComm> getCommKey(AirMapFlight flight) {
         String url = String.format(flightStartCommUrl, flight.getFlightId());
         return AirMap.getClient().post(url, AirMapComm.class);
     }
@@ -235,8 +228,8 @@ class FlightService extends BaseService {
      * @param flight   The flight to stop receiving notifications for
      * @param listener The callback that is invoked on success or error
      */
-    public static void clearCommKey(AirMapFlight flight, final AirMapCallback<Void> listener) {
+    static Call clearCommKey(AirMapFlight flight, final AirMapCallback<Void> listener) {
         String url = String.format(flightEndCommUrl, flight.getFlightId());
-        AirMap.getClient().post(url, new VoidCallback(listener));
+        return AirMap.getClient().post(url, new VoidCallback(listener));
     }
 }

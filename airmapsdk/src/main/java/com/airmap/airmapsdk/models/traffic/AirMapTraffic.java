@@ -79,6 +79,9 @@ public class AirMapTraffic implements Serializable, AirMapBaseModel {
         return this;
     }
 
+    /**
+     * @return The angle in degrees of the location of the traffic in relation to the current flight
+     */
     public double getDirection() {
         return direction;
     }
@@ -109,6 +112,9 @@ public class AirMapTraffic implements Serializable, AirMapBaseModel {
         return this;
     }
 
+    /**
+     * @return The heading of the traffic (the direction in which it is travelling)
+     */
     public int getTrueHeading() {
         return trueHeading;
     }

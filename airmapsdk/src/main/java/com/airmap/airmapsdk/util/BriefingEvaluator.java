@@ -1,6 +1,8 @@
 package com.airmap.airmapsdk.util;
 
+import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.flight.AirMapFlightBriefing;
+import com.airmap.airmapsdk.models.flight.AirMapFlightFeature;
 import com.airmap.airmapsdk.models.rules.AirMapRule;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 
@@ -8,15 +10,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by collin@airmap.com on 10/5/17.
  */
 
 public class BriefingEvaluator {
+
+    private static final String TAG = "BriefingEvaluator";
 
     public static LinkedHashMap<AirMapRule.Status, List<AirMapRule>> computeRulesViolations(AirMapFlightBriefing briefing) {
         List<AirMapRuleset> rulesets = briefing.getRulesets();
@@ -75,5 +81,24 @@ public class BriefingEvaluator {
         }
 
         return sortedRulesMap;
+    }
+
+    public static Set<AirMapFlightFeature> computeApplicableFlightFeatures(AirMapFlightBriefing briefing) {
+        Set<AirMapFlightFeature> flightFeatures = new HashSet<>();
+
+        for (AirMapRuleset ruleset : briefing.getRulesets()) {
+            for (AirMapRule rule : ruleset.getRules()) {
+                // Rules that are conflicting, missing information or are informational should be shown
+                if (rule.getStatus() != AirMapRule.Status.NotConflicting) {
+                    for (AirMapFlightFeature flightFeature : rule.getFlightFeatures()) {
+                        if (!flightFeature.isCalculated()) {
+                            flightFeatures.add(flightFeature);
+                        }
+                    }
+                }
+            }
+        }
+
+        return flightFeatures;
     }
 }

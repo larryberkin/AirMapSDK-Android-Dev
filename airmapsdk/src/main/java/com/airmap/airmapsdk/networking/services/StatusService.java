@@ -36,7 +36,7 @@ class StatusService extends BaseService {
      * @param listener     The callback that is invoked on success or error
      */
     @Deprecated
-    public static Call checkCoordinate(Coordinate coordinate, @Nullable Double buffer,
+    static Call checkCoordinate(Coordinate coordinate, @Nullable Double buffer,
                                        List<MappingService.AirMapAirspaceType> types,
                                        List<MappingService.AirMapAirspaceType> ignoredTypes,
                                        boolean weather, Date date,
@@ -62,7 +62,7 @@ class StatusService extends BaseService {
      * @param listener     The callback that is invoked on success or error
      */
     @Deprecated
-    public static Call checkFlightPath(List<Coordinate> path, int buffer, Coordinate takeOffPoint,
+    static Call checkFlightPath(List<Coordinate> path, int buffer, Coordinate takeOffPoint,
                                        List<MappingService.AirMapAirspaceType> types,
                                        List<MappingService.AirMapAirspaceType> ignoredTypes,
                                        boolean weather, Date date,
@@ -85,7 +85,7 @@ class StatusService extends BaseService {
      * @param listener     The callback that is invoked on success or error
      */
     @Deprecated
-    public static Call checkPolygon(List<Coordinate> geometry, Coordinate takeOffPoint,
+    static Call checkPolygon(List<Coordinate> geometry, Coordinate takeOffPoint,
                                     List<MappingService.AirMapAirspaceType> types,
                                     List<MappingService.AirMapAirspaceType> ignoredTypes,
                                     boolean weather, Date date,
@@ -104,7 +104,7 @@ class StatusService extends BaseService {
      * @param listener     The callback that is invoked on success or error
      */
     @Deprecated
-    public static Call checkWeather(Coordinate coordinate, @Nullable Double buffer,
+    static Call checkWeather(Coordinate coordinate, @Nullable Double buffer,
                                        AirMapCallback<AirMapStatus> listener) {
         String url = statusPointUrl;
         Map<String, String> params = AirMapStatus.getAsParams(coordinate, null, null, true, new Date());
@@ -123,7 +123,7 @@ class StatusService extends BaseService {
      * @param callback
      * @return
      */
-    public static Call getWeather(Coordinate coordinate, Date startTime, Date endTime, AirMapCallback<AirMapWeather> callback) {
+    static Call getWeather(Coordinate coordinate, Date startTime, Date endTime, AirMapCallback<AirMapWeather> callback) {
         Map<String, String> params = new HashMap<>();
         params.put("latitude", Double.toString(coordinate.getLatitude()));
         params.put("longitude", Double.toString(coordinate.getLongitude()));

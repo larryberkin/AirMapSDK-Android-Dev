@@ -3,6 +3,7 @@ package com.airmap.airmapsdk.models.flight;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.AirMapBaseModel;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.models.shapes.AirMapGeometry;
@@ -175,7 +176,7 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
                 params.put("takeoff_longitude", coordinate.getLongitude());
             }
         } catch (JSONException e) {
-            Log.e("AirMapFlightPlan", "Failed to parse geojson: " + getGeometry(), e);
+            AirMapLog.e("AirMapFlightPlan", "Failed to parse geojson: " + getGeometry(), e);
         }
 
         params.put("buffer", buffer);
@@ -211,6 +212,11 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
             JSONObject flightFeaturesJson = new JSONObject();
             for (FlightFeatureValue featureValue : flightFeatureValues.values()) {
                 try {
+                    // Don't include empty strings
+                    if (featureValue.getValue() != null && featureValue.getValue() instanceof String && TextUtils.isEmpty((CharSequence) featureValue.getValue())) {
+                        continue;
+                    }
+
                     flightFeaturesJson.put(featureValue.getKey(), featureValue.getValue());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -303,7 +309,7 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
     /**
      * @return maxAltitude of the flight in meters
      */
-    public double getMaxAltitude() {
+    public float getMaxAltitude() {
         return maxAltitude;
     }
 
@@ -318,7 +324,7 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
     /**
      * @return buffer, in meters
      */
-    public double getBuffer() {
+    public float getBuffer() {
         return buffer;
     }
 

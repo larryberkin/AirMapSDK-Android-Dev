@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="com_auth0_domain">sso.airmap.io</string>
+    <string name="com_auth0_scheme">airmap</string>
+</resources>

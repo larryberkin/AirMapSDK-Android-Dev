@@ -103,6 +103,7 @@ public class Analytics {
         public static final String flightPlanCheck = "flight_plan_check";
         public static final String flightPlanBrief = "flight_plan_brief";
         public static final String fly = "fly";
+        public static final String deeplink_create_flight = "deeplink_create_flight";
     }
 
     public static class Action {
@@ -127,6 +128,9 @@ public class Analytics {
         public static final String deselect = "deselect";
         public static final String expand = "expand";
         public static final String change = "change";
+        public static final String result = "result";
+        public static final String success = "success";
+        public static final String cancelled = "cancelled";
     }
 
     public static class Label {

@@ -36,10 +36,10 @@ public class AuthService extends BaseService {
         return auth0Domain;
     }
 
-    public static void performAnonymousLogin(String userId, final AirMapCallback<Void> callback) {
+    public static Call performAnonymousLogin(String userId, final AirMapCallback<Void> callback) {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", userId);
-        getClient().post(anonymousLoginUrl, params, new GenericOkHttpCallback(new AirMapCallback<AirMapToken>() {
+        return getClient().post(anonymousLoginUrl, params, new GenericOkHttpCallback(new AirMapCallback<AirMapToken>() {
             @Override
             public void onSuccess(AirMapToken response) {
                 AirMap.setAuthToken(response.getAuthToken());

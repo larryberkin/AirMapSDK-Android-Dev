@@ -37,6 +37,7 @@ public class Auth {
 
     public static void loginOrSignup(Activity activity, AirMapAuthenticationCallback callback) {
         Auth0 auth0 = new Auth0(AirMapConfig.getAuth0ClientId(), AirMapConfig.getAuth0Host());
+        auth0.setOIDCConformant(false);
 
         Lock lock = Lock.newBuilder(auth0, callback)
                 .hideMainScreenTitle(true)

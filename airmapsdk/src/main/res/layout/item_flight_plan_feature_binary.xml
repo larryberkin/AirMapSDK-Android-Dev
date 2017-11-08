@@ -33,6 +33,7 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:src="@drawable/ic_info"
+            android:tint="#fff"
             android:scaleType="centerInside"
             android:background="@null"/>
 
@@ -43,7 +44,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.airmap.airmap.views.ToggleButton
+        <com.airmap.airmapsdk.ui.views.ToggleButton
             android:id="@+id/no_button"
             android:layout_width="0dp"
             android:layout_height="40dp"
@@ -52,7 +53,7 @@
             android:text="@string/no"
             app:backgroundTint="?colorPrimaryDark" />
 
-        <com.airmap.airmap.views.ToggleButton
+        <com.airmap.airmapsdk.ui.views.ToggleButton
             android:id="@+id/yes_button"
             android:layout_width="0dp"
             android:layout_height="40dp"

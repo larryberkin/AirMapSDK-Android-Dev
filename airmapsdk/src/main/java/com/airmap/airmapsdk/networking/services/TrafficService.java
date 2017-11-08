@@ -41,6 +41,7 @@ public class TrafficService extends BaseService {
         Connecting, Connected, Disconnected
     }
 
+    private static String TAG = "TrafficService";
     private MqttAndroidClient client;
     private MqttConnectOptions options;
     private List<AirMapTrafficListener> listeners;
@@ -105,10 +106,10 @@ public class TrafficService extends BaseService {
      */
     public void connect() {
         if (listeners.isEmpty()) {
-            AirMapLog.i("TrafficService", "No listeners, not connecting");
+            AirMapLog.i(TAG, "No listeners, not connecting");
             return;
         }
-        AirMapLog.i("TrafficService", "Connecting to Traffic Service");
+        AirMapLog.i(TAG, "Connecting to Traffic Service");
         if (connectionState == ConnectionState.Connecting) { //Don't connect if already connecting
             return;
         }
@@ -124,13 +125,13 @@ public class TrafficService extends BaseService {
         if (connectionState == ConnectionState.Disconnected || connectionState == ConnectionState.Connecting || !client.isConnected()) {
             return;
         }
-        AirMapLog.i("TrafficService", "Disconnecting from alerts");
+        AirMapLog.i(TAG, "Disconnecting from alerts");
         removeAllTraffic();
         try {
             client.disconnect(connectionState, actionListener);
             checkForUpdatedFlight = false;
         } catch (MqttException e) {
-            AirMapLog.e("TrafficService", "Error disconnecting", e);
+            AirMapLog.e(TAG, "Error disconnecting", e);
         } finally {
             onDisconnect(false);
         }
@@ -303,16 +304,16 @@ public class TrafficService extends BaseService {
             client.subscribe(channel, 1, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    AirMapLog.v("TrafficService", "Success subscribing" + channel);
+                    AirMapLog.v(TAG, "Success subscribing" + channel);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     if (exception != null) {
-                        AirMapLog.e("TrafficService", "Subscribe failed", exception);
+                        AirMapLog.e(TAG, "Subscribe failed", exception);
                         exception.printStackTrace();
                     } else {
-                        AirMapLog.e("TrafficService", "Failed with no exception.");
+                        AirMapLog.e(TAG, "Failed with no exception.");
                     }
                 }
             });
@@ -404,7 +405,7 @@ public class TrafficService extends BaseService {
             if (response != null) {
                 flightId = response.getFlightId();
                 options.setUserName(flightId);
-                AirMapLog.i("TrafficService", "Connecting to MQTT server");
+                AirMapLog.i(TAG, "Connecting to MQTT server");
                 try {
                     client.connect(options, ConnectionState.Connecting, actionListener);
                 } catch (MqttException e) {
@@ -433,7 +434,7 @@ public class TrafficService extends BaseService {
         public void onSuccess(IMqttToken asyncActionToken) {
             ConnectionState state = (ConnectionState) asyncActionToken.getUserContext();
             if (state == ConnectionState.Connecting) {
-                AirMapLog.i("TrafficService", "Successfully connected");
+                AirMapLog.i(TAG, "Successfully connected");
                 onConnect();
             }
         }
@@ -444,7 +445,7 @@ public class TrafficService extends BaseService {
         @Override
         public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
             exception.printStackTrace();
-            AirMapLog.e("TrafficService", "Error connecting: " + exception.getMessage(), exception);
+            AirMapLog.e(TAG, "Error connecting: " + exception.getMessage(), exception);
             onDisconnect(false);
         }
     }
@@ -460,7 +461,7 @@ public class TrafficService extends BaseService {
         @Override
         public void messageArrived(String topic, MqttMessage message) throws Exception {
             String messageString = message.toString();
-            System.out.println("TrafficService: " + messageString);
+            AirMapLog.v(TAG, messageString);
             if (topic.contains("/alert/")) {
                 receivedTraffic(messageString, AirMapTraffic.TrafficType.Alert);
             } else if (topic.contains("/sa/")) {

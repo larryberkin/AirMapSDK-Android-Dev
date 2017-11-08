@@ -1,49 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="49dp"
-    android:background="?selectableItemBackground" >
+    android:layout_height="wrap_content"
+    android:minHeight="56dp"
+    android:background="?selectableItemBackground">
 
-    <FrameLayout android:id="@+id/background_view"
+    <View
+        android:id="@+id/background_view"
         android:layout_width="8dp"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:background="@color/status_orange" />
+        android:minHeight="56dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/status_orange"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/background_view"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:orientation="vertical">
 
-        <TextView android:id="@+id/title_text_view"
+        <TextView
+            android:id="@+id/title_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="Los Angeles Class B"
+            android:textColor="@color/font_title"
             android:textSize="14sp"
-            android:textColor="@color/font_title" />
+            tools:text="Los Angeles Class B"/>
 
-        <TextView android:id="@+id/info_text_view"
+        <TextView
+            android:id="@+id/info_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="Controlled Airspace - Class Bravo"
-            android:textSize="11sp"
             android:textColor="@color/font_light_grey"
-            android:visibility="gone" />
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:text="Controlled Airspace - Class Bravo"/>
 
     </LinearLayout>
 
-    <FrameLayout
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/colorPrimaryDark"/>
 
 </RelativeLayout>

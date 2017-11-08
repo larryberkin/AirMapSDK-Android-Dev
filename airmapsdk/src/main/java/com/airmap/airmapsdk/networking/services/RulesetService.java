@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.airmap.airmapsdk.models.Coordinate;
+import com.airmap.airmapsdk.models.flight.AirMapFlightBriefing;
 import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.models.rules.AirMapJurisdiction;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
@@ -30,14 +31,14 @@ import okhttp3.Call;
 
 public class RulesetService extends BaseService {
 
-    public static Call getJurisdictions(LatLng southwest, LatLng northeast, AirMapCallback<List<AirMapJurisdiction>> callback) {
+    static Call getJurisdictions(LatLng southwest, LatLng northeast, AirMapCallback<List<AirMapJurisdiction>> callback) {
         Map<String, String> params = new HashMap<>();
         params.put("bounds", southwest.getLatitude() + "," + southwest.getLongitude() + "," + northeast.getLatitude() + "," + northeast.getLongitude());
 
         return AirMap.getClient().get(jurisdictionBaseUrl, params, new GenericListOkHttpCallback(callback, AirMapJurisdiction.class));
     }
 
-    public static Call getJurisdictions(JSONObject geometry, double buffer, AirMapCallback<List<AirMapJurisdiction>> callback) {
+    static Call getJurisdictions(JSONObject geometry, double buffer, AirMapCallback<List<AirMapJurisdiction>> callback) {
         Map<String, Object> params = new HashMap<>();
         params.put("geometry", geometry);
         params.put("buffer", buffer);
@@ -45,50 +46,50 @@ public class RulesetService extends BaseService {
         return AirMap.getClient().postWithJsonBody(jurisdictionBaseUrl, params, new GenericListOkHttpCallback(callback, AirMapJurisdiction.class));
     }
 
-    public static Call getJurisdictions(List<String> jurisdictionIds, AirMapCallback<List<AirMapJurisdiction>> callback) {
+    static Call getJurisdictions(List<String> jurisdictionIds, AirMapCallback<List<AirMapJurisdiction>> callback) {
         Map<String, String> params = new HashMap<>();
         params.put("ids", TextUtils.join(",", jurisdictionIds));
 
         return AirMap.getClient().get(jurisdictionBaseUrl, params, new GenericListOkHttpCallback(callback, AirMapJurisdiction.class));
     }
 
-    public static Call getJurisdiction(String jurisdictionId, AirMapCallback<AirMapJurisdiction> callback) {
+    static Call getJurisdiction(String jurisdictionId, AirMapCallback<AirMapJurisdiction> callback) {
         String url = String.format(jurisdictionByIdUrl, jurisdictionId);
 
         return AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapJurisdiction.class));
     }
 
-    public static Call getRulesets(Coordinate coordinate, AirMapCallback<List<AirMapRuleset>> listener) {
+    static Call getRulesets(Coordinate coordinate, AirMapCallback<List<AirMapRuleset>> listener) {
         Map<String, Object> params = new HashMap<>();
         params.put("latitude", String.valueOf(coordinate.getLatitude()));
         params.put("longitude", String.valueOf(coordinate.getLongitude()));
         return AirMap.getClient().postWithJsonBody(rulesetBaseUrl, params, new GenericListOkHttpCallback(listener, AirMapRuleset.class));
     }
 
-    public static Call getRulesets(JSONObject geometry, AirMapCallback<List<AirMapRuleset>> listener) {
+    static Call getRulesets(JSONObject geometry, AirMapCallback<List<AirMapRuleset>> listener) {
         Map<String, Object> params = new HashMap<>();
         params.put("geometry", geometry);
         return AirMap.getClient().postWithJsonBody(rulesetBaseUrl, params, new GenericListOkHttpCallback(listener, AirMapRuleset.class));
     }
 
-    public static Call getRulesets(List<String> rulesetIds, AirMapCallback<List<AirMapRuleset>> listener) {
+    static Call getRulesets(List<String> rulesetIds, AirMapCallback<List<AirMapRuleset>> listener) {
         Map<String, String> params = new HashMap<>();
         params.put("rulesets", TextUtils.join(",",rulesetIds));
         return AirMap.getClient().get(rulesetBaseUrl, params, new GenericListOkHttpCallback(listener, AirMapRuleset.class));
     }
 
-    public static Call getRuleset(String rulesetId, AirMapCallback<AirMapRuleset> callback) {
+    static Call getRuleset(String rulesetId, AirMapCallback<AirMapRuleset> callback) {
         String url = String.format(rulesetByIdUrl, rulesetId);
 
         return AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapRuleset.class));
     }
 
-    public static Call getRules(String rulesetId, AirMapCallback<AirMapRuleset> listener) {
+    static Call getRules(String rulesetId, AirMapCallback<AirMapRuleset> listener) {
         String url = String.format(rulesByIdUrl, rulesetId);
         return AirMap.getClient().get(url, new GenericOkHttpCallback(listener, AirMapRuleset.class));
     }
 
-    public static Call getAdvisories(List<String> rulesets, List<Coordinate> geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String,Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
+    static Call getAdvisories(List<String> rulesets, List<Coordinate> geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String,Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
         Map<String, Object> params = new HashMap<>();
         params.put("rulesets", TextUtils.join(",", rulesets));
         params.put("geometry", "POLYGON(" + Utils.makeGeoString(geometry) + ")");
@@ -117,7 +118,7 @@ public class RulesetService extends BaseService {
         return call;
     }
 
-    public static Call getAdvisories(List<String> rulesets, JSONObject geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String,Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
+    static Call getAdvisories(List<String> rulesets, JSONObject geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String,Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
         Map<String, Object> params = new HashMap<>();
         params.put("rulesets", TextUtils.join(",", rulesets));
         params.put("geometry", geometry);
@@ -144,5 +145,25 @@ public class RulesetService extends BaseService {
 
         Call call = AirMap.getClient().postWithJsonBody(advisoriesUrl, params, new GenericOkHttpCallback(listener, AirMapAirspaceStatus.class));
         return call;
+    }
+
+    static Call getEvaluation(List<String> rulesets, JSONObject geometry, @Nullable Map<String,Object> flightFeatures, AirMapCallback<AirMapFlightBriefing> callback) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("rulesets", TextUtils.join(",", rulesets));
+        params.put("geometry", geometry);
+
+        if (flightFeatures != null && !flightFeatures.isEmpty()) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                for (String key : flightFeatures.keySet()) {
+                    jsonObject.put(key, flightFeatures.get(key));
+                }
+                params.put("flight_features", jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return AirMap.getClient().postWithJsonBody(evaluationUrl, params, new GenericOkHttpCallback(callback, AirMapFlightBriefing.class));
     }
 }

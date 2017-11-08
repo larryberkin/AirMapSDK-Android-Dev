@@ -33,7 +33,7 @@ public abstract class AirMapGeometry implements Serializable {
                 return new AirMapPolygon(coordinates);
             } else if (geoType.equals("linestring")) {
                 List<Coordinate> coordinates = new ArrayList<>();
-                JSONArray coordArray = geoJson.optJSONArray("coordinates").optJSONArray(0);
+                JSONArray coordArray = geoJson.optJSONArray("coordinates");
                 if (coordArray == null) return null;
                 for (int i = 0; i < coordArray.length(); i++) {
                     JSONArray coordinate = coordArray.optJSONArray(i);

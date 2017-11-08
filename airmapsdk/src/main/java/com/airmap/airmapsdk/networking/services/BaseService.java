@@ -98,6 +98,7 @@ class BaseService {
     protected static final String jurisdictionByIdUrl = jurisdictionBaseUrl + "%s/"; //Replace %s with id using String.format
     protected static final String rulesetBaseUrl = baseUrl + "rules/" + rulesetsVersion;
     protected static final String rulesetByIdUrl = rulesetBaseUrl + "%s/"; //Replace %s with id using String.format
-    protected static final String rulesByIdUrl = rulesetBaseUrl + "%s/rules"; //Replace %s with id using String.format
+    protected static final String rulesByIdUrl = rulesetBaseUrl + "%s/"; //Replace %s with id using String.format
     protected static final String advisoriesUrl = baseUrl + "advisory/" + rulesetsVersion + "airspace";
+    protected static final String evaluationUrl = rulesetBaseUrl + "evaluation";
 }

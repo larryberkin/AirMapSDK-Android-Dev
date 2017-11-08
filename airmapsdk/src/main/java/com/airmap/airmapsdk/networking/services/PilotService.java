@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Call;
+
 /**
  * Created by Vansh Gandhi on 6/23/16.
  * Copyright © 2016 AirMap, Inc. All rights reserved.
@@ -27,9 +29,9 @@ class PilotService extends BaseService {
      *
      * @param listener The callback that is invoked on success or error
      */
-    public static void getPilot(String pilotId, AirMapCallback<AirMapPilot> listener) {
+    static Call getPilot(String pilotId, AirMapCallback<AirMapPilot> listener) {
         String url = String.format(pilotByIdUrl, pilotId);
-        AirMap.getClient().get(url, new GenericOkHttpCallback(listener, AirMapPilot.class));
+        return AirMap.getClient().get(url, new GenericOkHttpCallback(listener, AirMapPilot.class));
     }
 
     /**
@@ -37,8 +39,8 @@ class PilotService extends BaseService {
      *
      * @param listener The callback that is invoked on success or error
      */
-    public static void getAuthenticatedPilot(AirMapCallback<AirMapPilot> listener) {
-        getPilot(AirMap.getUserId(), listener);
+    static Call getAuthenticatedPilot(AirMapCallback<AirMapPilot> listener) {
+        return getPilot(AirMap.getUserId(), listener);
     }
 
     /**
@@ -47,9 +49,9 @@ class PilotService extends BaseService {
      * @param pilot    The updated version of the pilot
      * @param listener The callback that is invoked on success or error
      */
-    public static void updatePilot(AirMapPilot pilot, AirMapCallback<AirMapPilot> listener) {
+    static Call updatePilot(AirMapPilot pilot, AirMapCallback<AirMapPilot> listener) {
         String url = String.format(pilotByIdUrl, pilot.getPilotId());
-        AirMap.getClient().patch(url, pilot.getAsParams(), new GenericOkHttpCallback(listener, AirMapPilot.class));
+        return AirMap.getClient().patch(url, pilot.getAsParams(), new GenericOkHttpCallback(listener, AirMapPilot.class));
     }
 
     /**
@@ -59,20 +61,21 @@ class PilotService extends BaseService {
      * @param phone    The new phone number
      * @param listener The callback that is invoked on success or error
      */
-    public static void updatePhoneNumber(String phone, AirMapCallback<Void> listener) {
+    static Call updatePhoneNumber(String phone, AirMapCallback<Void> listener) {
         String url = String.format(pilotByIdUrl, AirMap.getUserId());
         Map<String, String> params = new HashMap<>();
         params.put("phone", phone);
-        AirMap.getClient().patch(url, params, new VoidCallback(listener));
+        return AirMap.getClient().patch(url, params, new VoidCallback(listener));
     }
 
     /**
      * Verify the user's phone number
+     *
      * @param listener The callback that is invoked on success or error
      */
-    public static void sendVerificationToken(AirMapCallback<Void> listener) {
+    static Call sendVerificationToken(AirMapCallback<Void> listener) {
         String url = String.format(pilotSendVerifyUrl, AirMap.getUserId());
-        AirMap.getClient().post(url, new VoidCallback(listener));
+        return AirMap.getClient().post(url, new VoidCallback(listener));
     }
 
     /**
@@ -81,7 +84,7 @@ class PilotService extends BaseService {
      * @param token    The token that the user received in the text
      * @param listener The callback that is invoked on success or error
      */
-    public static void verifyToken(String token, AirMapCallback<Void> listener) {
+    static Call verifyToken(String token, AirMapCallback<Void> listener) {
         String url = String.format(pilotVerifyUrl, AirMap.getUserId());
         JSONObject params = new JSONObject();
         try {
@@ -89,7 +92,7 @@ class PilotService extends BaseService {
         } catch (JSONException | NumberFormatException e) {
             e.printStackTrace();
         }
-        AirMap.getClient().postWithJsonBody(url, params, new VoidCallback(listener));
+        return AirMap.getClient().postWithJsonBody(url, params, new VoidCallback(listener));
     }
 
     //Aircraft related requests
@@ -99,9 +102,9 @@ class PilotService extends BaseService {
      *
      * @param listener The callback that is invoked on success or error
      */
-    public static void getAircraft(AirMapCallback<List<AirMapAircraft>> listener) {
+    static Call getAircraft(AirMapCallback<List<AirMapAircraft>> listener) {
         String url = String.format(pilotAircraftUrl, AirMap.getUserId());
-        AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapAircraft.class));
+        return AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapAircraft.class));
     }
 
     /**
@@ -110,9 +113,9 @@ class PilotService extends BaseService {
      * @param aircraftId The ID of the aircraft to get
      * @param listener   The callback that is invoked on success or error
      */
-    public static void getAircraft(String aircraftId, AirMapCallback<AirMapAircraft> listener) {
+    static Call getAircraft(String aircraftId, AirMapCallback<AirMapAircraft> listener) {
         String url = String.format(pilotAircraftByIdUrl, AirMap.getUserId(), aircraftId);
-        AirMap.getClient().get(url, new GenericOkHttpCallback(listener, AirMapAircraft.class));
+        return AirMap.getClient().get(url, new GenericOkHttpCallback(listener, AirMapAircraft.class));
     }
 
     /**
@@ -121,9 +124,9 @@ class PilotService extends BaseService {
      * @param aircraft The aircraft to add to the user's profile
      * @param listener The callback that is invoked on success or error
      */
-    public static void createAircraft(AirMapAircraft aircraft, AirMapCallback<AirMapAircraft> listener) {
+    static Call createAircraft(AirMapAircraft aircraft, AirMapCallback<AirMapAircraft> listener) {
         String url = String.format(pilotAircraftUrl, AirMap.getUserId());
-        AirMap.getClient().post(url, aircraft.getAsParamsPost(), new GenericOkHttpCallback(listener, AirMapAircraft.class));
+        return AirMap.getClient().post(url, aircraft.getAsParamsPost(), new GenericOkHttpCallback(listener, AirMapAircraft.class));
     }
 
     /**
@@ -132,9 +135,9 @@ class PilotService extends BaseService {
      * @param aircraft The aircraft with the updated values (The ID must be valid and non-null)
      * @param listener The callback that is invoked on success or error
      */
-    public static void updateAircraft(AirMapAircraft aircraft, AirMapCallback<AirMapAircraft> listener) {
+    static Call updateAircraft(AirMapAircraft aircraft, AirMapCallback<AirMapAircraft> listener) {
         String url = String.format(pilotAircraftByIdUrl, AirMap.getUserId(), aircraft.getAircraftId());
-        AirMap.getClient().patch(url, aircraft.getAsParamsPatch(), new GenericOkHttpCallback(listener, AirMapAircraft.class));
+        return AirMap.getClient().patch(url, aircraft.getAsParamsPatch(), new GenericOkHttpCallback(listener, AirMapAircraft.class));
     }
 
     /**
@@ -143,19 +146,19 @@ class PilotService extends BaseService {
      * @param aircraft The aircraft to delete (The ID must be valid and non-null)
      * @param listener The callback that is invoked on success or error
      */
-    public static void deleteAircraft(AirMapAircraft aircraft, AirMapCallback<Void> listener) {
+    static Call deleteAircraft(AirMapAircraft aircraft, AirMapCallback<Void> listener) {
         String url = String.format(pilotAircraftByIdUrl, AirMap.getUserId(), aircraft.getAircraftId());
-        AirMap.getClient().delete(url, new VoidCallback(listener));
+        return AirMap.getClient().delete(url, new VoidCallback(listener));
     }
 
     //Permit related requests
-    public static void getPermits(AirMapCallback<List<AirMapPilotPermit>> listener) {
+    static Call getPermits(AirMapCallback<List<AirMapPilotPermit>> listener) {
         String url = String.format(pilotGetPermitsUrl, AirMap.getUserId());
-        AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapPilotPermit.class));
+        return AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapPilotPermit.class));
     }
 
-    public static void deletePermit(String permitId, AirMapCallback<Void> listener) {
+    static Call deletePermit(String permitId, AirMapCallback<Void> listener) {
         String url = String.format(pilotDeletePermitUrl, AirMap.getUserId(), permitId);
-        AirMap.getClient().delete(url, new VoidCallback(listener));
+        return AirMap.getClient().delete(url, new VoidCallback(listener));
     }
 }

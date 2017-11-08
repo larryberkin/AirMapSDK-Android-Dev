@@ -112,11 +112,34 @@
     <string name="authorizations_header">Authorization &amp; Validation</string>
     <string name="rules_header">Rules &amp; Compliance</string>
 
-    <string name="authorization_not_requested">Not Requested</string>
+    <string name="authorization_not_requested">Authorization Not Requested</string>
     <string name="rejected_upon_submission">Rejected Upon Submission</string>
-    <string name="authorized_upon_submission">Authorized Upon Submission</string>
-    <string name="manual_authorization">Manual Authorization Upon Submission</string>
-    <string name="authorization_pending">Pending</string>
-    <string name="authorization_accepted">Accepted</string>
-    <string name="authorization_rejected">Rejected</string>
+    <string name="authorized_upon_submission">Authorization Upon Submission</string>
+    <string name="manual_authorization">Manual Authorization Pending Submission</string>
+    <string name="authorization_pending">Authorization Pending Submission</string>
+    <string name="authorization_accepted">Authorization Approved</string>
+    <string name="authorization_rejected">Authorization Rejected</string>
+
+    <string name="airspace_laanc_authorization_automated">FAA authorization available</string>
+
+    <string name="country">Country</string>
+    <string name="county">County</string>
+    <string name="embassy">Embassy</string>
+    <string name="fir">Flight Information Region</string>
+    <string name="federal_building">Federal Building</string>
+    <string name="glider_port">Gliderport</string>
+    <string name="highway">Highway</string>
+    <string name="industrial_property">Industrial Property</string>
+    <string name="military_property">Military Property</string>
+    <string name="police_station">Police Station</string>
+    <string name="powerline">Power Line</string>
+    <string name="railway">Railway</string>
+    <string name="residential_property">Residential Property</string>
+    <string name="stadium">Stadium</string>
+    <string name="state">State</string>
+    <string name="subprefecture">Subprefecture</string>
+    <string name="supercity">Supercity</string>
+    <string name="ulm_field">Ulm Field</string>
+    <string name="waterway">Waterway</string>
+    <string name="japan_base_admin">Japan Base Admin</string>
 </resources>

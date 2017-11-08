@@ -7,9 +7,7 @@ import android.text.TextUtils;
 import com.airmap.airmapsdk.AirMapException;
 import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.R;
-import com.airmap.airmapsdk.models.flight.AirMapFlight;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
-import com.airmap.airmapsdk.networking.callbacks.GenericOkHttpCallback;
 import com.airmap.airmapsdk.util.AirMapConfig;
 import com.airmap.airmapsdk.util.Utils;
 
@@ -238,6 +236,26 @@ public class MappingService extends BaseService {
         University("university", R.string.airspace_type_university),
         Notam("notam", R.string.airspace_type_notam),
         AMA("ama_field", R.string.airspace_type_ama),
+        County("county", R.string.county),
+        Country("country", R.string.country),
+        Embassy("embassy", R.string.embassy),
+        FIR("fir", R.string.fir),
+        FederalBuilding("federal_building", R.string.federal_building),
+        GliderPort("gliderport", R.string.glider_port),
+        Highway("highway", R.string.highway),
+        IndustrialProperty("industrial_property", R.string.industrial_property),
+        MilitaryProperty("military_property", R.string.military_property),
+        PoliceStation("police_station", R.string.police_station),
+        Powerline("powerline", R.string.powerline),
+        Railway("railway", R.string.railway),
+        ResidentialProperty("residential_property", R.string.residential_property),
+        Stadium("stadium", R.string.stadium),
+        State("state", R.string.state),
+        Subprefecture("subprefecture", R.string.subprefecture),
+        Supercity("supercity", R.string.supercity),
+        UlmField("ulm_field", R.string.ulm_field),
+        Waterway("waterway", R.string.waterway),
+        JapanBase("jpn_base", R.string.japan_base_admin),
         Unknown("unknown", R.string.airspace_type_unknown);
 
         private final String text;
@@ -302,6 +320,44 @@ public class MappingService extends BaseService {
                 case "ama":
                 case "ama_field":
                     return AMA;
+                case "country":
+                    return Country;
+                case "county":
+                    return County;
+                case "embassy":
+                    return Embassy;
+                case "fir":
+                    return FIR;
+                case "federal_building":
+                    return FederalBuilding;
+                case "gliderport":
+                    return GliderPort;
+                case "highway":
+                    return Highway;
+                case "industrial_property":
+                    return IndustrialProperty;
+                case "military_property":
+                    return MilitaryProperty;
+                case "police_station":
+                    return PoliceStation;
+                case "powerline":
+                    return Powerline;
+                case "railway":
+                    return Railway;
+                case "residential_property":
+                    return ResidentialProperty;
+                case "stadium":
+                    return Stadium;
+                case "state":
+                    return State;
+                case "subprefecture":
+                    return Subprefecture;
+                case "supercity":
+                    return Supercity;
+                case "ulm_field":
+                    return UlmField;
+                case "waterway":
+                    return Waterway;
                 default:
                     return Unknown;
             }
@@ -356,7 +412,7 @@ public class MappingService extends BaseService {
 
     protected String getStylesUrl(AirMapMapTheme theme) {
         String stageOrProd = BaseService.DEBUG ? "stage/" : "";
-        String stylesUrl = "https://cdn." + AirMapConfig.getDomain() +"/static/map-styles/" + stageOrProd + "0.7.2/";
+        String stylesUrl = "https://cdn." + AirMapConfig.getDomain() +"/static/map-styles/" + stageOrProd + "0.7.3/";
 
         switch (theme) {
             case Light:
@@ -377,8 +433,8 @@ public class MappingService extends BaseService {
         return stylesUrl;
     }
 
-    protected void getStylesJson(AirMapMapTheme theme, final AirMapCallback<JSONObject> listener) {
-        AirMap.getClient().get(getStylesUrl(theme), new Callback() {
+    protected Call getStylesJson(AirMapMapTheme theme, final AirMapCallback<JSONObject> listener) {
+        return AirMap.getClient().get(getStylesUrl(theme), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 listener.error(new AirMapException(e.getMessage()));

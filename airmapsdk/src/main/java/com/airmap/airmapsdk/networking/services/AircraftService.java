@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Call;
+
 /**
  * Created by Vansh Gandhi on 6/23/16.
  * Copyright © 2016 AirMap, Inc. All rights reserved.
@@ -25,9 +27,9 @@ class AircraftService extends BaseService {
      *
      * @param listener The callback that is invoked on success or error
      */
-    public static void getManufacturers(final AirMapCallback<List<AirMapAircraftManufacturer>> listener) {
+    static Call getManufacturers(final AirMapCallback<List<AirMapAircraftManufacturer>> listener) {
         String url = aircraftManufacturersUrl;
-        AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapAircraftManufacturer.class));
+        return AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapAircraftManufacturer.class));
     }
 
     /**
@@ -36,11 +38,11 @@ class AircraftService extends BaseService {
      * @param query    manufacturer to search for
      * @param listener The callback that is invoked on success or error
      */
-    public static void getManufacturers(String query, final AirMapCallback<List<AirMapAircraftManufacturer>> listener) {
+    static Call getManufacturers(String query, final AirMapCallback<List<AirMapAircraftManufacturer>> listener) {
         String url = aircraftManufacturersUrl;
         Map<String, String> params = new HashMap<>();
         params.put("q", query);
-        AirMap.getClient().get(url, params, new GenericListOkHttpCallback(listener, AirMapAircraftManufacturer.class));
+        return AirMap.getClient().get(url, params, new GenericListOkHttpCallback(listener, AirMapAircraftManufacturer.class));
     }
 
     /**
@@ -48,9 +50,9 @@ class AircraftService extends BaseService {
      *
      * @param listener The callback that is invoked on success or error
      */
-    public static void getModels(AirMapCallback<List<AirMapAircraftModel>> listener) {
+    static Call getModels(final AirMapCallback<List<AirMapAircraftModel>> listener) {
         String url = aircraftModelsUrl;
-        AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapAircraftModel.class));
+        return AirMap.getClient().get(url, new GenericListOkHttpCallback(listener, AirMapAircraftModel.class));
     }
 
     /**
@@ -60,12 +62,12 @@ class AircraftService extends BaseService {
      * @param manufacturerId The ID of the manufacturer to get models for
      * @param listener       The callback that is invoked on success or error
      */
-    public static void getModels(@Nullable String query, @Nullable String manufacturerId, AirMapCallback<List<AirMapAircraftModel>> listener) {
+    static Call getModels(@Nullable String query, @Nullable String manufacturerId, final AirMapCallback<List<AirMapAircraftModel>> listener) {
         String url = aircraftModelsUrl;
         Map<String, String> params = new HashMap<>();
         params.put("manufacturer", manufacturerId);
         params.put("q", query);
-        AirMap.getClient().get(url, params, new GenericListOkHttpCallback(listener, AirMapAircraftModel.class));
+        return AirMap.getClient().get(url, params, new GenericListOkHttpCallback(listener, AirMapAircraftModel.class));
     }
 
     /**
@@ -74,11 +76,11 @@ class AircraftService extends BaseService {
      * @param manufacturerId The ID of the manufacturer to get models for
      * @param listener       The callback that is invoked on success or error
      */
-    public static void getModels(String manufacturerId, AirMapCallback<List<AirMapAircraftModel>> listener) {
+    static Call getModels(String manufacturerId, final AirMapCallback<List<AirMapAircraftModel>> listener) {
         String url = aircraftModelsUrl;
         Map<String, String> params = new HashMap<>();
         params.put("manufacturer", manufacturerId);
-        AirMap.getClient().get(url, params, new GenericListOkHttpCallback(listener, AirMapAircraftModel.class));
+        return AirMap.getClient().get(url, params, new GenericListOkHttpCallback(listener, AirMapAircraftModel.class));
     }
 
     /**
@@ -87,8 +89,8 @@ class AircraftService extends BaseService {
      * @param modelId  The ID of the model to get
      * @param listener The callback that is invoked on success or error
      */
-    public static void getModel(@NonNull String modelId, AirMapCallback<AirMapAircraftModel> listener) {
+    static Call getModel(@NonNull String modelId, final AirMapCallback<AirMapAircraftModel> listener) {
         String url = String.format(aircraftModelUrl, modelId);
-        AirMap.getClient().get(url, new GenericOkHttpCallback(listener, AirMapAircraftModel.class));
+        return AirMap.getClient().get(url, new GenericOkHttpCallback(listener, AirMapAircraftModel.class));
     }
 }

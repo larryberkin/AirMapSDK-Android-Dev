@@ -24,6 +24,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_weight="0"
+        android:tint="#fff"
         android:src="@drawable/ic_drop_down" />
 
 </LinearLayout>
