@@ -66,7 +66,7 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
         throw new RuntimeException("please call setDataUnseparated instead");
     }
 
-    public static LinkedHashMap<Pair<MappingService.AirMapAirspaceType, AirMapStatus.StatusColor>, List<AirMapAdvisory>> separateByColor(Map<MappingService.AirMapAirspaceType, List<AirMapAdvisory>> og) {
+    private static LinkedHashMap<Pair<MappingService.AirMapAirspaceType, AirMapStatus.StatusColor>, List<AirMapAdvisory>> separateByColor(Map<MappingService.AirMapAirspaceType, List<AirMapAdvisory>> og) {
         LinkedHashMap<Pair<MappingService.AirMapAirspaceType, AirMapStatus.StatusColor>, List<AirMapAdvisory>> dataTemp = new LinkedHashMap<>();
         for (MappingService.AirMapAirspaceType type : og.keySet()) {
             for (AirMapAdvisory advisory : og.get(type)) {
