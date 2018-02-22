@@ -502,4 +502,9 @@ public class Utils {
 
             return positions;
     }
+
+    public static boolean useGPSForLocation(Context context) {
+        // by default, GPS is not used
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.setting_location_provider), true);
+    }
 }

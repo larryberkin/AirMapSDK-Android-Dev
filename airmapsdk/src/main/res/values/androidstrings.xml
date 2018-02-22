@@ -146,4 +146,5 @@
     <string name="error_loading_map_button">Update Date/Time</string>
     <string name="error_loading_map_network_button">Check Network</string>
 
+    <string name="setting_location_provider">location_provider</string>
 </resources>
