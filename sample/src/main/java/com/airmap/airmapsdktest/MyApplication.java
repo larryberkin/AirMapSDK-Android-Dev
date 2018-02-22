@@ -1,5 +1,6 @@
 package com.airmap.airmapsdktest;
 
+import android.app.Application;
 import android.support.multidex.MultiDexApplication;
 
 import com.airmap.airmapsdk.networking.services.AirMap;
@@ -9,14 +10,12 @@ import com.mapbox.mapboxsdk.Mapbox;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         AirMap.init(this);
         Timber.plant(new DebugTree());
-
         Mapbox.getInstance(this, AirMapConfig.getMapboxApiKey());
     }
 }
