@@ -5,23 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdktest.R;
 
 import java.util.UUID;
 
-/**
- * Created by collin@airmap.com on 9/27/17.
- */
+import timber.log.Timber;
 
 public class AnonymousLoginDemoActivity extends AppCompatActivity {
-
-    private static final String TAG = "AnonymousLoginActivity";
 
     private Toolbar toolbar;
     private TextView statusTextView;
@@ -42,7 +36,7 @@ public class AnonymousLoginDemoActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(AirMap.getUserId())) {
             statusTextView.setText("Already logged in as:\n\n" + AirMap.getUserId() + "\n\nwith ability to create flights, receive traffic and send telemetry.");
 
-        // if not use Anonymous Login
+            // if not use Anonymous Login
         } else {
             // Any unique identifier from the developer for their user (UUID, username, email)
             String userId = UUID.randomUUID().toString();
@@ -50,14 +44,14 @@ public class AnonymousLoginDemoActivity extends AppCompatActivity {
             AirMap.performAnonymousLogin(userId, new AirMapCallback<Void>() {
                 @Override
                 public void onSuccess(Void response) {
-                    AirMapLog.v(TAG, "Token is: " + AirMap.getAuthToken());
+                    Timber.v("Token is: %s", AirMap.getAuthToken());
                     statusTextView.setText("Logged in as:\n\n" + AirMap.getUserId() + "\n\nNow able to create flights, receive traffic and send telemetry.");
                 }
 
                 @Override
                 public void onError(AirMapException e) {
-                    AirMapLog.e(TAG, e.getDetailedMessage(), e);
-                    statusTextView.setText("Anonymous Login failed. Enable AirMapLog for more information.");
+                    Timber.e(e, e.getDetailedMessage());
+                    statusTextView.setText("Anonymous Login failed");
                 }
             });
         }

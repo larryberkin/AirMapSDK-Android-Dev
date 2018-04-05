@@ -24,14 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Collin Vance on 4/20/17.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 public class RulesetRecyclerViewAdapter extends SectionedRecyclerViewAdapter<RulesetRecyclerViewAdapter.HeaderViewHolder, RulesetRecyclerViewAdapter.ViewHolder, RecyclerView.ViewHolder>
         implements EmptyableAdapter {
-
-    private static final String TAG = "RulesetRecyclerAdapter";
 
     private Context context;
     private RulesetListener listener;
@@ -55,14 +49,14 @@ public class RulesetRecyclerViewAdapter extends SectionedRecyclerViewAdapter<Rul
         Collections.sort(rulesets, new Comparator<AirMapRuleset>() {
             @Override
             public int compare(AirMapRuleset o1, AirMapRuleset o2) {
-                if (o1.getRegion().intValue() > o2.getRegion().intValue()) {
+                if (o1.getJurisdiction().getRegion().intValue() > o2.getJurisdiction().getRegion().intValue()) {
                     return -1;
-                } else if (o1.getRegion().intValue() < o2.getRegion().intValue()) {
+                } else if (o1.getJurisdiction().getRegion().intValue() < o2.getJurisdiction().getRegion().intValue()) {
                     return 1;
                 } else {
-                    if (o1.getJurisdictionId() > o2.getJurisdictionId()) {
+                    if (o1.getJurisdiction().getId() > o2.getJurisdiction().getId()) {
                         return 1;
-                    } else if (o1.getJurisdictionId() < o2.getJurisdictionId()) {
+                    } else if (o1.getJurisdiction().getId() < o2.getJurisdiction().getId()) {
                         return -1;
                     } else {
                         if (o1.getType().intValue() > o2.getType().intValue()) {
@@ -79,14 +73,14 @@ public class RulesetRecyclerViewAdapter extends SectionedRecyclerViewAdapter<Rul
         sectionRulesetMap = new LinkedHashMap<>();
 
         for (AirMapRuleset ruleset : rulesets) {
-            AirMapRuleset.Type firstType = titleSections.get(ruleset.getJurisdictionId());
+            AirMapRuleset.Type firstType = titleSections.get(ruleset.getJurisdiction().getId());
             boolean showName = false;
             if (firstType == null || firstType.intValue() <= ruleset.getType().intValue()) {
                 showName = true;
-                titleSections.put(ruleset.getJurisdictionId(), ruleset.getType());
+                titleSections.put(ruleset.getJurisdiction().getId(), ruleset.getType());
             }
 
-            Section section = new Section(ruleset.getJurisdictionId(), ruleset.getJurisdictionName(), ruleset.getType(), showName);
+            Section section = new Section(ruleset.getJurisdiction().getId(), ruleset.getJurisdiction().getName(), ruleset.getType(), showName);
             List<AirMapRuleset> rulesetList = sectionRulesetMap.get(section);
             if (rulesetList == null) {
                 rulesetList = new ArrayList<>();
@@ -195,15 +189,15 @@ public class RulesetRecyclerViewAdapter extends SectionedRecyclerViewAdapter<Rul
                         Analytics.logEvent(Analytics.Event.rules, Analytics.Action.deselect, Analytics.Label.OPTIONAL, ruleset.getId());
                     }
 
-                // not yet selected
+                    // not yet selected
                 } else {
                     // if pick one is selected, need to deselect its selected sibling(s)
                     if (ruleset.getType() == AirMapRuleset.Type.PickOne) {
                         for (AirMapRuleset selectedRuleset : new ArrayList<>(selectedRulesets)) {
 
                             if (selectedRuleset.getType() == AirMapRuleset.Type.PickOne
-                                    && selectedRuleset.getJurisdictionId() == ruleset.getJurisdictionId()
-                                    && selectedRuleset.getRegion() == ruleset.getRegion()) {
+                                    && selectedRuleset.getJurisdiction().getId() == ruleset.getJurisdiction().getId()
+                                    && selectedRuleset.getJurisdiction().getRegion() == ruleset.getJurisdiction().getRegion()) {
                                 selectedRulesets.remove(selectedRuleset);
                                 selectedRulesets.add(ruleset);
                                 listener.onRulesetSwitched(selectedRuleset, ruleset);
@@ -278,7 +272,7 @@ public class RulesetRecyclerViewAdapter extends SectionedRecyclerViewAdapter<Rul
         int indexOfItem = 0;
         int sectionBottom = 0;
 
-        Section section = new Section(ruleset.getJurisdictionId(), ruleset.getJurisdictionName(), ruleset.getType(), false);
+        Section section = new Section(ruleset.getJurisdiction().getId(), ruleset.getJurisdiction().getName(), ruleset.getType(), false);
         int currentSection = 0;
 
         for (Section s : sectionRulesetMap.keySet()) {
@@ -295,7 +289,7 @@ public class RulesetRecyclerViewAdapter extends SectionedRecyclerViewAdapter<Rul
             }
             currentSection++;
         }
-        return new int[] {sectionTop, indexOfItem, sectionBottom};
+        return new int[]{sectionTop, indexOfItem, sectionBottom};
     }
 
     @Override
@@ -360,8 +354,11 @@ public class RulesetRecyclerViewAdapter extends SectionedRecyclerViewAdapter<Rul
 
     public interface RulesetListener {
         void onRulesetSelected(AirMapRuleset ruleset);
+
         void onRulesetDeselected(AirMapRuleset ruleset);
+
         void onRulesetSwitched(AirMapRuleset fromRuleset, AirMapRuleset toRuleset);
+
         void onRulesetInfoPressed(AirMapRuleset ruleset);
     }
 }

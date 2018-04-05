@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="read_full_rules">Read Full Rules</string>
+    <string name="rejected_upon_submission">Rejected Upon Submission</string>
     <string name="learn_more">Learn More</string>
     <string name="rules_hint">Learn about federal, state, and local rules that may impact operations in this area</string>
 
@@ -36,6 +37,7 @@
     <string name="resend_email">Resend Email</string>
     <string name="sent_email">Sent email</string>
     <string name="successfully_updated">Successfully updated</string>
+    <string name="phone_verification_mismatch">Verification code does not match the one sent. Send a new SMS for the verification code and try again?</string>
 
     <string name="select_manufacturer">Select Manufacturer</string>
     <string name="select_model">Select Model</string>
@@ -58,7 +60,6 @@
         <item quantity="one">%1$s hour</item>
         <item quantity="other">%1$s hours</item>
     </plurals>
-
     <string name="duration_in_minutes">%1$s mins</string>
 
     <string name="no_advisories">No Advisories</string>
@@ -70,8 +71,6 @@
     <string name="tile_layer_class_f">Class F</string>
     <string name="tile_layer_did">Densely Populated Region</string>
     <string name="tile_layer_seaplane_base">Seaplane Base</string>
-    <string name="airspace_type_seaplane_base">Seaplane Base</string>
-    <string name="airspace_type_notam">NOTAM</string>
     <string name="notams">NOTAMS</string>
     <string name="airspace_type_ama">AMA Field</string>
     <string name="amas">AMA Fields</string>
@@ -84,9 +83,7 @@
     <string name="no">NO</string>
     <string name="yes">YES</string>
 
-    <string name="flight_brief">Flight Brief</string>
     <string name="advisory_type_quantity">%1$s (%2$s)</string>
-    <string name="rules_and_flight_features_header">Rules &amp; Flight Features</string>
     <string name="null_feature_value">—</string>
     <string name="flight_feature_speed">Speed</string>
     <string name="flight_feature_weight">Weight</string>
@@ -98,27 +95,18 @@
     <string name="flight_feature_km_per_hour">km/h</string>
     <string name="flight_feature_miles_per_hour">mph</string>
 
-    <string name="conflicting_rules">Rules you may be violating</string>
-    <string name="missing_info_rules">Rules needing more information</string>
-    <string name="informational_rules">Rules you should review</string>
-    <string name="not_conflicting_rules">Rules you are following</string>
-    <string name="celsius_temp">%d °C</string>
-    <string name="fahrenheit_temp">%d °F</string>
     <string name="kilometers_short">%d km</string>
     <string name="miles_short">%d mi</string>
 
-    <string name="no_pilot_name">Set Pilot Name</string>
-
     <string name="authorizations_header">Authorization &amp; Validation</string>
-    <string name="rules_header">Rules &amp; Compliance</string>
+    <string name="rules_header">Compliance Evaluation</string>
 
-    <string name="authorization_not_requested">Authorization Not Requested</string>
-    <string name="rejected_upon_submission">Rejected Upon Submission</string>
-    <string name="authorized_upon_submission">Authorization Upon Submission</string>
-    <string name="manual_authorization">Manual Authorization Pending Submission</string>
-    <string name="authorization_pending">Authorization Pending Submission</string>
-    <string name="authorization_accepted">Authorization Approved</string>
-    <string name="authorization_rejected">Authorization Rejected</string>
+    <string name="time">Time</string>
+    <string name="wind">Wind</string>
+    <string name="visibility">Visibility</string>
+    <string name="temperature">Temperature</string>
+    <string name="dew_point">Dew Point</string>
+    <string name="pressure">Pressure</string>
 
     <string name="airspace_laanc_authorization_automated">FAA authorization available</string>
 
@@ -142,4 +130,19 @@
     <string name="ulm_field">Ulm Field</string>
     <string name="waterway">Waterway</string>
     <string name="japan_base_admin">Japan Base Admin</string>
+
+
+    <string name="com_auth0_lock_description_change_password">Please enter your email address. We will send you an email to reset your password.</string>
+    <string name="com_auth0_lock_sign_up_terms_dialog_title">Terms &amp; Policy</string>
+    <string name="com_auth0_lock_sign_up_terms_dialog_message" formatted="false"><![CDATA[
+    By signing up, you agree to our <a href=\'%s\'>terms of service</a> and <a href=\'%s\'>privacy policy</a>
+    ]]></string>
+    <string name="com_auth0_lock_password_strength_title_at_least">And contain at least 3 of the following 4 types of characters:</string>
+
+
+    <string name="error_loading_map_title">Unable To Load Map</string>
+    <string name="error_loading_map_message">To load the map requires an accurate date and time on the device. Make sure your device\'s date and time are set to automatic.</string>
+    <string name="error_loading_map_network_message">To load the map requires an active internet connection on the device. Make sure your device\'s Wifi or LTE connection is working.</string>
+    <string name="error_loading_map_button">Update Date/Time</string>
+    <string name="error_loading_map_network_button">Check Network</string>
 </resources>

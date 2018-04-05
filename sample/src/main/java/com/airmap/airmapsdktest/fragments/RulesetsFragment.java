@@ -8,21 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdktest.R;
-import com.airmap.airmapsdktest.ui.RulesetRecyclerViewAdapter;
 import com.airmap.airmapsdktest.activities.MapDemoActivity;
+import com.airmap.airmapsdktest.ui.RulesetRecyclerViewAdapter;
 
 import java.util.List;
 
-/**
- * Created by collin@airmap.com on 9/7/17.
- */
+import timber.log.Timber;
 
 public class RulesetsFragment extends Fragment {
-
-    private static final String TAG = "RulesetsFragment";
 
     private RecyclerView rulesetsRecyclerView;
     private RulesetRecyclerViewAdapter rulesetsRecyclerAdapter;
@@ -43,25 +38,29 @@ public class RulesetsFragment extends Fragment {
         rulesetsRecyclerAdapter = new RulesetRecyclerViewAdapter(getActivity(), new RulesetRecyclerViewAdapter.RulesetListener() {
             @Override
             public void onRulesetSelected(AirMapRuleset ruleset) {
-                AirMapLog.i(TAG, "Ruleset selected: " + ruleset.getShortName());
-                ((MapDemoActivity) getActivity()).selectRuleset(ruleset);
+                Timber.i("Ruleset selected: %s", ruleset.getShortName());
+                if ((getActivity()) != null) {
+                    ((MapDemoActivity) getActivity()).selectRuleset(ruleset);
+                }
             }
 
             @Override
             public void onRulesetDeselected(AirMapRuleset ruleset) {
-                AirMapLog.i(TAG, "Ruleset deselected: " + ruleset.getShortName());
+                Timber.i("Ruleset deselected: %s", ruleset.getShortName());
                 ((MapDemoActivity) getActivity()).deselectRuleset(ruleset);
             }
 
             @Override
             public void onRulesetInfoPressed(AirMapRuleset ruleset) {
-                AirMapLog.i(TAG, "Ruleset info pressed: " + ruleset.getShortName());
+                Timber.i("Ruleset info pressed: %s", ruleset.getShortName());
             }
 
             @Override
             public void onRulesetSwitched(AirMapRuleset fromRuleset, AirMapRuleset toRuleset) {
-                AirMapLog.i(TAG, "Ruleset switched from: " + fromRuleset.getShortName() + " to: " + toRuleset.getShortName());
-                ((MapDemoActivity) getActivity()).switchSelectedRulesets(fromRuleset, toRuleset);
+                Timber.i("Ruleset switched from: %s to: %s", fromRuleset.getShortName(), toRuleset.getShortName());
+                if ((getActivity()) != null) {
+                    ((MapDemoActivity) getActivity()).switchSelectedRulesets(fromRuleset, toRuleset);
+                }
             }
         });
         rulesetsRecyclerView.setAdapter(rulesetsRecyclerAdapter);

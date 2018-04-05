@@ -1,5 +1,7 @@
 package com.airmap.airmapsdk.models.pilot;
 
+import android.text.TextUtils;
+
 import com.airmap.airmapsdk.models.AirMapBaseModel;
 
 import org.json.JSONObject;
@@ -8,10 +10,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapPilot implements Serializable, AirMapBaseModel {
     private String pilotId;
@@ -36,13 +36,13 @@ public class AirMapPilot implements Serializable, AirMapBaseModel {
     @Override
     public AirMapPilot constructFromJson(JSONObject json) {
         if (json != null) {
-            setPilotId(json.optString("id"));
-            setEmail(json.optString("email"));
-            setFirstName(json.optString("first_name"));
-            setLastName(json.optString("last_name"));
-            setPhone(json.optString("phone"));
-            setPictureUrl(json.optString("picture_url"));
-            setUsername(json.optString("username"));
+            setPilotId(optString(json, "id"));
+            setEmail(optString(json, "email"));
+            setFirstName(optString(json, "first_name"));
+            setLastName(optString(json, "last_name"));
+            setPhone(optString(json, "phone"));
+            setPictureUrl(optString(json, "picture_url"));
+            setUsername(optString(json, "username"));
             setVerificationStatus(new AirMapPilotVerificationStatus(json.optJSONObject("verification_status")));
             setUserMetaData(new AirMapPilotMetaData(json.optJSONObject("user_metadata")));
             setAppMetaData(new AirMapPilotMetaData(json.optJSONObject("app_metadata")));
@@ -176,6 +176,10 @@ public class AirMapPilot implements Serializable, AirMapBaseModel {
     public AirMapPilot setAppMetaData(AirMapPilotMetaData appMetaData) {
         this.appMetaData = appMetaData;
         return this;
+    }
+
+    public boolean isPhoneVerified() {
+        return !TextUtils.isEmpty(phone) && verificationStatus != null && verificationStatus.isPhone();
     }
 
     /**

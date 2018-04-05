@@ -2,10 +2,6 @@ package com.airmap.airmapsdk.models.flight;
 
 import java.io.Serializable;
 
-/**
- * Created by collin@airmap.com on 5/24/17.
- */
-
 public class FlightFeatureValue<T> implements Serializable {
 
     private String key;

@@ -15,10 +15,6 @@ import android.support.v4.content.ContextCompat;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
-/**
- * Created by collin@airmap.com on 10/4/17.
- */
-
 public class Utils extends com.airmap.airmapsdk.util.Utils {
 
     private static final int[] compassDirections = new int[]{

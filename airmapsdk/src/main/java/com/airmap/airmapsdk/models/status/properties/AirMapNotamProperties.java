@@ -8,10 +8,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by Vansh Gandhi on 7/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapNotamProperties implements Serializable, AirMapBaseModel {
     private String url;
@@ -34,9 +32,9 @@ public class AirMapNotamProperties implements Serializable, AirMapBaseModel {
     @Override
     public AirMapNotamProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setUrl(json.optString("url"));
-            setStartTime(Utils.getDateFromIso8601String(json.optString("effective_start", null)));
-            setEndTime(Utils.getDateFromIso8601String(json.optString("effective_end", null)));
+            setUrl(optString(json, "url"));
+            setStartTime(Utils.getDateFromIso8601String(optString(json, "effective_start", null)));
+            setEndTime(Utils.getDateFromIso8601String(optString(json, "effective_end", null)));
         }
         return this;
     }

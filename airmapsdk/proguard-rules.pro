@@ -17,7 +17,6 @@
 #}
 -keepattributes InnerClasses
 -dontoptimize
--keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
 
 
 # Proguard for Mapbox, might be unnecessary stuff in here. Copied from their sample app

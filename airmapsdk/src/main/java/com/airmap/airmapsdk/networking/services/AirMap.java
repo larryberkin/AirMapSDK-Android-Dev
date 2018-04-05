@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.Analytics;
 import com.airmap.airmapsdk.AnalyticsTracker;
 import com.airmap.airmapsdk.Auth;
@@ -17,23 +15,24 @@ import com.airmap.airmapsdk.models.aircraft.AirMapAircraft;
 import com.airmap.airmapsdk.models.aircraft.AirMapAircraftManufacturer;
 import com.airmap.airmapsdk.models.aircraft.AirMapAircraftModel;
 import com.airmap.airmapsdk.models.airspace.AirMapAirspace;
-import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.models.comm.AirMapComm;
+import com.airmap.airmapsdk.models.flight.AirMapEvaluation;
 import com.airmap.airmapsdk.models.flight.AirMapFlight;
 import com.airmap.airmapsdk.models.flight.AirMapFlightBriefing;
 import com.airmap.airmapsdk.models.flight.AirMapFlightPlan;
-import com.airmap.airmapsdk.models.permits.AirMapAvailablePermit;
-import com.airmap.airmapsdk.models.permits.AirMapPilotPermit;
 import com.airmap.airmapsdk.models.pilot.AirMapPilot;
+import com.airmap.airmapsdk.models.rules.AirMapJurisdiction;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdk.models.shapes.AirMapGeometry;
 import com.airmap.airmapsdk.models.shapes.AirMapPolygon;
+import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.models.status.AirMapStatus;
+import com.airmap.airmapsdk.networking.callbacks.AirMapAuthenticationCallback;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.AirMapTrafficListener;
 import com.airmap.airmapsdk.networking.callbacks.LoginCallback;
 import com.airmap.airmapsdk.networking.callbacks.LoginListener;
-import com.airmap.airmapsdk.networking.callbacks.AirMapAuthenticationCallback;
+import com.airmap.airmapsdk.util.AirMapTree;
 import com.airmap.airmapsdk.util.Utils;
 
 import org.jose4j.jwt.JwtClaims;
@@ -47,17 +46,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import timber.log.Timber;
 
-/**
- * Created by Vansh Gandhi on 6/16/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.timberContainsDebugTree;
+
 @SuppressWarnings({"unused", "ConstantConditions"})
 public final class AirMap {
     private Context context;
@@ -94,7 +91,6 @@ public final class AirMap {
         ourInstance = new AirMap(context, authToken, pinCertificates);
         airMapTrafficService = new TrafficService(context); //Initialized here because TrafficService requires AirMap to be initialized already, so it is called after the constructor
         airMapMapMappingService = new MappingService(); //Initialized here because MappingService requires AirMap to be initialized already, so it is called after the constructor
-        AirMapLog.ENABLED = BaseService.DEBUG;
         return ourInstance;
     }
 
@@ -163,7 +159,6 @@ public final class AirMap {
             config = new JSONObject(json);
             apiKey = getConfig().getJSONObject("airmap").getString("api_key");
         } catch (IOException | JSONException | NullPointerException e) {
-            e.printStackTrace();
             throw new RuntimeException("Please ensure you have your airmap.config.json file in your /assets directory");
         }
         client = new AirMapClient();
@@ -194,7 +189,7 @@ public final class AirMap {
             JwtClaims claims = consumer.processToClaims(authToken);
             return claims.getExpirationTime();
         } catch (InvalidJwtException | MalformedClaimException e) {
-            AirMapLog.v("AirMap", "Invalid auth token");
+            Timber.v("Invalid auth token");
             return NumericDate.now();
         }
     }
@@ -240,7 +235,7 @@ public final class AirMap {
             JwtClaims claims = consumer.processToClaims(jwt);
             userId = claims.getSubject();
         } catch (InvalidJwtException | MalformedClaimException e) {
-            Log.e("AirMap", "Invalid auth token");
+            Timber.e(e, "Invalid auth token");
         }
     }
 
@@ -366,12 +361,14 @@ public final class AirMap {
     }
 
     /**
-     * Enables logging from the network requests for debugging purposes
-     *
-     * @param enable whether to enable logging or not
+     * Enables logging for debugging purposes. Currently cannot be disabled once enabled. This should not need to be
+     * called if you are using Timber yourself and have already planted a DebugTree
      */
-    public static void enableLogging(boolean enable) {
-        AirMapLog.ENABLED = enable;
+    public static void enableLogging() {
+        // Don't want to double log
+        if (!timberContainsDebugTree()) {
+            Timber.plant(new AirMapTree());
+        }
     }
 
     /**
@@ -514,6 +511,15 @@ public final class AirMap {
     /**
      * Get a list of all public flights combined with the authenticated pilot's private flights
      *
+     * @param callback The callback that is invoked on success or error
+     */
+    public static Call getPublicFlights(@Nullable AirMapCallback<List<AirMapFlight>> callback) {
+        return FlightService.getPublicFlights(1000,null,null, callback);
+    }
+
+    /**
+     * Get a list of all public flights combined with the authenticated pilot's private flights
+     *
      * @param limit    Max number of flights to return
      * @param from     Search for flights from this date
      * @param to       Search for flights to this date
@@ -596,7 +602,7 @@ public final class AirMap {
      *
      * @param callback The callback that is invoked on success or error
      */
-    public static Call getFlights(@Nullable AirMapCallback<List<AirMapFlight>> callback) {
+    public static Call getMyFlights(@Nullable AirMapCallback<List<AirMapFlight>> callback) {
         return FlightService.getFlights(null, AirMap.getUserId(), null, null, null, null, null, null, null, null, null, null, null, true, callback);
     }
 
@@ -608,8 +614,16 @@ public final class AirMap {
         return FlightService.patchFlightPlan(plan, callback);
     }
 
+    public static Call getFlightPlanById(String flightPlanId, AirMapCallback<AirMapFlightPlan> callback) {
+        return FlightService.getFlightPlanById(flightPlanId, callback);
+    }
+
     public static Call getFlightPlanByFlightId(String flightId, AirMapCallback<AirMapFlightPlan> callback) {
         return FlightService.getFlightPlanByFlightId(flightId, callback);
+    }
+
+    public static Call submitFlightPlan(String flightPlanId, boolean isPublic, AirMapCallback<AirMapFlightPlan> callback) {
+        return FlightService.submitFlightPlan(flightPlanId, isPublic, callback);
     }
 
     public static Call submitFlightPlan(String flightPlanId, AirMapCallback<AirMapFlightPlan> callback) {
@@ -634,13 +648,9 @@ public final class AirMap {
     /**
      * End a flight belonging to the logged in pilot
      *
-     * @param flight   The flight to close
+     * @param flightId The ID of the flight to close
      * @param callback The callback that is invoked on success or error
      */
-    public static Call endFlight(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapFlight> callback) {
-        return FlightService.endFlight(flight, callback);
-    }
-
     public static Call endFlight(@NonNull String flightId, @Nullable AirMapCallback<AirMapFlight> callback) {
         return FlightService.endFlight(flightId, callback);
     }
@@ -658,11 +668,11 @@ public final class AirMap {
     /**
      * Get a comm key for a given flight to enable traffic alerts
      *
-     * @param flight   The flight to get the comm key for
+     * @param flightId The flight ID to get the comm key for
      * @param callback The callback that is invoked on success or error
      */
-    public static Call startComm(@NonNull AirMapFlight flight, @Nullable AirMapCallback<AirMapComm> callback) {
-        return FlightService.getCommKey(flight, callback);
+    public static Call startComm(@NonNull String flightId, @Nullable AirMapCallback<AirMapComm> callback) {
+        return FlightService.getCommKey(flightId, callback);
     }
 
     /**
@@ -673,57 +683,6 @@ public final class AirMap {
      */
     public static Call clearComm(@NonNull AirMapFlight flight, @Nullable AirMapCallback<Void> callback) {
         return FlightService.clearCommKey(flight, callback);
-    }
-
-    //Permits
-
-    /**
-     * Get permits by permit IDs and/or organization ID. Either permitIds or organizationId must be
-     * non-null
-     *
-     * @param permitIds      The list of permits to get
-     * @param organizationId The organization get permits for
-     * @param callback       The callback that is invoked on success or error
-     */
-    public static Call getPermits(@Nullable List<String> permitIds, @Nullable String organizationId, @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
-        return PermitService.getPermits(permitIds, organizationId, callback);
-    }
-
-    /**
-     * Gets permits by a singular permit ID and/or organization ID. Either permitId or
-     * organizationId must be non-null
-     *
-     * @param permitId       The ID of the permit to get
-     * @param organizationId The organization to get permits for
-     * @param callback       The callback that is invoked on success or error
-     */
-    public static Call getPermits(@Nullable String permitId, @Nullable String organizationId,
-                                  @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
-        List<String> permitIds = new ArrayList<>();
-        if (permitId != null && !permitId.isEmpty()) {
-            permitIds.add(permitId);
-        }
-        return getPermits(permitIds, organizationId, callback);
-    }
-
-    /**
-     * Get a permit by a permit ID
-     *
-     * @param permitId The ID of the permit to get
-     * @param callback The callback that is invoked on success or error
-     */
-    public static Call getPermit(@NonNull String permitId, @Nullable AirMapCallback<List<AirMapAvailablePermit>> callback) {
-        return getPermits(permitId, null, callback);
-    }
-
-    /**
-     * Apply for a permit
-     *
-     * @param permit   The permit to apply for
-     * @param callback The callback that is invoked on success or error
-     */
-    public static Call applyForPermit(@NonNull AirMapAvailablePermit permit, @Nullable AirMapCallback<AirMapPilotPermit> callback) {
-        return PermitService.applyForPermit(permit, callback);
     }
 
     //Pilot
@@ -744,25 +703,6 @@ public final class AirMap {
      */
     public static Call getPilot(@Nullable AirMapCallback<AirMapPilot> callback) {
         return getPilot(AirMap.getUserId(), callback);
-    }
-
-    /**
-     * Get permits that the authenticated pilot has obtained
-     *
-     * @param callback The callback that is invoked on success or error
-     */
-    public static Call getAuthenticatedPilotPermits(@Nullable AirMapCallback<List<AirMapPilotPermit>> callback) {
-        return PilotService.getPermits(callback);
-    }
-
-    /**
-     * Delete a permit from the pilot's profile
-     *
-     * @param permitId The ID of the permit to delete
-     * @param callback The callback that is invoked on success or error
-     */
-    public static Call deletePermit(@NonNull String permitId, @Nullable AirMapCallback<Void> callback) {
-        return PilotService.deletePermit(permitId, callback);
     }
 
     /**
@@ -788,10 +728,10 @@ public final class AirMap {
     /**
      * Verify the user's phone number
      *
-     * @param listener The callback that is invoked on success or error
+     * @param callback The callback that is invoked on success or error
      */
-    public static Call sendVerificationToken(@Nullable AirMapCallback<Void> listener) {
-        return PilotService.sendVerificationToken(listener);
+    public static Call sendVerificationToken(@Nullable AirMapCallback<Void> callback) {
+        return PilotService.sendVerificationToken(callback);
     }
 
     /**
@@ -800,7 +740,7 @@ public final class AirMap {
      * @param token    The token that the pilot received in the text
      * @param callback The callback that is invoked on success or error
      */
-    public static Call verifyPhoneToken(@NonNull String token, @Nullable AirMapCallback<Void> callback) {
+    public static Call verifyPhoneToken(@NonNull String token, @Nullable AirMapCallback<Boolean> callback) {
         return PilotService.verifyToken(token, callback);
     }
 
@@ -831,6 +771,17 @@ public final class AirMap {
      */
     public static Call createAircraft(@NonNull AirMapAircraft aircraft, @Nullable AirMapCallback<AirMapAircraft> callback) {
         return PilotService.createAircraft(aircraft, callback);
+    }
+
+    /**
+     * Create an aircraft for the authenticated pilot
+     *
+     * @param nickname The nickname for the aircraft
+     * @param model The aircraft model
+     * @param callback The callback that is invoked on success or error
+     */
+    public static Call createAircraft(@NonNull String nickname, AirMapAircraftModel model, @Nullable AirMapCallback<AirMapAircraft> callback) {
+        return PilotService.createAircraft(nickname, model, callback);
     }
 
     /**
@@ -930,66 +881,70 @@ public final class AirMap {
      * Get an airspace by its ID
      *
      * @param airspaceId The ID of the airspace to get
-     * @param listener   The callback that is invoked on success or error
+     * @param callback   The callback that is invoked on success or error
      */
     public static Call getAirspace(@NonNull String airspaceId,
-                                   @Nullable AirMapCallback<AirMapAirspace> listener) {
-        return AirspaceService.getAirspace(airspaceId, listener);
+                                   @Nullable AirMapCallback<AirMapAirspace> callback) {
+        return AirspaceService.getAirspace(airspaceId, callback);
     }
 
     /**
      * Get airspaces by a list of their IDs
      *
      * @param airspaceIds The IDs of the airspaces to get
-     * @param listener    The callback that is invoked on success or error
+     * @param callback    The callback that is invoked on success or error
      */
     public static Call getAirspace(@NonNull List<String> airspaceIds,
-                                   @Nullable AirMapCallback<List<AirMapAirspace>> listener) {
-        return AirspaceService.getAirspace(airspaceIds, listener);
+                                   @Nullable AirMapCallback<List<AirMapAirspace>> callback) {
+        return AirspaceService.getAirspace(airspaceIds, callback);
+    }
+
+    public static Call getJurisdictions(@NonNull AirMapPolygon polygon, @Nullable AirMapCallback<List<AirMapJurisdiction>> callback) {
+        return RulesetService.getJurisdictions(AirMapGeometry.getGeoJSONFromGeometry(polygon), callback);
     }
 
     /**
      * Get all the rulesets that apply for a specific coordinate
      *
      * @param coordinate
-     * @param listener
+     * @param callback
      * @return
      */
-    public static Call getRulesets(@NonNull Coordinate coordinate, @Nullable AirMapCallback<List<AirMapRuleset>> listener) {
-        return RulesetService.getRulesets(coordinate, listener);
+    public static Call getRulesets(@NonNull Coordinate coordinate, @Nullable AirMapCallback<List<AirMapRuleset>> callback) {
+        return RulesetService.getRulesets(coordinate, callback);
     }
 
     /**
      * Get all the rulesets that apply for a geometry (geoJSON)
      *
      * @param geometry
-     * @param listener
+     * @param callback
      * @return
      */
-    public static Call getRulesets(@NonNull JSONObject geometry, @Nullable AirMapCallback<List<AirMapRuleset>> listener) {
-        return RulesetService.getRulesets(geometry, listener);
+    public static Call getRulesets(@NonNull JSONObject geometry, @Nullable AirMapCallback<List<AirMapRuleset>> callback) {
+        return RulesetService.getRulesets(geometry, callback);
     }
 
     /**
      * Get the full ruleset objects for a list of ruleset ids
      *
      * @param rulesetIds
-     * @param listener
+     * @param callback
      * @return
      */
-    public static Call getRulesets(@NonNull List<String> rulesetIds, @Nullable AirMapCallback<List<AirMapRuleset>> listener) {
-        return RulesetService.getRulesets(rulesetIds, listener);
+    public static Call getRulesets(@NonNull List<String> rulesetIds, @Nullable AirMapCallback<List<AirMapRuleset>> callback) {
+        return RulesetService.getRulesets(rulesetIds, callback);
     }
 
     /**
      * Get the entire list of rules of a ruleset
      *
      * @param rulesetId
-     * @param listener
+     * @param callback
      * @return
      */
-    public static Call getRules(@NonNull String rulesetId, @Nullable AirMapCallback<AirMapRuleset> listener) {
-        return RulesetService.getRules(rulesetId, listener);
+    public static Call getRules(@NonNull String rulesetId, @Nullable AirMapCallback<AirMapRuleset> callback) {
+        return RulesetService.getRules(rulesetId, callback);
     }
 
     /**
@@ -1002,40 +957,24 @@ public final class AirMap {
         FlightService.getFlightBriefing(flightPlanId, callback);
     }
 
-    public static void getFlightPlanEvaluation(@NonNull List<String> rulesets, @NonNull JSONObject geometry, @Nullable Map<String, Object> flightFeatures, AirMapCallback<AirMapFlightBriefing> listener) {
-        RulesetService.getEvaluation(rulesets, geometry, flightFeatures, listener);
+    public static void getFlightPlanEvaluation(@NonNull List<String> rulesets, @NonNull AirMapPolygon polygon, AirMapCallback<AirMapEvaluation> callback) {
+        getFlightPlanEvaluation(rulesets, AirMapGeometry.getGeoJSONFromGeometry(polygon), callback);
     }
 
-    public static Call getAdvisories(@NonNull List<AirMapRuleset> rulesets, @NonNull List<Coordinate> geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String, Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
-        List<String> rulesetIds = new ArrayList<>();
-        for (AirMapRuleset ruleset : rulesets) {
-            rulesetIds.add(ruleset.getId());
-        }
-
-        return RulesetService.getAdvisories(rulesetIds, geometry, start, end, flightFeatures, listener);
+    public static void getFlightPlanEvaluation(@NonNull List<String> rulesets, @NonNull JSONObject geometry, AirMapCallback<AirMapEvaluation> callback) {
+        RulesetService.getEvaluation(rulesets, geometry, callback);
     }
 
-    public static Call getAdvisories(@NonNull List<AirMapRuleset> rulesets, @NonNull JSONObject geometry, @Nullable Date start, @Nullable Date end, @Nullable Map<String, Object> flightFeatures, AirMapCallback<AirMapAirspaceStatus> listener) {
-        List<String> rulesetIds = new ArrayList<>();
-        for (AirMapRuleset ruleset : rulesets) {
-            rulesetIds.add(ruleset.getId());
-        }
-
-        return RulesetService.getAdvisories(rulesetIds, geometry, start, end, flightFeatures, listener);
+    public static Call getAirspaceStatus(@NonNull AirMapPolygon polygon, @NonNull List<String> rulesetIds, AirMapCallback<AirMapAirspaceStatus> callback) {
+        return RulesetService.getAdvisories(rulesetIds, polygon, null, null, null, callback);
     }
 
-    public static Call getAdvisories(@NonNull List<String> rulesets, @NonNull JSONObject geometry, @Nullable Date start, @Nullable Date end, AirMapCallback<AirMapAirspaceStatus> listener) {
-        return RulesetService.getAdvisories(rulesets, geometry, start, end, null, listener);
+    public static Call getAirspaceStatus(@NonNull AirMapPolygon polygon, @NonNull List<String> rulesetIds, @Nullable Date start, @Nullable Date end, AirMapCallback<AirMapAirspaceStatus> callback) {
+        return RulesetService.getAdvisories(rulesetIds, polygon, start, end, null, callback);
     }
 
-    public static Call getAdvisories(@NonNull List<String> rulesets, Coordinate southwest, Coordinate northwest, @Nullable Date start, @Nullable Date end, AirMapCallback<AirMapAirspaceStatus> listener) {
-        // create polygon based on Lat/Long bounds
-        List<Coordinate> bounds = new ArrayList<>();
-        bounds.add(southwest);
-        bounds.add(northwest);
-        AirMapPolygon polygon = new AirMapPolygon(bounds);
-
-        return RulesetService.getAdvisories(rulesets, AirMapGeometry.getGeoJSONFromGeometry(polygon), start, end, null, listener);
+    public static Call getAirspaceStatus(@NonNull JSONObject geometry, @NonNull List<String> rulesetIds, @Nullable Date start, @Nullable Date end, AirMapCallback<AirMapAirspaceStatus> callback) {
+        return RulesetService.getAdvisories(rulesetIds, geometry, start, end, null, callback);
     }
 
     /**
@@ -1045,6 +984,7 @@ public final class AirMap {
      * @param theme  The theme of the map
      * @return the map tile url
      */
+    @Deprecated
     public static String getTileSourceUrl(List<MappingService.AirMapLayerType> layers, MappingService.AirMapMapTheme theme) {
         return airMapMapMappingService.getTileSourceUrl(layers, theme);
     }
@@ -1053,16 +993,12 @@ public final class AirMap {
         return airMapMapMappingService.getStylesUrl(theme);
     }
 
-    public static String getJurisdictionsTileUrlTemplate() {
-        return airMapMapMappingService.getJurisdictionsTileUrlTemplate();
+    public static Call getMapStylesJson(MappingService.AirMapMapTheme theme, AirMapCallback<JSONObject> listener) {
+        return airMapMapMappingService.getStylesJson(theme, listener);
     }
 
     public static String getRulesetTileUrlTemplate(String rulesetId, List<String> layers) {
         return airMapMapMappingService.getRulesetTileUrlTemplate(rulesetId, layers);
-    }
-
-    public static Call getMapStylesJson(MappingService.AirMapMapTheme theme, AirMapCallback<JSONObject> listener) {
-        return airMapMapMappingService.getStylesJson(theme, listener);
     }
 
     /**
@@ -1086,10 +1022,10 @@ public final class AirMap {
     /**
      * Adds a callback to the traffic service
      *
-     * @param callback The callback that is invoked when traffic is added, updated, and removed
+     * @param listener The callback that is invoked when traffic is added, updated, and removed
      */
-    public static void addTrafficListener(AirMapTrafficListener callback) {
-        getAirMapTrafficService().addListener(callback);
+    public static void addTrafficListener(AirMapTrafficListener listener) {
+        getAirMapTrafficService().addListener(listener);
     }
 
     /**

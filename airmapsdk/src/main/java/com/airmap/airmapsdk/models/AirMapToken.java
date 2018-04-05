@@ -2,10 +2,7 @@ package com.airmap.airmapsdk.models;
 
 import org.json.JSONObject;
 
-/**
- * Created by Vansh Gandhi on 4/6/17.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapToken implements AirMapBaseModel {
 
@@ -21,7 +18,7 @@ public class AirMapToken implements AirMapBaseModel {
     @Override
     public AirMapToken constructFromJson(JSONObject json) {
         if (json != null) {
-            setAuthToken(json.optString("id_token"));
+            setAuthToken(optString(json, "id_token"));
         }
         return this;
     }

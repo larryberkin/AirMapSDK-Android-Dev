@@ -3,7 +3,6 @@ package com.airmap.airmapsdk.models.rules;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.models.AirMapBaseModel;
@@ -16,9 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by collin@airmap.com on 3/28/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable {
 
@@ -77,9 +74,7 @@ public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable 
     private String id;
     private String name;
     private String shortName;
-    private int jurisdictionId;
-    private String jurisdictionName;
-    private AirMapJurisdiction.RegionCategory region;
+    private AirMapJurisdiction jurisdiction;
     private AirMapRuleset.Type type;
     private boolean isDefault;
     private String summary;
@@ -97,26 +92,23 @@ public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable 
     @Override
     public AirMapRuleset constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setName(json.optString("name"));
-            setShortName(Utils.optString(json, "short_name"));
+            setId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setShortName(optString(json, "short_name"));
 
             JSONObject jurisdictionObject = json.optJSONObject("jurisdiction");
             if (jurisdictionObject != null) {
-                setJurisdictionId(jurisdictionObject.optInt("id"));
-                setJurisdictionName(jurisdictionObject.optString("name"));
-                setRegion(AirMapJurisdiction.RegionCategory.fromString(jurisdictionObject.optString("region")));
+                setJurisdiction(new AirMapJurisdiction(jurisdictionObject));
             }
-            setSummary(Utils.optString(json, "description"));
-            setType(Type.fromString(json.optString("selection_type")));
+            setSummary(optString(json, "description"));
+            setType(Type.fromString(optString(json, "selection_type")));
 
-            //FIXME: this should probably only use the default flag from the server
-            setDefault(json.optBoolean("default") || (getType() == Type.Optional && getId().contains("airmap")));
+            setDefault(json.optBoolean("default"));
 
             layers = new ArrayList<>();
-            JSONArray layersJSON = json.has("layers") ? json.optJSONArray("layers") : json.optJSONArray("airspace_types");
-            for (int i = 0; layersJSON != null && i < layersJSON.length(); i++) {
-                layers.add(layersJSON.optString(i));
+            JSONArray layersJson = json.has("layers") ? json.optJSONArray("layers") : json.optJSONArray("airspace_types");
+            for (int i = 0; layersJson != null && i < layersJson.length(); i++) {
+                layers.add(optString(layersJson, i));
             }
 
             rules = new ArrayList<>();
@@ -146,21 +138,12 @@ public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable 
         return this;
     }
 
-    public int getJurisdictionId() {
-        return jurisdictionId;
+    public AirMapJurisdiction getJurisdiction() {
+        return jurisdiction;
     }
 
-    public AirMapRuleset setJurisdictionId(int jurisdictionId) {
-        this.jurisdictionId = jurisdictionId;
-        return this;
-    }
-
-    public String getJurisdictionName() {
-        return jurisdictionName;
-    }
-
-    public AirMapRuleset setJurisdictionName(String jurisdictionName) {
-        this.jurisdictionName = jurisdictionName;
+    public AirMapRuleset setJurisdiction(AirMapJurisdiction jurisdiction) {
+        this.jurisdiction = jurisdiction;
         return this;
     }
 
@@ -173,15 +156,6 @@ public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable 
 
     public AirMapRuleset setShortName(String shortName) {
         this.shortName = shortName;
-        return this;
-    }
-
-    public AirMapJurisdiction.RegionCategory getRegion() {
-        return region;
-    }
-
-    public AirMapRuleset setRegion(AirMapJurisdiction.RegionCategory region) {
-        this.region = region;
         return this;
     }
 
@@ -239,7 +213,7 @@ public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable 
 
     @Override
     public String toString() {
-        return "Ruleset id: " + id + " name: " + name;
+        return id;
     }
 
     @Override
@@ -249,6 +223,9 @@ public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable 
 
     @Override
     public int hashCode() {
+        if (id == null) {
+            return 0;
+        }
         return id.hashCode();
     }
 }

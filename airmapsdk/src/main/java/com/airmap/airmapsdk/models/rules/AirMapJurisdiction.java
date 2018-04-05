@@ -1,7 +1,5 @@
 package com.airmap.airmapsdk.models.rules;
 
-import android.util.Log;
-
 import com.airmap.airmapsdk.models.AirMapBaseModel;
 
 import org.json.JSONArray;
@@ -13,9 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by collin@airmap.com on 4/6/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapJurisdiction implements Serializable, AirMapBaseModel {
 
@@ -81,8 +77,8 @@ public class AirMapJurisdiction implements Serializable, AirMapBaseModel {
     @Override
     public AirMapBaseModel constructFromJson(JSONObject json) {
         setId(json.optInt("id"));
-        setName(json.optString("name"));
-        setRegion(RegionCategory.fromString(json.optString("region")));
+        setName(optString(json, "name"));
+        setRegion(RegionCategory.fromString(optString(json, "region")));
 
         JSONArray rulesetsJSON = json.optJSONArray("rulesets");
         rulesets = new HashSet<>();
@@ -90,9 +86,7 @@ public class AirMapJurisdiction implements Serializable, AirMapBaseModel {
         if (rulesetsJSON != null) {
             for (int i = 0; i < rulesetsJSON.length(); i++) {
                 AirMapRuleset ruleset = new AirMapRuleset(rulesetsJSON.optJSONObject(i));
-                ruleset.setRegion(region);
-                ruleset.setJurisdictionId(getId());
-                ruleset.setJurisdictionName(getName());
+                ruleset.setJurisdiction(this);
                 rulesets.add(ruleset);
             }
         }
@@ -130,6 +124,51 @@ public class AirMapJurisdiction implements Serializable, AirMapBaseModel {
 
     public void setRegion(RegionCategory region) {
         this.region = region;
+    }
+
+    public void addRuleset(AirMapRuleset ruleset) {
+        rulesets.add(ruleset);
+    }
+
+    public List<AirMapRuleset> getPickOneRulesets() {
+        List<AirMapRuleset> pickOneRulesets = new ArrayList<>();
+
+        for (AirMapRuleset ruleset : rulesets) {
+            if (ruleset.getType() == AirMapRuleset.Type.PickOne) {
+                pickOneRulesets.add(ruleset);
+            }
+        }
+
+        return pickOneRulesets;
+    }
+
+    public List<AirMapRuleset> getOptionalRulesets() {
+        List<AirMapRuleset> optionalRulesets = new ArrayList<>();
+
+        for (AirMapRuleset ruleset : rulesets) {
+            if (ruleset.getType() == AirMapRuleset.Type.Optional) {
+                optionalRulesets.add(ruleset);
+            }
+        }
+
+        return optionalRulesets;
+    }
+
+    public List<AirMapRuleset> getRequiredRulesets() {
+        List<AirMapRuleset> requiredRulesets = new ArrayList<>();
+
+        for (AirMapRuleset ruleset : rulesets) {
+            if (ruleset.getType() == AirMapRuleset.Type.Required) {
+                requiredRulesets.add(ruleset);
+            }
+        }
+
+        return requiredRulesets;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     @Override

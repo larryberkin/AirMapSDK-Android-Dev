@@ -5,10 +5,6 @@ import com.airmap.airmapsdk.models.Coordinate;
 import java.io.Serializable;
 import java.util.Scanner;
 
-/**
- * Created by Vansh Gandhi on 7/26/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 @SuppressWarnings("unused")
 public class AirMapPoint extends AirMapGeometry implements Serializable {
 

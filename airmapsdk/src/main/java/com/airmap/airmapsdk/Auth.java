@@ -10,6 +10,7 @@ import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.networking.services.AuthService;
 import com.airmap.airmapsdk.util.AirMapConfig;
+import com.airmap.airmapsdk.util.AirMapConstants;
 import com.airmap.airmapsdk.util.PreferenceUtils;
 import com.airmap.airmapsdk.util.SecuredPreferenceException;
 import com.airmap.airmapsdk.util.Utils;
@@ -23,10 +24,8 @@ import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
-/**
- * Created by Vansh Gandhi on 8/10/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import timber.log.Timber;
+
 public class Auth {
 
     public enum ErrorType {
@@ -35,16 +34,26 @@ public class Auth {
         Unknown,
     }
 
+    public static boolean isUserLoggedIn(Context context) {
+        try {
+            SharedPreferences preferences = PreferenceUtils.getPreferences(context);
+            return preferences.getBoolean(AirMapConstants.LOGGED_IN, false);
+        } catch (SecuredPreferenceException e) {
+            Timber.e(e, "SecurePref");
+            return false;
+        }
+    }
+
     public static void loginOrSignup(Activity activity, AirMapAuthenticationCallback callback) {
         Auth0 auth0 = new Auth0(AirMapConfig.getAuth0ClientId(), AirMapConfig.getAuth0Host());
         auth0.setOIDCConformant(false);
 
         Lock lock = Lock.newBuilder(auth0, callback)
                 .hideMainScreenTitle(true)
-                .setTermsURL("https://www." + AirMapConfig.getDomain() + "/terms")
-                .setPrivacyURL("https://www." + AirMapConfig.getDomain() + "/privacy")
+                .setTermsURL(AirMapConfig.getTermsUrl())
+                .setPrivacyURL(AirMapConfig.getPrivacyUrl())
                 .withScope("openid offline_access")
-                .withScheme("airmap")
+                .withScheme(activity.getString(R.string.com_auth0_scheme))
                 .closable(true)
                 .build(activity);
 
@@ -57,14 +66,14 @@ public class Auth {
      * Refreshes the saved access token. Non-blocking
      */
     public static void refreshAccessToken(final Context context, final AirMapCallback<Void> callback) {
-        AirMapLog.i("AuthServices", "Trying to refresh token");
+        Timber.v("Trying to refresh token");
 
         String refreshToken = null;
         try {
             SharedPreferences preferences = PreferenceUtils.getPreferences(context);
             refreshToken = preferences.getString(Utils.REFRESH_TOKEN_KEY, "");
         } catch (SecuredPreferenceException e) {
-            AirMapLog.e("Auth", "Unable to get refresh token from secure prefs", e);
+            Timber.e(e, "Unable to get refresh token from secure prefs");
         }
 
         // return if refresh token is empty
@@ -82,14 +91,14 @@ public class Auth {
      * Refresh Access Token. Blocking
      */
     public static void refreshAccessToken(final Context context) {
-        AirMapLog.i("AuthServices", "Trying to refresh token");
+        Timber.v("Trying to refresh token");
 
         String refreshToken = null;
         try {
             SharedPreferences preferences = PreferenceUtils.getPreferences(context);
             refreshToken = preferences.getString(Utils.REFRESH_TOKEN_KEY, "");
         } catch (SecuredPreferenceException e) {
-            AirMapLog.e("Auth", "Unable to get refresh token from secure prefs", e);
+            Timber.e(e, "Unable to get refresh token from secure prefs");
         }
 
         // return if refresh token is empty
@@ -106,13 +115,18 @@ public class Auth {
             SharedPreferences preferences = PreferenceUtils.getPreferences(context);
             preferences.edit().putString(Utils.REFRESH_TOKEN_KEY, "").apply();
         } catch (SecuredPreferenceException e) {
-            AirMapLog.e("Auth", "Unable to get clear refresh token from secure prefs", e);
+            Timber.e(e, "Unable to get clear refresh token from secure prefs");
         }
     }
 
     public static boolean isTokenExpired() {
+        String token = AirMap.getAuthToken();
+        if (TextUtils.isEmpty(token)) {
+            Timber.v("No auth token");
+            return true;
+        }
+
         try {
-            String token = AirMap.getAuthToken();
             JwtConsumer consumer = new JwtConsumerBuilder()
                     .setSkipAllValidators()
                     .setDisableRequireSignature()
@@ -121,7 +135,7 @@ public class Auth {
             JwtClaims claims = consumer.processToClaims(token);
             return claims.getExpirationTime().isBefore(NumericDate.now());
         } catch (InvalidJwtException | MalformedClaimException e) {
-            e.printStackTrace();
+            Timber.e(e, "Unable to process token");
             return true;
         }
     }

@@ -1,14 +1,10 @@
 package com.airmap.airmapsdk.networking.services;
 
-import android.util.Log;
-
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.AirMapToken;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.GenericOkHttpCallback;
 import com.airmap.airmapsdk.util.AirMapConfig;
-import com.airmap.airmapsdk.util.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,13 +17,9 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
+import timber.log.Timber;
 
 import static com.airmap.airmapsdk.networking.services.AirMap.getClient;
-
-/**
- * Created by Vansh Gandhi on 4/6/17.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 
 @SuppressWarnings("WeakerAccess")
 public class AuthService extends BaseService {
@@ -80,7 +72,7 @@ public class AuthService extends BaseService {
         getClient().get(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                AirMapLog.e("AuthServices", e.getMessage());
+                Timber.e(e, "error refreshing access token");
                 if (listener != null) {
                     listener.error(new AirMapException(e.getMessage()));
                 }
@@ -98,7 +90,7 @@ public class AuthService extends BaseService {
                         listener.success(null);
                     }
                 } catch (JSONException e) {
-                    AirMapLog.e("AuthServices", e.getMessage());
+                    Timber.e(e, "error parsing json");
                     if (listener != null) {
                         listener.error(new AirMapException(response.code(), e.getMessage()));
                     }
@@ -134,7 +126,7 @@ public class AuthService extends BaseService {
                         listener.success(customToken);
                     }
                 } catch (JSONException e) {
-                    AirMapLog.e("AuthServices", e.getMessage());
+                    Timber.e(e, "error parsing json");
                     if (listener != null) {
                         listener.error(new AirMapException(response.code(), e.getMessage()));
                     }

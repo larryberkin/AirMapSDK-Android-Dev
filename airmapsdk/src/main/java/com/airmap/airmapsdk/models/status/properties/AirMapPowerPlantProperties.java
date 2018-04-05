@@ -6,10 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by Vansh Gandhi on 7/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapPowerPlantProperties implements Serializable, AirMapBaseModel {
     private String tech;
@@ -31,7 +29,7 @@ public class AirMapPowerPlantProperties implements Serializable, AirMapBaseModel
     @Override
     public AirMapPowerPlantProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setTech(json.optString("tech"));
+            setTech(optString(json, "tech"));
             setPlantCode(json.optInt("plant_code"));
         }
         return this;

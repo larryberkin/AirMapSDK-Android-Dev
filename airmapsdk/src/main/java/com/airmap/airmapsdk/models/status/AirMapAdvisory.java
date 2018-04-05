@@ -1,8 +1,5 @@
 package com.airmap.airmapsdk.models.status;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.airmap.airmapsdk.models.AirMapBaseModel;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.models.status.properties.AirMapAirportProperties;
@@ -10,6 +7,7 @@ import com.airmap.airmapsdk.models.status.properties.AirMapControlledAirspacePro
 import com.airmap.airmapsdk.models.status.properties.AirMapEmergencyProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapHeliportProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapNotamProperties;
+import com.airmap.airmapsdk.models.status.properties.AirMapOptionalProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapParkProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapPowerPlantProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapSchoolProperties;
@@ -18,21 +16,14 @@ import com.airmap.airmapsdk.models.status.properties.AirMapTfrProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapWildfireProperties;
 import com.airmap.airmapsdk.networking.services.MappingService;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import static com.airmap.airmapsdk.networking.services.MappingService.AirMapAirspaceType.Park;
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 public class AirMapAdvisory implements Serializable, AirMapBaseModel {
     private String id;
     private String name;
@@ -42,11 +33,13 @@ public class AirMapAdvisory implements Serializable, AirMapBaseModel {
     private String state;
     private String country;
     private Date lastUpdated;
-    private AirMapStatus.StatusColor color;
+    private AirMapColor color;
     private int distance;
     private Coordinate coordinate;
     private String geometryString;
     private AirMapStatusRequirement requirements;
+
+    private AirMapOptionalProperties optionalProperties;
 
     private AirMapAirportProperties airportProperties;
     private AirMapHeliportProperties heliportProperties;
@@ -59,6 +52,7 @@ public class AirMapAdvisory implements Serializable, AirMapBaseModel {
     private AirMapWildfireProperties wildfireProperties;
     private AirMapEmergencyProperties emergencyProperties;
     private AirMapNotamProperties notamProperties;
+
 
     /**
      * Initialize an AirMapAdvisory from JSON
@@ -79,29 +73,24 @@ public class AirMapAdvisory implements Serializable, AirMapBaseModel {
     @Override
     public AirMapAdvisory constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setName(json.optString("name"));
-            setOrganizationId(json.optString("organization_id"));
-            String typeString = json.optString("type");
-            setType(MappingService.AirMapAirspaceType.fromString(typeString));
-            setCountry(json.optString("country"));
+            setId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setOrganizationId(optString(json, "organization_id"));
+            setType(MappingService.AirMapAirspaceType.fromString(optString(json, "type")));
+            setCountry(optString(json, "country"));
             setDistance(json.optInt("distance"));
-            setCity(json.optString("city"));
-            setState(json.optString("state"));
-            setColor(AirMapStatus.StatusColor.fromString(json.optString("color")));
-            setGeometryString(json.optString("geometry"));
+            setCity(optString(json, "city"));
+            setState(optString(json, "state"));
+            setColor(AirMapColor.fromString(optString(json, "color")));
+            setGeometryString(optString(json, "geometry"));
             double lat = json.optDouble("latitude");
             double lng = json.optDouble("longitude");
             if (lat != Double.NaN && lng != Double.NaN) {
                 setCoordinate(new Coordinate(lat, lng));
             }
 
-            if (!json.isNull("last_updated")) {
-                String lastUpdated = json.optString("last_updated");
-                setLastUpdated(getDateFromIso8601String(lastUpdated));
-            } else {
-                setLastUpdated(null);
-            }
+            String lastUpdated = optString(json, "last_updated");
+            setLastUpdated(getDateFromIso8601String(lastUpdated));
 
             if (json.has("requirements")) {
                 setRequirements(new AirMapStatusRequirement(json.optJSONObject("requirements")));
@@ -109,6 +98,11 @@ public class AirMapAdvisory implements Serializable, AirMapBaseModel {
 
             if (type != null) {
                 JSONObject properties = json.optJSONObject("properties");
+
+                // set generic properties (url, description, etc)
+                setOptionalProperties(new AirMapOptionalProperties(properties));
+
+                // set type specific properties
                 switch (type) {
                     case Airport: {
                         setAirportProperties(new AirMapAirportProperties(properties));
@@ -242,11 +236,11 @@ public class AirMapAdvisory implements Serializable, AirMapBaseModel {
         return this;
     }
 
-    public AirMapStatus.StatusColor getColor() {
+    public AirMapColor getColor() {
         return color;
     }
 
-    public AirMapAdvisory setColor(AirMapStatus.StatusColor color) {
+    public AirMapAdvisory setColor(AirMapColor color) {
         this.color = color;
         return this;
     }
@@ -371,8 +365,18 @@ public class AirMapAdvisory implements Serializable, AirMapBaseModel {
         return notamProperties;
     }
 
-    public void setNotamProperties(AirMapNotamProperties notamProperties) {
+    public AirMapAdvisory setNotamProperties(AirMapNotamProperties notamProperties) {
         this.notamProperties = notamProperties;
+        return this;
+    }
+
+    public AirMapOptionalProperties getOptionalProperties() {
+        return optionalProperties;
+    }
+
+    public AirMapAdvisory setOptionalProperties(AirMapOptionalProperties optionalProperties) {
+        this.optionalProperties = optionalProperties;
+        return this;
     }
 
     /**

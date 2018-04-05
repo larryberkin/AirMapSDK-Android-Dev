@@ -1,57 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="56dp"
-    android:background="?selectableItemBackground">
+    android:orientation="horizontal" >
 
     <View
         android:id="@+id/background_view"
         android:layout_width="8dp"
         android:layout_height="match_parent"
-        android:minHeight="56dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
         android:background="@color/status_orange"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/background_view"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:orientation="vertical">
+        android:minHeight="56dp"
+        android:background="?selectableItemBackground">
 
-        <TextView
-            android:id="@+id/title_text_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textColor="@color/font_title"
-            android:textSize="14sp"
-            tools:text="Los Angeles Class B"/>
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/link_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/info_text_view"
+            <TextView
+                android:id="@+id/title_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/font_title"
+                android:textSize="14sp"
+                tools:text="Los Angeles Class B"/>
+
+            <TextView
+                android:id="@+id/description_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/font_light_grey"
+                android:textSize="11sp"
+                android:visibility="gone"
+                tools:text="Controlled Airspace - Class Bravo"/>
+
+            <TextView
+                android:id="@+id/info_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/font_light_grey"
+                android:textSize="11sp"
+                android:visibility="gone"
+                tools:text="Controlled Airspace - Class Bravo"/>
+
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"/>
+
+        <ImageView android:id="@id/link_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:textColor="@color/font_light_grey"
-            android:textSize="11sp"
-            android:visibility="gone"
-            tools:text="Controlled Airspace - Class Bravo"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_info"
+            android:tint="@color/font_white" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"/>
-
-</RelativeLayout>
+</LinearLayout>

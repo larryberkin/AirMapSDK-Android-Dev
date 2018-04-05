@@ -31,19 +31,8 @@
         <item name="Auth0.DarkPrimaryColor">@color/airmap_navy</item>
     </style>
 
-    <style name="AppTheme.WeatherLabel" >
-        <item name="android:layout_width">84dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">center</item>
-        <item name="android:paddingTop">8dp</item>
-    </style>
-
-    <style name="AppTheme.WeatherValue" >
-        <item name="android:layout_width">84dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/font_title</item>
-        <item name="android:textSize">13sp</item>
+    <style name="CustomLocationLayer" parent="mapbox_LocationLayer">
+        <item name="mapbox_accuracyAlpha">0</item>
     </style>
 
 </resources>

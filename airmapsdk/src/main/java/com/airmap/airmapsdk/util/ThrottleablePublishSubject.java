@@ -7,10 +7,6 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
-/**
- * Created by collin@airmap.com on 5/1/17.
- */
-
 public class ThrottleablePublishSubject<T> {
 
     public static ThrottleablePublishSubject create() {

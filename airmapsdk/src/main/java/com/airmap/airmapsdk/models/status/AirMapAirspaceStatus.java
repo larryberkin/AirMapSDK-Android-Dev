@@ -12,10 +12,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapAirspaceStatus implements Serializable, AirMapBaseModel {
     public enum StatusColor {
@@ -91,7 +89,7 @@ public class AirMapAirspaceStatus implements Serializable, AirMapBaseModel {
                 advisories.add(new AirMapAdvisory(advisoriesJson.optJSONObject(i)));
             }
             setAdvisories(advisories);
-            setAdvisoryColor(StatusColor.fromString(json.optString("color")));
+            setAdvisoryColor(StatusColor.fromString(optString(json, "color")));
         }
         return this;
     }

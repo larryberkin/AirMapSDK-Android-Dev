@@ -5,7 +5,6 @@ import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.util.AirMapConfig;
@@ -21,11 +20,8 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import timber.log.Timber;
 
-/**
- * Created by Vansh Gandhi on 7/7/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 @SuppressWarnings("unused")
 public class MappingService extends BaseService {
 
@@ -148,7 +144,7 @@ public class MappingService extends BaseService {
                 case "notam":
                     return Notam;
                 case "ama":
-                case  "ama_field":
+                case "ama_field":
                     return AMA;
                 default:
                     return Unknown;
@@ -366,8 +362,8 @@ public class MappingService extends BaseService {
 
     public enum AirMapMapTheme {
         Standard("standard"),
-        Light("light"),
         Dark("dark"),
+        Light("light"),
         Satellite("satellite");
 
         private final String text;
@@ -397,13 +393,10 @@ public class MappingService extends BaseService {
         }
     }
 
+    @Deprecated
     protected String getTileSourceUrl(@Nullable List<AirMapLayerType> layers, AirMapMapTheme theme) {
         String tiles = (layers == null || layers.size() == 0) ? "_-_" : TextUtils.join(",", layers);
         return mapTilesBaseUrl + tiles + "?&theme=" + theme.toString() + "&apikey=" + AirMap.getInstance().getApiKey() + "&token=" + AirMap.getInstance().getApiKey();
-    }
-
-    protected String getJurisdictionsTileUrlTemplate() {
-        return mapTilesRulesUrl + "/base-jurisdiction/{z}/{x}/{y}";
     }
 
     protected String getRulesetTileUrlTemplate(String rulesetId, List<String> layers) {
@@ -411,8 +404,12 @@ public class MappingService extends BaseService {
     }
 
     protected String getStylesUrl(AirMapMapTheme theme) {
-        String stageOrProd = BaseService.DEBUG ? "stage/" : "";
-        String stylesUrl = "https://cdn." + AirMapConfig.getDomain() +"/static/map-styles/" + stageOrProd + "0.7.3/";
+        String stylesUrl = AirMapConfig.getMapStyleUrl();
+
+        // fallback
+        if (TextUtils.isEmpty(stylesUrl)) {
+            stylesUrl = "https://cdn.airmap.com/static/map-styles/0.8.6/";
+        }
 
         switch (theme) {
             case Light:
@@ -455,8 +452,7 @@ public class MappingService extends BaseService {
                     result = new JSONObject(jsonString);
                     listener.success(result);
                 } catch (JSONException e) {
-                    e.printStackTrace();
-                    AirMapLog.e("AirMapCallback", jsonString);
+                    Timber.e(e, "Unable to parse map style:%s", jsonString);
                     listener.error(new AirMapException(e.getMessage()));
                 }
             }

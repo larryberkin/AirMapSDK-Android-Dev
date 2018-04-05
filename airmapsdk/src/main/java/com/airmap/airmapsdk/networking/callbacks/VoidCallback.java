@@ -13,10 +13,6 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Response;
 
-/**
- * Created by Vansh Gandhi on 6/23/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 public class VoidCallback extends GenericBaseOkHttpCallback {
     public VoidCallback(AirMapCallback<Void> listener) {
         super(listener, null);

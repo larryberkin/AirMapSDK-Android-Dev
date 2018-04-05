@@ -3,11 +3,9 @@ package com.airmap.airmapsdk.networking.services;
 import android.support.annotation.Nullable;
 
 import com.airmap.airmapsdk.models.AirMapWeather;
-import com.airmap.airmapsdk.models.AirMapWeatherUpdate;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.models.status.AirMapStatus;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
-import com.airmap.airmapsdk.networking.callbacks.GenericListOkHttpCallback;
 import com.airmap.airmapsdk.networking.callbacks.GenericOkHttpCallback;
 import com.airmap.airmapsdk.util.Utils;
 
@@ -18,10 +16,6 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-/**
- * Created by Vansh Gandhi on 6/23/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 @SuppressWarnings("unused")
 class StatusService extends BaseService {
     /**

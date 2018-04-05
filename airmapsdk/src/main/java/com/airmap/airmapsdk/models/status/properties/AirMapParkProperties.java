@@ -6,10 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by Vansh Gandhi on 7/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapParkProperties implements Serializable, AirMapBaseModel {
     private int size;
@@ -27,7 +25,7 @@ public class AirMapParkProperties implements Serializable, AirMapBaseModel {
     public AirMapParkProperties constructFromJson(JSONObject json) {
         if (json != null) {
             setSize(json.optInt("size"));
-            setType(json.optString("type"));
+            setType(optString(json, "type"));
         }
         return this;
     }

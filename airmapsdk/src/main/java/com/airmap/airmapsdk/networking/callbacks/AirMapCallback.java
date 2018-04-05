@@ -5,10 +5,6 @@ import android.os.Looper;
 
 import com.airmap.airmapsdk.AirMapException;
 
-/**
- * Created by Vansh Gandhi on 6/16/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 public abstract class AirMapCallback<T> {
 
     public final void success(final T response) {

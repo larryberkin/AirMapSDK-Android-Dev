@@ -30,6 +30,13 @@
         </activity>
 
         <activity
+            android:name=".activities.JurisdictionsDemoActivity"
+            android:label="@string/airmap_app_name"
+            android:parentActivityName=".activities.DemosActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
                 android:name=".activities.MapDemoActivity"
                 android:label="Map &amp; Contextual Airspace"
                 android:parentActivityName=".activities.DemosActivity"
@@ -53,6 +60,13 @@
         <activity
             android:name=".activities.TrafficDemoActivity"
             android:label="Traffic Demo"
+            android:parentActivityName=".activities.DemosActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".activities.TelemetryDemoActivity"
+            android:label="Telemetry Demo"
             android:parentActivityName=".activities.DemosActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

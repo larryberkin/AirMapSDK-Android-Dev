@@ -8,10 +8,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by Vansh Gandhi on 7/27/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapWildfireProperties implements AirMapBaseModel, Serializable {
 
@@ -30,7 +28,7 @@ public class AirMapWildfireProperties implements AirMapBaseModel, Serializable {
     public AirMapWildfireProperties constructFromJson(JSONObject json) {
         if (json != null) {
             setSize(json.optInt("size", -1));
-            setEffectiveDate(Utils.getDateFromIso8601String(json.optString("date_effective")));
+            setEffectiveDate(Utils.getDateFromIso8601String(optString(json, "date_effective")));
         }
         return this;
     }

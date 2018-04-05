@@ -3,7 +3,6 @@ package com.airmap.airmapsdk.networking.services;
 import android.content.Context;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.models.flight.AirMapFlight;
 import com.airmap.airmapsdk.models.traffic.AirMapTraffic;
@@ -30,10 +29,8 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * Created by Vansh Gandhi on 6/27/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import timber.log.Timber;
+
 @SuppressWarnings("unused")
 public class TrafficService extends BaseService {
     //The current state of the connection
@@ -41,7 +38,6 @@ public class TrafficService extends BaseService {
         Connecting, Connected, Disconnected
     }
 
-    private static String TAG = "TrafficService";
     private MqttAndroidClient client;
     private MqttConnectOptions options;
     private List<AirMapTrafficListener> listeners;
@@ -106,10 +102,10 @@ public class TrafficService extends BaseService {
      */
     public void connect() {
         if (listeners.isEmpty()) {
-            AirMapLog.i(TAG, "No listeners, not connecting");
+            Timber.d("No listeners, not connecting");
             return;
         }
-        AirMapLog.i(TAG, "Connecting to Traffic Service");
+        Timber.i("Connecting to Traffic Service");
         if (connectionState == ConnectionState.Connecting) { //Don't connect if already connecting
             return;
         }
@@ -125,13 +121,13 @@ public class TrafficService extends BaseService {
         if (connectionState == ConnectionState.Disconnected || connectionState == ConnectionState.Connecting || !client.isConnected()) {
             return;
         }
-        AirMapLog.i(TAG, "Disconnecting from alerts");
+        Timber.i("Disconnecting from alerts");
         removeAllTraffic();
         try {
             client.disconnect(connectionState, actionListener);
             checkForUpdatedFlight = false;
         } catch (MqttException e) {
-            AirMapLog.e(TAG, "Error disconnecting", e);
+            Timber.e(e, "Error disconnecting");
         } finally {
             onDisconnect(false);
         }
@@ -304,16 +300,16 @@ public class TrafficService extends BaseService {
             client.subscribe(channel, 1, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    AirMapLog.v(TAG, "Success subscribing" + channel);
+                    Timber.v("Success subscribing to %s", channel);
                 }
 
                 @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    if (exception != null) {
-                        AirMapLog.e(TAG, "Subscribe failed", exception);
-                        exception.printStackTrace();
+                public void onFailure(IMqttToken asyncActionToken, Throwable e) {
+                    if (e != null) {
+                        Timber.e(e, "Subscribe failed");
+                        e.printStackTrace();
                     } else {
-                        AirMapLog.e(TAG, "Failed with no exception.");
+                        Timber.e("Failed with no exception.");
                     }
                 }
             });
@@ -405,7 +401,7 @@ public class TrafficService extends BaseService {
             if (response != null) {
                 flightId = response.getFlightId();
                 options.setUserName(flightId);
-                AirMapLog.i(TAG, "Connecting to MQTT server");
+                Timber.i("Connecting to MQTT server");
                 try {
                     client.connect(options, ConnectionState.Connecting, actionListener);
                 } catch (MqttException e) {
@@ -434,7 +430,7 @@ public class TrafficService extends BaseService {
         public void onSuccess(IMqttToken asyncActionToken) {
             ConnectionState state = (ConnectionState) asyncActionToken.getUserContext();
             if (state == ConnectionState.Connecting) {
-                AirMapLog.i(TAG, "Successfully connected");
+                Timber.i("Successfully connected");
                 onConnect();
             }
         }
@@ -445,7 +441,7 @@ public class TrafficService extends BaseService {
         @Override
         public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
             exception.printStackTrace();
-            AirMapLog.e(TAG, "Error connecting: " + exception.getMessage(), exception);
+            Timber.e(exception, "Error connecting: %s", exception.getMessage());
             onDisconnect(false);
         }
     }
@@ -461,7 +457,7 @@ public class TrafficService extends BaseService {
         @Override
         public void messageArrived(String topic, MqttMessage message) throws Exception {
             String messageString = message.toString();
-            AirMapLog.v(TAG, messageString);
+            Timber.v("Got message %s", messageString);
             if (topic.contains("/alert/")) {
                 receivedTraffic(messageString, AirMapTraffic.TrafficType.Alert);
             } else if (topic.contains("/sa/")) {

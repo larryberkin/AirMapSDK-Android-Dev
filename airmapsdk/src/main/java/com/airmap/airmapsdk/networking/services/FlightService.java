@@ -23,16 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-import okhttp3.Response;
 import rx.Observable;
 
 import static com.airmap.airmapsdk.util.Utils.getIso8601StringFromDate;
 
-/**
- * Created by Vansh Gandhi on 6/23/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- * This class handles all flight related requests.
- */
 @SuppressWarnings("unused")
 class FlightService extends BaseService {
 
@@ -162,6 +156,11 @@ class FlightService extends BaseService {
         return AirMap.getClient().post(url, params, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
     }
 
+    static Call getFlightPlanById(String flightPlanId, final AirMapCallback<AirMapFlightPlan> callback) {
+        String url = String.format(flightPlanPatchUrl, flightPlanId);
+        return AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
+    }
+
     static Call getFlightPlanByFlightId(String flightId, final AirMapCallback<AirMapFlightPlan> callback) {
         String url = String.format(flightPlanByFlightIdUrl, flightId);
         return AirMap.getClient().get(url, new GenericOkHttpCallback(callback, AirMapFlightPlan.class));
@@ -188,14 +187,9 @@ class FlightService extends BaseService {
     /**
      * End a flight
      *
-     * @param flight   The flight to end
+     * @param flightId   The ID of the flight to end
      * @param listener The callback that is invoked on success or error
      */
-    static Call endFlight(AirMapFlight flight, AirMapCallback<AirMapFlight> listener) {
-        String url = String.format(flightEndUrl, flight.getFlightId());
-        return AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapFlight.class));
-    }
-
     static Call endFlight(String flightId, AirMapCallback<AirMapFlight> listener) {
         String url = String.format(flightEndUrl, flightId);
         return AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapFlight.class));
@@ -209,16 +203,16 @@ class FlightService extends BaseService {
     /**
      * Get a comm key for a given flight to enable traffic alerts
      *
-     * @param flight   The flight to get the comm key for
+     * @param flightId The flight ID to get the comm key for
      * @param listener The callback that is invoked on success or error
      */
-    static Call getCommKey(AirMapFlight flight, final AirMapCallback<AirMapComm> listener) {
-        String url = String.format(flightStartCommUrl, flight.getFlightId());
+    static Call getCommKey(String flightId, final AirMapCallback<AirMapComm> listener) {
+        String url = String.format(flightStartCommUrl, flightId);
         return AirMap.getClient().post(url, new GenericOkHttpCallback(listener, AirMapComm.class));
     }
 
-    static Observable<AirMapComm> getCommKey(AirMapFlight flight) {
-        String url = String.format(flightStartCommUrl, flight.getFlightId());
+    static Observable<AirMapComm> getCommKey(String flightId) {
+        String url = String.format(flightStartCommUrl, flightId);
         return AirMap.getClient().post(url, AirMapComm.class);
     }
 

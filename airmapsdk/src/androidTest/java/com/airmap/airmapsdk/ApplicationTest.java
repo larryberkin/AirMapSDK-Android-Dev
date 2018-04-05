@@ -56,7 +56,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
                 assertEquals(response.getMaxAltitude(), 15, 0.01);
                 assertEquals(response.getCoordinate(), new Coordinate(33, 42));
                 assertFalse(response.shouldNotify());
-                AirMap.endFlight(flight, null);
+                AirMap.endFlight(flight.getFlightId(), null);
             }
 
             @Override
@@ -146,7 +146,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     }
 
     public void testGetAllFlights() throws InterruptedException {
-        AirMap.getFlights(new AirMapCallback<List<AirMapFlight>>() {
+        AirMap.getMyFlights(new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(List<AirMapFlight> response) {
                 assertNotNull(response);
@@ -171,7 +171,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             public void onSuccess(final AirMapFlight createdFlight) {
                 assertNotNull(createdFlight);
                 assertNotNull(createdFlight.getFlightId());
-                AirMap.endFlight(createdFlight, new AirMapCallback<AirMapFlight>() {
+                AirMap.endFlight(createdFlight.getFlightId(), new AirMapCallback<AirMapFlight>() {
                     @Override
                     public void onSuccess(AirMapFlight endedFlight) {
                         assertNotNull(endedFlight);

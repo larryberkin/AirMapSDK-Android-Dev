@@ -6,10 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapAircraftManufacturer implements Serializable, AirMapBaseModel {
 
@@ -27,9 +25,9 @@ public class AirMapAircraftManufacturer implements Serializable, AirMapBaseModel
     @Override
     public AirMapAircraftManufacturer constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setName(json.optString("name"));
-            setUrl(json.optString("url"));
+            setId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setUrl(optString(json, "url"));
         }
         return this;
     }

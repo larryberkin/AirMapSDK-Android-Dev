@@ -7,6 +7,7 @@ import com.airmap.airmapsdk.models.comm.AirMapComm;
 import com.airmap.airmapsdk.models.flight.AirMapFlight;
 import com.airmap.airmapsdk.models.flight.AirMapFlightStatus;
 import com.airmap.airmapsdk.models.pilot.AirMapPilot;
+import com.airmap.airmapsdk.models.status.AirMapColor;
 import com.airmap.airmapsdk.models.status.AirMapStatus;
 import com.airmap.airmapsdk.models.status.AirMapStatusAdvisory;
 import com.airmap.airmapsdk.models.status.AirMapStatusRequirement;
@@ -20,10 +21,6 @@ import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 public class ModelTests {
     @Test
     public void AirMapTrafficTest() throws Exception {
@@ -51,15 +48,15 @@ public class ModelTests {
     public void AirMapStatusTests() {
         AirMapStatus airmapstatus = new AirMapStatus();
         assertEquals(airmapstatus.getAdvisoryColor(), null);
-        assertEquals("red", AirMapStatus.StatusColor.Red.toString());
-        assertEquals(AirMapStatus.StatusColor.fromString("green"), AirMapStatus.StatusColor.Green);
+        assertEquals("red", AirMapColor.Red.toString());
+        assertEquals(AirMapColor.fromString("green"), AirMapColor.Green);
     }
 
     @Test
     public void AirMapStatusAdvisoriesTest() {
         AirMapStatusAdvisory airMapStatusAdvisory = new AirMapStatusAdvisory();
-        airMapStatusAdvisory.setColor(AirMapStatus.StatusColor.Yellow);
-        assertEquals(airMapStatusAdvisory.getColor(), AirMapStatus.StatusColor.fromString("yellow"));
+        airMapStatusAdvisory.setColor(AirMapColor.Yellow);
+        assertEquals(airMapStatusAdvisory.getColor(), AirMapColor.fromString("yellow"));
     }
 
     @Test

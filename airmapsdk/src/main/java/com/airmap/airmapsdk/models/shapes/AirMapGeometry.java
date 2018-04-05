@@ -11,15 +11,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Vansh Gandhi on 7/26/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public abstract class AirMapGeometry implements Serializable {
     public static AirMapGeometry getGeometryFromGeoJSON(JSONObject geoJson) {
         if (geoJson != null) {
-            String geoType = geoJson.optString("type").toLowerCase();
+            String geoType = optString(geoJson, "type").toLowerCase();
             if (geoType.equals("polygon")) {
                 List<Coordinate> coordinates = new ArrayList<>();
                 JSONArray coordArray = geoJson.optJSONArray("coordinates").optJSONArray(0);
@@ -71,11 +69,43 @@ public abstract class AirMapGeometry implements Serializable {
 
                 jsonObject.put("coordinates", coordinates);
             } else if (geometry instanceof AirMapPoint) {
+                jsonObject.put("type", "Point");
 
+                JSONArray coordinates = new JSONArray();
+                coordinates.put(((AirMapPoint) geometry).getCoordinate().getLongitude());
+                coordinates.put(((AirMapPoint) geometry).getCoordinate().getLatitude());
+
+                jsonObject.put("coordinates", coordinates);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    public static AirMapPolygon convertPointToPolygon(AirMapPoint point, float radius) {
+        ArrayList<Coordinate> coordinates = new ArrayList<>(); //array to hold all the points
+
+        int degreesBetweenPoints = 8;
+        int numberOfPoints = (int) Math.floor(360 / degreesBetweenPoints);
+        double distRadians = radius / 6371000.0; // earth radius in meters
+        double centerLatRadians = point.getCoordinate().getLatitude() * Math.PI / 180;
+        double centerLonRadians = point.getCoordinate().getLongitude() * Math.PI / 180;
+        for (int index = 0; index < numberOfPoints; index++) {
+            double degrees = index * degreesBetweenPoints;
+            double degreeRadians = degrees * Math.PI / 180;
+            double pointLatRadians = Math.asin(Math.sin(centerLatRadians) * Math.cos(distRadians) + Math.cos(centerLatRadians) * Math.sin(distRadians) * Math.cos(degreeRadians));
+            double pointLonRadians = centerLonRadians + Math.atan2(Math.sin(degreeRadians) * Math.sin(distRadians) * Math.cos(centerLatRadians),
+                    Math.cos(distRadians) - Math.sin(centerLatRadians) * Math.sin(pointLatRadians));
+            double pointLat = pointLatRadians * 180 / Math.PI;
+            double pointLon = pointLonRadians * 180 / Math.PI;
+
+            coordinates.add(new Coordinate(pointLat, pointLon));
+        }
+
+        // add first coordinate to end to complete polygon
+        coordinates.add(coordinates.get(0));
+
+        return new AirMapPolygon(coordinates);
     }
 }

@@ -1,9 +1,7 @@
 package com.airmap.airmapsdk.models.flight;
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.AirMapBaseModel;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.models.shapes.AirMapGeometry;
@@ -22,13 +20,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import timber.log.Timber;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
 import static com.airmap.airmapsdk.util.Utils.getIso8601StringFromDate;
-
-/**
- * Created by collin@airmap.com on 5/19/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
 
@@ -49,9 +47,26 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
     private Date createdAt;
     private boolean isPublic;
     private boolean notify;
-    private List<String> permitIds;
 
     public AirMapFlightPlan() {
+        isPublic = true;
+    }
+
+    public AirMapFlightPlan(AirMapFlightPlan planToClone) {
+        setTakeoffCoordinate(planToClone.takeoffCoordinate);
+        setMaxAltitude(planToClone.maxAltitude);
+        setNotify(planToClone.notify);
+        setPilotId(planToClone.pilotId);
+        setAircraftId(planToClone.aircraftId);
+        setPublic(planToClone.isPublic);
+        setBuffer(planToClone.buffer);
+        setGeometry(planToClone.geometry);
+        setRulesetIds(planToClone.rulesetIds);
+        setFlightFeatureValues(planToClone.flightFeatureValues);
+        setCreatedAt(planToClone.createdAt);
+        setStartsAt(planToClone.startsAt);
+        setEndsAt(planToClone.endsAt);
+        setDurationInMillis(planToClone.durationInMillis);
     }
 
     public AirMapFlightPlan(JSONObject flightJson) {
@@ -61,13 +76,13 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
     @Override
     public AirMapFlightPlan constructFromJson(JSONObject json) {
         if (json != null) {
-            setPlanId(json.optString("id"));
-            setFlightId(json.optString("flight_id"));
+            setPlanId(optString(json, "id"));
+            setFlightId(optString(json, "flight_id"));
             setTakeoffCoordinate(new Coordinate(json.optDouble("takeoff_latitude", 0), json.optDouble("takeoff_longitude", 0)));
             setMaxAltitude((float) json.optDouble("max_altitude_agl"));
             setNotify(json.optBoolean("notify"));
-            setPilotId(json.optString("pilot_id"));
-            setAircraftId(json.optString("aircraft_id", null));
+            setPilotId(optString(json, "pilot_id"));
+            setAircraftId(optString(json, "aircraft_id"));
             setPublic(json.optBoolean("public"));
             setBuffer((float) json.optDouble("buffer"));
 
@@ -79,13 +94,7 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
             rulesetIds = new ArrayList<>();
             JSONArray rulesetsJson = json.optJSONArray("rulesets");
             for (int i = 0; rulesetsJson != null && i < rulesetsJson.length(); i++) {
-                rulesetIds.add(rulesetsJson.optString(i));
-            }
-
-            permitIds = new ArrayList<>();
-            JSONArray permitIdsJson = json.optJSONArray("permits");
-            for (int i = 0; permitIdsJson != null && i < permitIdsJson.length(); i++) {
-                addPermitId(permitIdsJson.optString(i));
+                rulesetIds.add(optString(rulesetsJson, i));
             }
 
             flightFeatureValues = new HashMap<>();
@@ -102,13 +111,13 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
 
             //Created at
             if (json.has("created_at")) {
-                setCreatedAt(getDateFromIso8601String(json.optString("created_at")));
+                setCreatedAt(getDateFromIso8601String(optString(json, "created_at")));
             } else if (json.has("creation_date")) {
-                setCreatedAt(getDateFromIso8601String(json.optString("creation_date")));
+                setCreatedAt(getDateFromIso8601String(optString(json, "creation_date")));
             }
 
-            String startTime = json.optString("start_time");
-            String endTime = json.optString("end_time");
+            String startTime = optString(json, "start_time");
+            String endTime = optString(json, "end_time");
             if (!TextUtils.isEmpty(startTime) && !startTime.equals("now")) {
                 // if start date is before now, set it to now and shift end time
                 Date startDate = getDateFromIso8601String(startTime);
@@ -176,12 +185,12 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
                 params.put("takeoff_longitude", coordinate.getLongitude());
             }
         } catch (JSONException e) {
-            AirMapLog.e("AirMapFlightPlan", "Failed to parse geojson: " + getGeometry(), e);
+            Timber.e(e, "Failed to parse geojson: %s", getGeometry());
         }
 
         params.put("buffer", buffer);
-
         params.put("max_altitude_agl", getMaxAltitude());
+
         Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
         while (iterator.hasNext()) { //Remove any null values
             Map.Entry<String, Object> entry = iterator.next();
@@ -190,14 +199,6 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
             }
         }
         JSONObject jsonObject = new JSONObject(params);
-        if (getPermitIds() != null && !getPermitIds().isEmpty()) {
-            JSONArray permitsArray = new JSONArray(getPermitIds());
-            try {
-                jsonObject.put("permits", permitsArray);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
 
         if (rulesetIds != null && !rulesetIds.isEmpty()) {
             JSONArray rulesetsArray = new JSONArray(rulesetIds);
@@ -273,7 +274,7 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
      */
     public boolean isActive() {
         Date now = new Date();
-        return startsAt != null && endsAt != null && now.after(startsAt) && now.before(endsAt);
+        return !TextUtils.isEmpty(flightId) && startsAt != null && endsAt != null && now.after(startsAt) && now.before(endsAt);
     }
 
     public String getPlanId() {
@@ -395,25 +396,13 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
         return this;
     }
 
-    public List<String> getPermitIds() {
-        return permitIds;
-    }
-
-    public AirMapFlightPlan setPermitIds(ArrayList<String> permitIds) {
-        this.permitIds = permitIds;
-        return this;
-    }
-
-    /**
-     * @param id A PilotPermit Id (should start with "permit_application")
-     */
-    public AirMapFlightPlan addPermitId(String id) {
-        permitIds.add(id);
-        return this;
-    }
-
     public String getGeometry() {
         return geometry;
+    }
+
+    public AirMapFlightPlan setGeometry(AirMapPolygon geometry) {
+        this.geometry = AirMapGeometry.getGeoJSONFromGeometry(geometry).toString();
+        return this;
     }
 
     public AirMapFlightPlan setGeometry(String geometry) {
@@ -435,6 +424,14 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
 
     public void setFlightFeatureValues(Map<String, FlightFeatureValue> flightFeatureValues) {
         this.flightFeatureValues = flightFeatureValues;
+    }
+
+    public void setFlightFeatureValues(Set<FlightFeatureValue> flightFeatureValuesSet) {
+        flightFeatureValues = new HashMap<>();
+
+        for (FlightFeatureValue flightFeatureValue : flightFeatureValuesSet) {
+            flightFeatureValues.put(flightFeatureValue.getKey(), flightFeatureValue);
+        }
     }
 
     public void setFlightFeatureValue(FlightFeatureValue flightFeatureValue) {

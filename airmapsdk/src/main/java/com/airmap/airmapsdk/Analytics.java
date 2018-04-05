@@ -1,14 +1,6 @@
 package com.airmap.airmapsdk;
 
-import android.util.Log;
-
-/**
- * Created by collin@airmap.com on 12/19/16.
- */
-
 public class Analytics {
-
-    private static final String TAG = "SDKAnalytics";
 
     private static AnalyticsTracker tracker;
 
@@ -19,24 +11,24 @@ public class Analytics {
     public static void logEvent(String section, String action, String label) {
         if (tracker != null) {
             tracker.logEvent(section, action, label);
-        } else {
-            AirMapLog.w(TAG, "No tracker set!");
         }
     }
 
     public static void logEvent(String section, String action, String label, int value) {
         if (tracker != null) {
             tracker.logEvent(section, action, label, value);
-        } else {
-            AirMapLog.w(TAG, "No tracker set!");
         }
     }
 
     public static void logEvent(String section, String action, String label, String value) {
         if (tracker != null) {
             tracker.logEvent(section, action, label, value);
-        } else {
-            AirMapLog.w(TAG, "No tracker set!");
+        }
+    }
+
+    public static void report(Throwable t) {
+        if (tracker != null) {
+            tracker.report(t);
         }
     }
 
@@ -63,6 +55,7 @@ public class Analytics {
         public static final String MODEL_CREATE_AIRCRAFT = "Create_Aircraft_Model";
 
         public static final String ADVISORIES = "Advisories";
+        public static final String MAP = "Map";
     }
 
     public static class Event {
@@ -104,6 +97,7 @@ public class Analytics {
         public static final String flightPlanBrief = "flight_plan_brief";
         public static final String fly = "fly";
         public static final String deeplink_create_flight = "deeplink_create_flight";
+        public static final String dji_fly = "dji_fly";
     }
 
     public static class Action {
@@ -221,11 +215,21 @@ public class Analytics {
         public static final String NON_CONFLICTING = "Non Conflicting Header";
         public static final String NEEDS_MORE_INFO = "Needing More Info Header";
         public static final String INFORMATIONAL = "Informational Header";
+
+        public static final String DJI_CONNECTION_STATUS = "DJI Connection Status";
+        public static final String DJI_CONNECT_BUTTON = "DJI Connect Button";
+        public static final String MAP_SLASH_CAMERA_VIEW = "Map/Camera View";
+        public static final String TAKE_OFF = "Take off";
+        public static final String LAND = "Land";
+        public static final String END_FLIGHT_DIALOG = "End Flight Dialog";
+        public static final String ANNUNCIATOR_MUTE = "Annunciator Mute";
     }
 
     public static final class Value {
         public static final String AIRMAP = "AirMap";
         public static final String RULES = "Rules";
         public static final String ADVISORIES = "Advisories";
+        public static final String YES = "Yes";
+        public static final String NO = "No";
     }
 }

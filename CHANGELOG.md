@@ -1,3 +1,21 @@
+##`2.0.0 Beta (12/21/17)`
+* New Rulesets API
+* New Flight Plan API
+* Update Advisory API
+* Updated Mapbox to 5.3.2
+* New AirMapMapView (beta)
+
+##`1.0.10 (8/21/17)`
+* Updated Mapbox to 5.1.3
+
+##`1.0.9 (5/12/17)`
+* Updated login/signup to use auth0 Lock library instead of webview
+* Bug fixes
+
+##`1.0.8 (3/28/17)`
+* CreateFlightActivity can now take theme and layers to display on map
+* Added Anonymous Login
+
 ##`1.0.7 (3/14/17)`
 * Updated AirMap Server Certificate for Certificate Pinning
 

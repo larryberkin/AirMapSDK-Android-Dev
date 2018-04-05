@@ -15,10 +15,6 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-/**
- * Created by Vansh Gandhi on 6/23/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 @SuppressWarnings("unused")
 class AircraftService extends BaseService {
 

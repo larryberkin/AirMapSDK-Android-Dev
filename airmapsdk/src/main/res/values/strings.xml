@@ -28,40 +28,86 @@
   <string name="airspace_type_aerial_rec_area">Aerial Recreational Area</string>
   <!-- Name for airspace type Airport -->
   <string name="airspace_type_airport">Airport</string>
+  <!-- Name for airspace type AMA Field (Academy of Model Aeronautics) -->
+  <string name="airspace_type_ama_field">AMA Field</string>
   <!-- Name for airspace type City -->
   <string name="airspace_type_city">City</string>
   <!-- Name for airspace type Controlled Airspace -->
   <string name="airspace_type_controlled">Controlled Airspace</string>
+  <!-- Name for airspace type Country -->
+  <string name="airspace_type_country">Country</string>
+  <!-- Name for airspace type County -->
+  <string name="airspace_type_county">County</string>
   <!-- Name for airspace type Custom -->
   <string name="airspace_type_custom">Custom</string>
+  <!-- Name for airspace type Embassy -->
+  <string name="airspace_type_embassy">Embassy</string>
   <!-- Name for airspace type Emergency -->
-  <string name="airspace_type_emergency">Emergency</string>
+  <string name="airspace_type_emergency">First Responder Activity</string>
+  <!-- Name for airspace type Federal Building -->
+  <string name="airspace_type_federal_building">Federal Building</string>
+  <!-- Name for airspace type Flight Information Region -->
+  <string name="airspace_type_fir">Flight Information Region</string>
   <!-- Name for airspace type Fire -->
   <string name="airspace_type_fire">Fire</string>
+  <!-- Name for airspace type Gliderport -->
+  <string name="airspace_type_gliderport">Gliderport</string>
   <!-- Name for airspace type Hazard Area -->
   <string name="airspace_type_hazard_area">Hazard Area</string>
   <!-- Name for airspace type Heliport -->
   <string name="airspace_type_heliport">Heliport</string>
+  <!-- Name for airspace type Highway -->
+  <string name="airspace_type_highway">Highway</string>
   <!-- Name for airspace type Hospital -->
   <string name="airspace_type_hospital">Hospital</string>
+  <!-- Name for airspace type Industrial Property -->
+  <string name="airspace_type_industrial_property">Industrial Property</string>
+  <!-- Name for airspace type Japan Base Admin (Smallest unit of Japanse administrative units) -->
+  <string name="airspace_type_japan_base">Japan Base Admin</string>
+  <!-- Name for airspace type Military Property -->
+  <string name="airspace_type_military_property">Military Property</string>
   <!-- Name for airspace type National Park -->
   <string name="airspace_type_national_park">National Park</string>
+  <!-- Name for airspace type NOTAM -->
+  <string name="airspace_type_notam">NOTAM</string>
+  <!-- Name for airspace type Police Station -->
+  <string name="airspace_type_police_station">Police Station</string>
+  <!-- Name for airspace type Powerline -->
+  <string name="airspace_type_powerline">Powerline</string>
   <!-- Name for airspace type Power Plant -->
   <string name="airspace_type_power_plant">Power Plant</string>
   <!-- Name for airspace type Prison -->
   <string name="airspace_type_prison">Prison</string>
+  <!-- Name for airspace type Railway -->
+  <string name="airspace_type_railway">Railway</string>
+  <!-- Name for airspace type Residential Property -->
+  <string name="airspace_type_residential_property">Residential Property</string>
   <!-- Name for airspace type School -->
   <string name="airspace_type_school">School</string>
+  <!-- Name for airspace type Seaplane Base -->
+  <string name="airspace_type_seaplane_base">Seaplane Base</string>
   <!-- Name for airspace type Special Use Airspace -->
   <string name="airspace_type_special_use">Special Use Airspace</string>
   <!-- Name for airspace type Stadium -->
   <string name="airspace_type_stadium">Stadium</string>
+  <!-- Name for airspace type State -->
+  <string name="airspace_type_state">State</string>
+  <!-- Name for airspace type Subprefecture -->
+  <string name="airspace_type_subprefecture">Subprefecture</string>
+  <!-- Name for airspace type Supercity (Japan related) -->
+  <string name="airspace_type_supercity">Supercity</string>
   <!-- Name for airspace type FAA Temporary Flight Restriction -->
   <string name="airspace_type_tfr_faa">Temporary Flight Restriction</string>
+  <!-- Name for airspace type Ultralight Field -->
+  <string name="airspace_type_ulm_field">Ultralight Field</string>
+  <!-- Generic catchall placeholder/name for airspace type is new and unknown at time of development but present via the advisories or map sources -->
+  <string name="airspace_type_unclassified">Unclassified</string>
   <!-- Name for airspace type University -->
   <string name="airspace_type_university">University</string>
+  <!-- Name for airspace type Waterway -->
+  <string name="airspace_type_waterway">Waterway</string>
   <!-- Name for airspace type WildFire -->
-  <string name="airspace_type_wildfire">Wildfire</string>
+  <string name="airspace_type_wildfire">WildFire</string>
   <!-- Login message when a user's account has been blacklisted. -->
   <string name="invalid_email_domain">Your account has been blacklisted. Please contact security@airmap.com</string>
   <!-- Login message when a user must verify their email address -->
@@ -422,4 +468,22 @@
   <!-- Unit and format for displaying temperature in Fahrenheit -->
   <string name="units_temperature_fahrenheit_format">%1$s°F</string>
   <string name="no_phone_number_provided">No Phone Number Provided</string>
+
+  <string name="no_pilot_name">Set Pilot Name</string>
+
+  <string name="rules_and_flight_features_header">Rules &amp; Compliance</string>
+
+  <string name="flight_brief">Flight Brief</string>
+  <string name="conflicting_rules">Rules you may be violating</string>
+  <string name="missing_info_rules">Rules needing more information</string>
+  <string name="informational_rules">Rules you should review</string>
+  <string name="not_conflicting_rules">Rules you are following</string>
+
+  <string name="authorization_not_requested">Authorization Not Requested</string>
+  <string name="authorization_rejected_upon_submission">Rejected Upon Submission</string>
+  <string name="authorized_upon_submission">Authorization Upon Submission</string>
+  <string name="manual_authorization">Manual Authorization Pending Submission</string>
+  <string name="authorization_pending">Authorization Pending</string>
+  <string name="authorization_accepted">Authorization Approved</string>
+  <string name="authorization_rejected">Authorization Rejected</string>
 </resources>

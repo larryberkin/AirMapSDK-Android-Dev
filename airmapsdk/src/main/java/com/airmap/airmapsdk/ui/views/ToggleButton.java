@@ -1,6 +1,10 @@
 package com.airmap.airmapsdk.ui.views;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatButton;
@@ -10,34 +14,51 @@ import android.view.ViewGroup;
 
 import com.airmap.airmapsdk.R;
 
-/**
- * Created by collin@airmap.com on 5/24/17.
- */
-
 public class ToggleButton extends AppCompatButton implements View.OnClickListener {
 
     private OnClickListener clickListener;
 
+    @ColorInt
+    private int selectedColor;
+    @ColorInt
+    private int unselectedColor;
+
     public ToggleButton(Context context) {
         super(context);
 
-        init();
+        init(context, null);
     }
 
     public ToggleButton(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        init();
+        init(context, attrs);
     }
 
     public ToggleButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        init();
+        init(context, attrs);
     }
 
 
-    public void init() {
+    public void init(Context context, AttributeSet attrs) {
+        if (attrs != null) {
+            TypedArray a = context.getTheme().obtainStyledAttributes(
+                    attrs,
+                    R.styleable.ToggleButton,
+                    0, 0);
+
+            try {
+                selectedColor = a.getColor(R.styleable.ToggleButton_selectedColor, ContextCompat.getColor(context, R.color.colorAccent));
+                unselectedColor = a.getColor(R.styleable.ToggleButton_unselectedColor, ContextCompat.getColor(context, R.color.colorPrimaryDark));
+            } finally {
+                a.recycle();
+            }
+        } else {
+            selectedColor = ContextCompat.getColor(context, R.color.colorAccent);
+            unselectedColor = ContextCompat.getColor(context, R.color.colorPrimaryDark);
+        }
     }
 
     @Override
@@ -70,6 +91,6 @@ public class ToggleButton extends AppCompatButton implements View.OnClickListene
     public void setSelected(boolean selected) {
         super.setSelected(selected);
 
-        ViewCompat.setBackgroundTintList(this, ContextCompat.getColorStateList(getContext(), selected ? R.color.colorAccent : R.color.colorPrimaryDark));
+        ViewCompat.setBackgroundTintList(this, ColorStateList.valueOf(selected ? selectedColor : unselectedColor));
     }
 }

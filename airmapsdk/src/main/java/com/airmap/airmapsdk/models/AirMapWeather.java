@@ -7,10 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by collin@airmap.com on 6/19/17.
- */
-
 public class AirMapWeather implements AirMapBaseModel, Serializable {
 
     private List<AirMapWeatherUpdate> updates;

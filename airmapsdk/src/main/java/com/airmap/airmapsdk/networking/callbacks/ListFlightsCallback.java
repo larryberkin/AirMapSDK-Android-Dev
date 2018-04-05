@@ -14,10 +14,6 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Response;
 
-/**
- * Created by Vansh Gandhi on 7/27/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 public class ListFlightsCallback extends GenericListOkHttpCallback {
     public ListFlightsCallback(AirMapCallback listener, Class<? extends AirMapBaseModel> classToInstantiate) {
         super(listener, classToInstantiate);

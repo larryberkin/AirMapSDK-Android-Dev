@@ -1,15 +1,12 @@
 package com.airmap.airmapsdk.models.rules;
 
 import com.airmap.airmapsdk.models.AirMapBaseModel;
-import com.airmap.airmapsdk.models.flight.AirMapFlightFeature;
 
 import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by collin@airmap.com on 8/11/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapValidation implements AirMapBaseModel, Serializable {
 
@@ -35,9 +32,9 @@ public class AirMapValidation implements AirMapBaseModel, Serializable {
         private String code;
         private String description;
 
-        public Feature(JSONObject jsonObject) {
-            setCode(jsonObject.optString("code"));
-            setDescription(jsonObject.optString("description"));
+        public Feature(JSONObject json) {
+            setCode(optString(json, "code"));
+            setDescription(optString(json, "description"));
         }
 
         public String getCode() {
@@ -69,9 +66,9 @@ public class AirMapValidation implements AirMapBaseModel, Serializable {
 
     @Override
     public AirMapBaseModel constructFromJson(JSONObject json) {
-        setData(json.optString("data"));
-        setStatus(Status.fromText(json.optString("status")));
-        setMessage(json.optString("message"));
+        setData(optString(json, "data"));
+        setStatus(Status.fromText(optString(json, "status")));
+        setMessage(optString(json, "message"));
 
         if (json.has("feature")) {
             setFeature(new Feature(json.optJSONObject("feature")));

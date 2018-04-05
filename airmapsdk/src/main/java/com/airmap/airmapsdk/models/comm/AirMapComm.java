@@ -8,10 +8,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapComm implements Serializable, AirMapBaseModel {
     private byte[] key;
@@ -26,7 +24,7 @@ public class AirMapComm implements Serializable, AirMapBaseModel {
     @Override
     public AirMapComm constructFromJson(JSONObject json) {
         if (json != null) {
-            setKey(Base64.decode(json.optString("key"), Base64.DEFAULT));
+            setKey(Base64.decode(optString(json, "key"), Base64.DEFAULT));
         }
 
         return this;

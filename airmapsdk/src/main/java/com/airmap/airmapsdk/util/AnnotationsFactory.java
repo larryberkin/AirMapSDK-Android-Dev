@@ -20,11 +20,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import java.util.ArrayList;
 
-/**
- * Created by Vansh Gandhi on 12/9/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
-
 public class AnnotationsFactory {
 
     public static final String MIDPOINT_TAG = "midpoint";

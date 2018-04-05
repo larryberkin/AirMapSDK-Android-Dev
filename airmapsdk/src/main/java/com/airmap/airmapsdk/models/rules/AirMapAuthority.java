@@ -6,9 +6,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by collin@airmap.com on 8/11/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapAuthority implements Serializable, AirMapBaseModel {
 
@@ -24,8 +22,8 @@ public class AirMapAuthority implements Serializable, AirMapBaseModel {
 
     @Override
     public AirMapBaseModel constructFromJson(JSONObject json) {
-        setId(json.optString("id"));
-        setName(json.optString("name"));
+        setId(optString(json, "id"));
+        setName(optString(json, "name"));
         return this;
     }
 

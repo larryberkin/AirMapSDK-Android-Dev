@@ -3,15 +3,13 @@ package com.airmap.airmapsdk;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 /**
- * Created by Vansh Gandhi on 6/22/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
  * An Exception wrapper class
  */
 @SuppressWarnings("unused")
 public class AirMapException extends Exception {
-
-    private static final String TAG = "AirMapException";
 
     private static final String UNKNOWN_ERROR_MESSAGE = "Unknown error";
 
@@ -70,7 +68,7 @@ public class AirMapException extends Exception {
         if (data == null) {
             return UNKNOWN_ERROR_MESSAGE;
         }
-        errorMessage = data.optString("message");
+        errorMessage = optString(data, "message");
         JSONArray errors = data.optJSONArray("errors");
         if (errors == null) {
             return UNKNOWN_ERROR_MESSAGE;
@@ -78,9 +76,9 @@ public class AirMapException extends Exception {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < errors.length(); i++) {
             JSONObject error = errors.optJSONObject(i);
-            builder.append(error.optString("name"));
+            builder.append(optString(error, "name"));
             builder.append(": ");
-            builder.append(error.optString("message"));
+            builder.append(optString(error, "message"));
             builder.append(", ");
         }
         if (builder.length() > 2) { //In case no errors were listed in the array
@@ -98,17 +96,17 @@ public class AirMapException extends Exception {
         JSONObject data = json.optJSONObject("data");
         if (data == null) {
             if (json.has("message")) {
-                return json.optString("message");
+                return optString(json, "message");
             }
             return UNKNOWN_ERROR_MESSAGE;
         }
-        return data.optString("message");
+        return optString(data, "message");
     }
 
     private String get500sErrorMessage(JSONObject json) {
         if (json == null) {
             return UNKNOWN_ERROR_MESSAGE;
         }
-        return json.optString("message");
+        return optString(json, "message");
     }
 }

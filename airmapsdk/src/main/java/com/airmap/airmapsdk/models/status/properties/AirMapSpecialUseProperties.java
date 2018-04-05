@@ -6,10 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by Vansh Gandhi on 7/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapSpecialUseProperties implements Serializable, AirMapBaseModel {
     private boolean currentlyActive;
@@ -32,7 +30,7 @@ public class AirMapSpecialUseProperties implements Serializable, AirMapBaseModel
     public AirMapSpecialUseProperties constructFromJson(JSONObject json) {
         if (json != null) {
             setCurrentlyActive(json.optBoolean("currentlyActive"));
-            setDescription(json.optString("description"));
+            setDescription(optString(json, "description"));
         }
         return this;
     }

@@ -19,11 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Vansh Gandhi on 6/20/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
-
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk=23, manifest = "src/main/AndroidManifest.xml")
 public class Tests extends AndroidTestCase {
@@ -53,11 +48,11 @@ public class Tests extends AndroidTestCase {
     @Test
     public void testComm() throws InterruptedException {
         createTestFlights(5); //Creates 5 flights
-        AirMap.getFlights(new AirMapCallback<List<AirMapFlight>>() {
+        AirMap.getMyFlights(new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(List<AirMapFlight> response) {
                 for (AirMapFlight flight : response) {
-                    AirMap.startComm(flight, new AirMapCallback<AirMapComm>() {
+                    AirMap.startComm(flight.getFlightId(), new AirMapCallback<AirMapComm>() {
                         @Override
                         public void onSuccess(AirMapComm response) {
                             assertNotNull(response);
@@ -123,7 +118,7 @@ public class Tests extends AndroidTestCase {
     @Test
     public void testFetchFlight() throws InterruptedException {
         createTestFlights(3);
-        AirMap.getFlights(new AirMapCallback<List<AirMapFlight>>() {
+        AirMap.getMyFlights(new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(List<AirMapFlight> response) {
                 for (final AirMapFlight flight : response) {
@@ -154,11 +149,11 @@ public class Tests extends AndroidTestCase {
     @Test
     public void closeFlightTest() throws InterruptedException {
         createTestFlights(1);
-        AirMap.getFlights(new AirMapCallback<List<AirMapFlight>>() {
+        AirMap.getMyFlights(new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(List<AirMapFlight> response) {
                 for (final AirMapFlight flight : response) {
-                    AirMap.endFlight(flight, new AirMapCallback<AirMapFlight>() {
+                    AirMap.endFlight(flight.getFlightId(), new AirMapCallback<AirMapFlight>() {
                         @Override
                         public void onSuccess(AirMapFlight response) {
                             assertNotNull(response);
@@ -185,7 +180,7 @@ public class Tests extends AndroidTestCase {
 
     @Test
     public void listAllFlightsTest() throws InterruptedException {
-        AirMap.getFlights(new AirMapCallback<List<AirMapFlight>>() {
+        AirMap.getMyFlights(new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(List<AirMapFlight> response) {
                 assertNotNull(response);
@@ -229,7 +224,7 @@ public class Tests extends AndroidTestCase {
 
     @Test
     public void deleteAllFlights() throws InterruptedException {
-        AirMap.getFlights(new AirMapCallback<List<AirMapFlight>>() {
+        AirMap.getMyFlights(new AirMapCallback<List<AirMapFlight>>() {
             @Override
             public void onSuccess(List<AirMapFlight> response) {
                 for (AirMapFlight flight : response) {

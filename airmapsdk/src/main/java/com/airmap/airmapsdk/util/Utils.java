@@ -1,64 +1,80 @@
 package com.airmap.airmapsdk.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.mapbox.mapboxsdk.annotations.PolygonOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.services.commons.models.Position;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by Vansh Gandhi on 7/25/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import timber.log.Timber;
+
 @SuppressWarnings("unused")
 public class Utils {
 
-    private static final String TAG = "Utils (SDK)";
-
     public static final String REFRESH_TOKEN_KEY = "AIRMAP_SDK_REFRESH_TOKEN";
 
-    /** Return the value mapped by the given key, or {@code null} if not present or null. */
+    /**
+     * Return the value mapped by the given key, or fallback if not present or null.
+     */
     public static String optString(JSONObject json, String key) {
+        return optString(json, key, "");
+    }
+
+    public static String optString(JSONObject json, String key, String fallback) {
         // http://code.google.com/p/android/issues/detail?id=13830
         if (json.isNull(key))
+            return fallback;
+        else
+            return json.optString(key, fallback);
+    }
+
+    /**
+     * Return the value mapped by the given index, or fallback if not present or null.
+     */
+    public static String optString(JSONArray json, int index) {
+        return optString(json, index, "");
+    }
+
+    public static String optString(JSONArray json, int index, String fallback) {
+        // http://code.google.com/p/android/issues/detail?id=13830
+        if (json.isNull(index))
             return null;
         else
-            return json.optString(key, null);
+            return json.optString(index, fallback);
     }
 
     public static Float dpToPixels(Context context, int dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
-    }
-
-    public static boolean useMetric(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(AirMapConstants.MEASUREMENT_SYSTEM, AirMapConstants.IMPERIAL_SYSTEM).equals(AirMapConstants.METRIC_SYSTEM);
     }
 
     public static String titleCase(String s) {
@@ -93,9 +109,9 @@ public class Utils {
 
     public static String getTemperatureString(Context context, double tempInCelsius, boolean useFahrenheit) {
         if (useFahrenheit) {
-            return context.getString(R.string.fahrenheit_temp, Math.round(celsiusToFahrenheit(tempInCelsius)));
+            return context.getString(R.string.units_temperature_fahrenheit_format, Long.toString(Math.round(celsiusToFahrenheit(tempInCelsius))));
         }
-        return context.getString(R.string.celsius_temp, Math.round(tempInCelsius));
+        return context.getString(R.string.units_temperature_celcius_format, Long.toString(Math.round(tempInCelsius)));
     }
 
     public static int convertToDp(Context context, int px) {
@@ -122,6 +138,7 @@ public class Utils {
     public static int metersPerSecondToKmph(int metersPerSecond) {
         return (int) (metersPerSecond * 3.6);
     }
+
     public static int metersPerSecondToMph(int metersPerSecond) {
         return (int) (metersPerSecond * 2.23694);
     }
@@ -162,14 +179,14 @@ public class Utils {
             DateTimeFormatter dateTimeFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
             DateTime dateTime = dateTimeFormatter.parseDateTime(iso8601);
             return dateTime.toDate();
-        } catch (UnsupportedOperationException | IllegalArgumentException e) {
-            AirMapLog.e("AirMap Utils", "Error parsing date: " + iso8601, e);
+        } catch (Exception e) {
+            Timber.e(e, "Error parsing date: %s", iso8601);
         }
         return null;
     }
 
-    public static boolean statusSuccessful(JSONObject object) {
-        return object != null && object.optString("status").equalsIgnoreCase("success");
+    public static boolean statusSuccessful(JSONObject json) {
+        return json != null && optString(json, "status").equalsIgnoreCase("success");
     }
 
     public static void error(AirMapCallback listener, Exception e) {
@@ -413,11 +430,11 @@ public class Utils {
     }
 
 
-    public static String getDebugUrl() {
+    public static String getStagingUrl() {
         try {
             return AirMap.getConfig().getJSONObject("internal").getString("debug_url");
         } catch (JSONException e) {
-            return "v2/";
+            return "stage/";
         }
     }
 
@@ -441,5 +458,69 @@ public class Utils {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public static String getMapboxLogs() {
+        StringBuilder builder = new StringBuilder();
+
+        String processId = Integer.toString(android.os.Process.myPid());
+
+        try {
+            String[] command = new String[]{"logcat", "-d", "-v", "threadtime"};
+
+            Process process = Runtime.getRuntime().exec(command);
+
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.contains(processId)) {
+                    if ((line.toLowerCase().contains("mbgl") || line.toLowerCase().contains("mapbox")) && line.toLowerCase().contains("fail")) {
+                        builder.insert(0, line + "\n");
+                    }
+                }
+            }
+            return builder.substring(0, Math.min(1000, builder.length() - 2));
+        } catch (IOException e) {
+            Timber.e(e, "getMapboxLogs failed");
+            return "";
+        }
+    }
+
+    public static boolean checkAndStartIntent(Context context, Intent intent) {
+        boolean canHandle = context.getPackageManager().queryIntentActivities(intent, 0).size() > 0;
+        if (canHandle) {
+            context.startActivity(intent);
+        }
+        return canHandle;
+    }
+
+    public static boolean timberContainsDebugTree() {
+        for (Timber.Tree tree : Timber.forest()) {
+            if (tree instanceof Timber.DebugTree) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<Position> getPositionsFromFeature(ArrayList coordinates) {
+            List<Position> positions = new ArrayList<>();
+            for (Object o : coordinates) {
+                if (o instanceof ArrayList) {
+                    positions.addAll(getPositionsFromFeature((ArrayList) o));
+                } else if (o instanceof Position) {
+                    Position position = (Position) o;
+                    positions.add(position);
+                }
+            }
+
+            return positions;
+    }
+
+    public static boolean useGPSForLocation(Context context) {
+        // by default, GPS is not used
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.setting_location_provider), true);
     }
 }

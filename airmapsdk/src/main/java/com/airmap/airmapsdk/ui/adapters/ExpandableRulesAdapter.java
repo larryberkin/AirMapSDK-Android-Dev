@@ -3,31 +3,18 @@ package com.airmap.airmapsdk.ui.adapters;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.airmap.airmapsdk.Analytics;
 import com.airmap.airmapsdk.R;
-import com.airmap.airmapsdk.models.AirMapBaseModel;
-import com.airmap.airmapsdk.models.flight.AirMapFlightFeature;
-import com.airmap.airmapsdk.models.flight.FlightFeatureValue;
 import com.airmap.airmapsdk.models.rules.AirMapRule;
-import com.airmap.airmapsdk.ui.views.ToggleButton;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-/**
- * Created by collin@airmap.com on 5/26/17.
- */
 
 public class ExpandableRulesAdapter extends ExpandableRecyclerAdapter<AirMapRule.Status, AirMapRule> {
 
@@ -66,7 +53,7 @@ public class ExpandableRulesAdapter extends ExpandableRecyclerAdapter<AirMapRule
             case CHILD_VIEW_TYPE: {
                 final AirMapRule rule = (AirMapRule) getItem(position);
                 RuleViewHolder ruleViewHolder = (RuleViewHolder) holder;
-                ruleViewHolder.descriptionTextView.setText(rule.toString());
+                ruleViewHolder.descriptionTextView.setText(rule.getShortText());
 
                 break;
             }

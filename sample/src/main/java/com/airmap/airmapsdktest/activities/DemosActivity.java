@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.pilot.AirMapPilot;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.LoginCallback;
@@ -17,13 +16,9 @@ import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.util.AirMapConstants;
 import com.airmap.airmapsdktest.R;
 
-/**
- * Created by collin@airmap.com on 9/8/17.
- */
+import timber.log.Timber;
 
 public class DemosActivity extends BaseActivity implements View.OnClickListener {
-
-    private static final String TAG = "DemosActivity";
 
     private Toolbar toolbar;
     private CardView mapCardView;
@@ -32,6 +27,7 @@ public class DemosActivity extends BaseActivity implements View.OnClickListener 
     private CardView flightPlanCardView;
     private CardView briefingCardView;
     private CardView trafficCardView;
+    private CardView telemetryCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +66,9 @@ public class DemosActivity extends BaseActivity implements View.OnClickListener 
 
         trafficCardView = findViewById(R.id.traffic_card_view);
         trafficCardView.setOnClickListener(this);
+
+        telemetryCardView = findViewById(R.id.telemetry_card_view);
+        telemetryCardView.setOnClickListener(this);
     }
 
     @Override
@@ -80,13 +79,13 @@ public class DemosActivity extends BaseActivity implements View.OnClickListener 
             AirMap.showLogin(this, new LoginCallback() {
                 @Override
                 public void onSuccess(AirMapPilot pilot) {
-                    AirMapLog.v(TAG, "Auth Token is: " + AirMap.getAuthToken());
+                    Timber.v("Token is: %s", AirMap.getAuthToken());
                     Toast.makeText(DemosActivity.this, "Logged in as " + pilot.getUsername(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onError(AirMapException e) {
-                    AirMapLog.e(TAG, e.getDetailedMessage(), e);
+                    Timber.e(e, e.getDetailedMessage());
                     Toast.makeText(DemosActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -96,6 +95,8 @@ public class DemosActivity extends BaseActivity implements View.OnClickListener 
             startActivity(new Intent(this, TrafficDemoActivity.class));
         } else if (view.getId() == R.id.flight_plan_card_view) {
             startActivity(new Intent(this, FlightPlanDemoActivity.class));
+        } else if (view.getId() == R.id.telemetry_card_view) {
+            startActivity(new Intent(this, TelemetryDemoActivity.class));
         } else {
             String flightPlanId = PreferenceManager.getDefaultSharedPreferences(this).getString(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, null);
 
@@ -109,20 +110,12 @@ public class DemosActivity extends BaseActivity implements View.OnClickListener 
         AirMap.refreshAccessToken(new AirMapCallback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                if (!isActive()) {
-                    return;
-                }
-
-                AirMapLog.e(TAG, "Refreshing access token success");
+                Timber.i("Successfully refreshed access token");
             }
 
             @Override
             public void onError(AirMapException e) {
-                if (!isActive()) {
-                    return;
-                }
-
-                AirMapLog.e(TAG, "Refreshing access token failed", e);
+                Timber.e(e, "Refreshing access token failed: %s", e.getDetailedMessage());
             }
         });
     }

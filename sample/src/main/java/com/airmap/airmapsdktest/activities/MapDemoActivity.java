@@ -7,28 +7,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.Toolbar;
 
-import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
-import com.airmap.airmapsdk.ui.views.CustomViewPager;
+import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
+import com.airmap.airmapsdk.ui.activities.MyLocationMapActivity;
+import com.airmap.airmapsdk.ui.views.AirMapMapView;
+import com.airmap.airmapsdk.ui.views.SwipeDisableableViewPager;
+import com.airmap.airmapsdktest.R;
 import com.airmap.airmapsdktest.fragments.AdvisoriesFragment;
 import com.airmap.airmapsdktest.fragments.MapFragment;
-import com.airmap.airmapsdktest.R;
 import com.airmap.airmapsdktest.fragments.RulesetsFragment;
 
 import java.util.List;
 
-/**
- * Created by collin@airmap.com on 9/8/17.
- */
-
 public class MapDemoActivity extends MyLocationMapActivity {
-
-    private static final String TAG = "MapDemoActivity";
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private MapPagerAdapter pagerAdapter;
-    private CustomViewPager viewPager;
+    private SwipeDisableableViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +97,15 @@ public class MapDemoActivity extends MyLocationMapActivity {
         return null;
     }
 
+    @Override
+    protected AirMapMapView getMapView() {
+        if (getMapFragment() != null) {
+            return getMapFragment().getMapView();
+        }
+
+        return null;
+    }
+
     private class MapPagerAdapter extends FragmentPagerAdapter {
 
         public MapPagerAdapter(FragmentManager fm) {
@@ -113,7 +118,7 @@ public class MapDemoActivity extends MyLocationMapActivity {
                 case 0:
                     return MapFragment.newInstance();
                 case 1:
-                   return RulesetsFragment.newInstance();
+                    return RulesetsFragment.newInstance();
                 case 2:
                     return AdvisoriesFragment.newInstance();
             }

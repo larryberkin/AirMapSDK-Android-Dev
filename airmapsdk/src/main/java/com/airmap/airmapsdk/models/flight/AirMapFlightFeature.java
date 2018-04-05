@@ -10,18 +10,42 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by collin@airmap.com on 5/22/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapFlightFeature implements Serializable, AirMapBaseModel {
 
-    public InputType getInputType() {
-        return inputType;
-    }
+    public enum Status {
+        Conflicting, NotConflicting, MissingInfo, InformationRules, Unknown;
 
-    public void setInputType(InputType inputType) {
-        this.inputType = inputType;
+        public static Status fromString(String text) {
+            switch (text.toLowerCase()) {
+                case "conflicting":
+                    return Conflicting;
+                case "not_conflicting":
+                    return NotConflicting;
+                case "missing_info":
+                    return MissingInfo;
+                case "informational":
+                case "information_rules":
+                    return InformationRules;
+                default:
+                    return Unknown;
+            }
+        }
+
+        public int intValue() {
+            switch (this) {
+                case Conflicting:
+                    return 0;
+                case MissingInfo:
+                    return 1;
+                case InformationRules:
+                    return 2;
+                case NotConflicting:
+                    return 3;
+            }
+            return -1;
+        }
     }
 
     public enum InputType {
@@ -109,6 +133,7 @@ public class AirMapFlightFeature implements Serializable, AirMapBaseModel {
 
     private int id;
     private String flightFeature;
+    private Status status;
     private String description;
     private InputType inputType;
     private MeasurementType measurementType;
@@ -125,11 +150,12 @@ public class AirMapFlightFeature implements Serializable, AirMapBaseModel {
 
     @Override
     public AirMapBaseModel constructFromJson(JSONObject json) {
-        setFlightFeature(json.optString("flight_feature"));
-        setInputType(InputType.fromText(json.optString("input_type")));
-        setDescription(json.optString("description"));
-        setMeasurementType(MeasurementType.fromText(json.optString("measurement_type")));
-        setMeasurementUnit(MeasurementUnit.fromText(json.optString("measurement_unit")));
+        setFlightFeature(optString(json, "flight_feature"));
+        setStatus(Status.fromString(optString(json, "status")));
+        setInputType(InputType.fromText(optString(json, "input_type")));
+        setDescription(optString(json, "description"));
+        setMeasurementType(MeasurementType.fromText(optString(json, "measurement_type")));
+        setMeasurementUnit(MeasurementUnit.fromText(optString(json, "measurement_unit")));
         setCalculated(json.optBoolean("is_calculated"));
         return this;
     }
@@ -150,12 +176,28 @@ public class AirMapFlightFeature implements Serializable, AirMapBaseModel {
         this.flightFeature = flightFeature;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public InputType getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(InputType inputType) {
+        this.inputType = inputType;
     }
 
     public MeasurementType getMeasurementType() {

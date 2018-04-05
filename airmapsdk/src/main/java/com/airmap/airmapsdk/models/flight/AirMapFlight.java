@@ -1,13 +1,14 @@
 package com.airmap.airmapsdk.models.flight;
 
 import com.airmap.airmapsdk.models.AirMapBaseModel;
-import com.airmap.airmapsdk.models.aircraft.AirMapAircraft;
 import com.airmap.airmapsdk.models.Coordinate;
+import com.airmap.airmapsdk.models.aircraft.AirMapAircraft;
 import com.airmap.airmapsdk.models.pilot.AirMapPilot;
 import com.airmap.airmapsdk.models.shapes.AirMapGeometry;
 import com.airmap.airmapsdk.models.shapes.AirMapPath;
 import com.airmap.airmapsdk.models.shapes.AirMapPoint;
 import com.airmap.airmapsdk.models.shapes.AirMapPolygon;
+import com.airmap.airmapsdk.util.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +24,8 @@ import java.util.Map;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
 import static com.airmap.airmapsdk.util.Utils.getIso8601StringFromDate;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 @SuppressWarnings("unused")
 public class AirMapFlight implements Serializable, AirMapBaseModel {
 
@@ -91,17 +89,17 @@ public class AirMapFlight implements Serializable, AirMapBaseModel {
     @Override
     public AirMapFlight constructFromJson(JSONObject json) {
         if (json != null) {
-            setFlightId(json.optString("id"));
-            setFlightPlanId(json.optString("flight_plan_id"));
+            setFlightId(optString(json, "id"));
+            setFlightPlanId(optString(json, "flight_plan_id"));
             setCoordinate(new Coordinate(json.optDouble("latitude", 0), json.optDouble("longitude", 0)));
             setMaxAltitude(json.optDouble("max_altitude"));
-            setCity(json.optString("city"));
-            setState(json.optString("state"));
-            setCountry(json.optString("country"));
+            setCity(optString(json, "city"));
+            setState(optString(json, "state"));
+            setCountry(optString(json, "country"));
             setNotify(json.optBoolean("notify"));
-            setPilotId(json.optString("pilot_id"));
+            setPilotId(optString(json, "pilot_id"));
             setPilot(new AirMapPilot(json.optJSONObject("pilot")));
-            setAircraftId(json.optString("aircraft_id", null));
+            setAircraftId(optString(json, "aircraft_id"));
             setAircraft(new AirMapAircraft(json.optJSONObject("aircraft")));
             setPublic(json.optBoolean("public"));
             setBuffer(json.optDouble("buffer"));
@@ -115,17 +113,17 @@ public class AirMapFlight implements Serializable, AirMapBaseModel {
 
             JSONArray permitIdsJson = json.optJSONArray("permits");
             for (int i = 0; permitIdsJson != null && i < permitIdsJson.length(); i++) {
-                addPermitId(permitIdsJson.optString(i));
+                addPermitId(optString(permitIdsJson, i));
             }
 
             //Created at
             if (json.has("created_at")) {
-                setCreatedAt(getDateFromIso8601String(json.optString("created_at")));
+                setCreatedAt(getDateFromIso8601String(optString(json, "created_at")));
             } else if (json.has("creation_date")) {
-                setCreatedAt(getDateFromIso8601String(json.optString("creation_date")));
+                setCreatedAt(getDateFromIso8601String(optString(json, "creation_date")));
             }
-            setStartsAt(getDateFromIso8601String(json.optString("start_time")));
-            setEndsAt(getDateFromIso8601String(json.optString("end_time")));
+            setStartsAt(getDateFromIso8601String(optString(json, "start_time")));
+            setEndsAt(getDateFromIso8601String(optString(json, "end_time")));
         }
         return this;
     }

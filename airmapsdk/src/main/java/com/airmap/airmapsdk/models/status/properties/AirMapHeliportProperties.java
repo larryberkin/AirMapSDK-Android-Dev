@@ -6,10 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * Created by Vansh Gandhi on 8/8/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapHeliportProperties implements Serializable, AirMapBaseModel {
     private boolean publicUse;
@@ -25,10 +23,10 @@ public class AirMapHeliportProperties implements Serializable, AirMapBaseModel {
     @Override
     public AirMapHeliportProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            String use = json.optString("use");
-            setPublicUse(use.equals("public"));
+            String use = optString(json, "use");
+            setPublicUse("public".equals(use));
 
-            setPhoneNumber(json.optString("phone"));
+            setPhoneNumber(optString(json, "phone"));
         }
         return this;
     }

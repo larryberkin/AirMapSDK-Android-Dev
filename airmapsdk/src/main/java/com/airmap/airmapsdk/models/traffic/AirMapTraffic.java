@@ -8,10 +8,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapTraffic implements Serializable, AirMapBaseModel {
     /**
@@ -55,7 +53,7 @@ public class AirMapTraffic implements Serializable, AirMapBaseModel {
     @Override
     public AirMapTraffic constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
+            setId(optString(json, "id"));
             setDirection(json.optDouble("direction", -1));
             setAltitude(json.optDouble("altitude"));
             setGroundSpeedKt(json.optInt("ground_speed_kts", -1));

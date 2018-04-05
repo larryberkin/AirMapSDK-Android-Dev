@@ -1,20 +1,20 @@
 package com.airmap.airmapsdk.models.map;
 
+import com.mapbox.mapboxsdk.style.functions.Function;
+import com.mapbox.mapboxsdk.style.functions.stops.Stop;
+import com.mapbox.mapboxsdk.style.functions.stops.Stops;
 import com.mapbox.mapboxsdk.style.layers.Filter;
 import com.mapbox.mapboxsdk.style.layers.Layer;
+import com.mapbox.mapboxsdk.style.layers.PropertyValue;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
-/**
- * Created by collin@airmap.com on 4/17/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public abstract class AirMapLayerStyle {
-
-    protected static final String TAG = "AirMapLayerStyle";
 
     public final String id;
     public final String source;
@@ -36,10 +36,6 @@ public abstract class AirMapLayerStyle {
         filter = getFilter(json.optJSONArray("filter"));
     }
 
-    public static String optString(JSONObject jsonObject, String key) {
-        return jsonObject.optString(key);
-    }
-
     public boolean isBackgroundStyle() {
         return id.contains("background");
     }
@@ -52,7 +48,7 @@ public abstract class AirMapLayerStyle {
         }
 
         Filter.Statement filter;
-        String operator = filterJsonArray.optString(0);
+        String operator = optString(filterJsonArray, 0);
         final Object[] operands = new Object[filterJsonArray.length() - 1];
         for (int i = 0; i < operands.length; i++) {
             operands[i] = filterJsonArray.opt(i + 1);
@@ -119,6 +115,67 @@ public abstract class AirMapLayerStyle {
             statements[i] = getFilter((JSONArray) jsonArrays[i]);
         }
         return statements;
+    }
+
+    public static Function getFillColorFunction(JSONObject fillColor) {
+        String property = optString(fillColor, "property");
+        String type = optString(fillColor, "type");
+        optString(fillColor, "default", "#000000");
+        String defaultColor = optString(fillColor, "default", "#000000");
+        JSONArray stopsArray = fillColor.optJSONArray("stops");
+
+        switch (type) {
+            case "categorical": {
+                Stop[] stops;
+                if (stopsArray != null) {
+                    stops = new Stop[stopsArray.length()];
+                    for (int i = 0; i < stopsArray.length(); i++) {
+                        JSONArray stopArray = stopsArray.optJSONArray(i);
+                        if (stopArray != null) {
+                            Object value1 = stopArray.opt(0);
+                            Object value2 = stopArray.opt(1);
+                            stops[i] = (Stop.stop(value1, new PropertyValue("color", value2)));
+                        }
+                    }
+                } else {
+                    stops = new Stop[0];
+                }
+
+                return Function.property(property, Stops.categorical(stops)).withDefaultValue(new PropertyValue("default", defaultColor));
+            }
+        }
+
+        return null;
+    }
+
+    public static Function getFillOpacityFunction(JSONObject fillOpacity) {
+        String property = optString(fillOpacity, "property");
+        String type = optString(fillOpacity, "type");
+        float defaultOpacity = (float) fillOpacity.optDouble("default", 1.0f);
+        JSONArray stopsArray = fillOpacity.optJSONArray("stops");
+
+        switch (type) {
+            case "categorical": {
+                Stop[] stops;
+                if (stopsArray != null) {
+                    stops = new Stop[stopsArray.length()];
+                    for (int i = 0; i < stopsArray.length(); i++) {
+                        JSONArray stopArray = stopsArray.optJSONArray(i);
+                        if (stopArray != null) {
+                            Object value1 = stopArray.opt(0);
+                            Object value2 = stopArray.opt(1);
+                            stops[i] = (Stop.stop(value1, new PropertyValue("opacity", value2)));
+                        }
+                    }
+                } else {
+                    stops = new Stop[0];
+                }
+
+                return Function.property(property, Stops.categorical(stops)).withDefaultValue(new PropertyValue("default", defaultOpacity));
+            }
+        }
+
+        return null;
     }
 
     public static AirMapLayerStyle fromJson(JSONObject jsonObject) {

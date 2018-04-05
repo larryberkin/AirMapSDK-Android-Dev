@@ -6,17 +6,17 @@ import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.util.AirMapConfig;
 import com.mapbox.mapboxsdk.Mapbox;
 
-/**
- * Created by Vansh Gandhi on 8/12/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
+import timber.log.Timber;
+import timber.log.Timber.DebugTree;
+
 public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
 
         AirMap.init(this);
-        AirMap.enableLogging(true);
+        Timber.plant(new DebugTree());
+
         Mapbox.getInstance(this, AirMapConfig.getMapboxApiKey());
     }
 }

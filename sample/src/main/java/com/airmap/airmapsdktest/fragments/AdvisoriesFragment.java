@@ -4,15 +4,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.models.Coordinate;
-import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
+import com.airmap.airmapsdk.models.shapes.AirMapPolygon;
 import com.airmap.airmapsdk.models.status.AirMapAdvisory;
+import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.networking.services.MappingService;
@@ -25,13 +24,9 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-/**
- * Created by collin@airmap.com on 9/7/17.
- */
+import timber.log.Timber;
 
 public class AdvisoriesFragment extends Fragment {
-
-    private static final String TAG = "AdvisoriesFragment";
 
     private RecyclerView advisoriesRecyclerView;
     private ExpandableAdvisoriesAdapter advisoriesAdapter;
@@ -53,8 +48,8 @@ public class AdvisoriesFragment extends Fragment {
         return view;
     }
 
-    private void loadAdvisories(List<String> rulesets, Coordinate northeast, Coordinate southwest) {
-        AirMap.getAdvisories(rulesets, northeast, southwest, null, null, new AirMapCallback<AirMapAirspaceStatus>() {
+    private void loadAdvisories(List<String> rulesets, AirMapPolygon polygon) {
+        AirMap.getAirspaceStatus(polygon, rulesets, new AirMapCallback<AirMapAirspaceStatus>() {
             @Override
             public void onSuccess(AirMapAirspaceStatus advisoryStatus) {
                 // if the activity has been destroy, ignore response
@@ -99,7 +94,7 @@ public class AdvisoriesFragment extends Fragment {
 
             @Override
             public void onError(AirMapException e) {
-                Log.e(TAG, "Getting advisories failed", e);
+                Timber.e(e, "Getting advisories failed");
 
                 //TODO: show error
             }

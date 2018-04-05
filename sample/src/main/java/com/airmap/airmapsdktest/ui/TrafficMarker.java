@@ -3,10 +3,6 @@ package com.airmap.airmapsdktest.ui;
 import com.airmap.airmapsdk.models.traffic.AirMapTraffic;
 import com.mapbox.mapboxsdk.annotations.Marker;
 
-/**
- * Created by collin@airmap.com on 10/2/17.
- */
-
 public class TrafficMarker extends Marker {
     private AirMapTraffic traffic;
 

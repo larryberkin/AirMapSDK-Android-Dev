@@ -1,7 +1,5 @@
 package com.airmap.airmapsdk.models;
 
-import android.util.Log;
-
 import com.airmap.airmapsdk.util.Utils;
 
 import org.json.JSONObject;
@@ -9,9 +7,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by collin@airmap.com on 6/16/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapWeatherUpdate implements AirMapBaseModel, Serializable {
 
@@ -36,11 +32,11 @@ public class AirMapWeatherUpdate implements AirMapBaseModel, Serializable {
     @Override
     public AirMapWeatherUpdate constructFromJson(JSONObject json) {
         if (json != null) {
-            String time = json.optString("time");
+            String time = optString(json, "time");
             setTime(Utils.getDateFromIso8601String(time));
-            setTimezone(json.optString("timeone"));
-            setCondition(json.optString("condition"));
-            setIcon(json.optString("icon", "").replace("-", "_"));
+            setTimezone(optString(json, "timezone"));
+            setCondition(optString(json, "condition"));
+            setIcon(optString(json, "icon").replace("-", "_"));
 
             JSONObject windJSON = json.optJSONObject("wind");
             if (windJSON != null) {

@@ -8,11 +8,6 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Vansh Gandhi on 9/22/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
-
 public class PointMath {
 
     /**

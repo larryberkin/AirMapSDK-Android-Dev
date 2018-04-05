@@ -13,10 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by collin@airmap.com on 3/28/17.
- */
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapRule implements Serializable, AirMapBaseModel {
 
@@ -67,9 +64,9 @@ public class AirMapRule implements Serializable, AirMapBaseModel {
     @Override
     public AirMapRule constructFromJson(JSONObject json) {
         if (json != null) {
-            setShortText(Utils.optString(json, "short_text"));
-            setDescription(Utils.optString(json, "description"));
-            setStatus(AirMapRule.Status.fromString(json.optString("status")));
+            setShortText(optString(json, "short_text"));
+            setDescription(optString(json, "description"));
+            setStatus(AirMapRule.Status.fromString(optString(json, "status")));
             setDisplayOrder(json.optInt("display_order", 90000));
 
             List<AirMapFlightFeature> flightFeatures = new ArrayList<>();

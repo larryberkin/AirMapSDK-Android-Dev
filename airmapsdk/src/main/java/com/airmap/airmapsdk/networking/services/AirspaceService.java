@@ -15,11 +15,6 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-/**
- * Created by Vansh Gandhi on 11/8/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
-
 public class AirspaceService extends BaseService {
 
     /**

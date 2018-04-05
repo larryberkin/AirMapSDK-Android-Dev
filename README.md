@@ -4,8 +4,9 @@
 
 Create Flights, Send Telemetry Data, Get Realtime Traffic Alerts.
 
-##Requirements
+## Requirements
 * Minimum Andorid SDK Level 18 or higher
+* Contextual Airspace (Rules API, Advisory API, and Flight Plan API) is currently in developer PREVIEW for testing and is subject to change. Contact us for more information.
 
 ### Sign up for an [AirMap Developer Account.](https://dashboard.airmap.io/developer/)
 
@@ -13,7 +14,7 @@ Create Flights, Send Telemetry Data, Get Realtime Traffic Alerts.
  
  
 ### Read Getting Started Guide
-[https://developers.airmap.com/docs/android-getting-started](https://developers.airmap.com/docs/android-getting-started)
+[https://developers.airmap.com/v2.1/docs/getting-started-with-airmap](https://developers.airmap.com/v2.1/docs/getting-started-with-airmap)
 
 ## Setup
 
@@ -21,7 +22,7 @@ Start by adding the Android SDK to your project:
 
 * Add 
 ```groovy
-compile('com.airmap.sdk:airmapsdk:1.0.6')
+implementation 'com.airmap.sdk:airmapsdk:2.0.0-beta.6'
 ``` 
 
 to your module level `build.gradle` file
@@ -33,11 +34,6 @@ maven { url "https://jitpack.io" }
 
 to your application-level `build.gradle` file under the `allprojects.repositories` block
 
-
-* If you were previously using version `1.0.2` or older, note that there have also been some package name changes, so some classes will need to be re-imported
-
-
-
 ### Initalizing The SDK
 
 Simply add this line in your Application or Activity's `onCreate`
@@ -46,8 +42,8 @@ Simply add this line in your Application or Activity's `onCreate`
 AirMap.init(MainActivity.this);
 ```
 
-###Documentation
-Visit [https://developers.airmap.com/docs/android-getting-started](https://developers.airmap.com/docs/android-getting-started) for the full documentation
+### Documentation
+Visit [https://developers.airmap.com/](https://developers.airmap.com/) for the full documentation
 
-#License
+# License
 See [LICENSE](https://raw.githubusercontent.com/airmap/AirMapSDK-Android/master/LICENSE) for details.

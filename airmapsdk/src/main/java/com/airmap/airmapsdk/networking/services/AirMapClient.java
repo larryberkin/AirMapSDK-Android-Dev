@@ -1,5 +1,6 @@
 package com.airmap.airmapsdk.networking.services;
 
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.airmap.airmapsdk.AirMapException;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -31,14 +33,8 @@ import okhttp3.Response;
 import rx.Observable;
 import rx.functions.Func0;
 
-/**
- * Created by Vansh Gandhi on 6/16/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 @SuppressWarnings("unused")
 public class AirMapClient {
-
-    private static final String TAG = "AirMapClient";
 
     private OkHttpClient client;
 
@@ -336,6 +332,11 @@ public class AirMapClient {
                     if (!TextUtils.isEmpty(authToken)) {
                         newRequest.header("Authorization", "Bearer " + authToken);
                     }
+
+                    if (!TextUtils.isEmpty(getLanguageTag())) {
+                        newRequest.header("Accept-Language", getLanguageTag());
+                    }
+
                     return chain.proceed(newRequest.build());
                 }
                 return chain.proceed(chain.request());
@@ -431,5 +432,14 @@ public class AirMapClient {
                 call.cancel();
             }
         }
+    }
+
+    private String getLanguageTag() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return Locale.getDefault().toLanguageTag();
+        } else {
+            return Locale.getDefault().toString().replace("_", "-");
+        }
+
     }
 }

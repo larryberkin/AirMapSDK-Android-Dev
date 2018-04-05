@@ -79,6 +79,50 @@ advisories_title : airmap_airspace_advisories
 flight_drawing_mode_area : airmap_polygon
 create_aircraft_title : create_aircraft
 
+RULES_SECTION_CONFLICTING_TITLE : conflicting_rules
+RULES_SECTION_NEEDING_MORE_INFO_TITLE : missing_info_rules
+RULES_SECTION_INFORMATIONAL_TITLE : informational_rules
+RULES_SECTION_NOT_CONFLICTING_TITLE : not_conflicting_rules
+HEADER_SECTION_RULES_AND_COMPLIANCE_TITLE : rules_and_flight_features_header
+
+
+com.auth0.lock.database.button.forgot_password : com_auth0_lock_action_forgot_password
+com.auth0.lock.database.mode.switcher.login : com_auth0_lock_mode_log_in
+com.auth0.lock.database.mode.switcher.signup : com_auth0_lock_mode_sign_up
+com.auth0.lock.strategy.login.title : com_auth0_lock_social_log_in
+com.auth0.lock.strategy.signup.title : com_auth0_lock_social_sign_up
+com.auth0.lock.database.separator : com_auth0_lock_forms_separator
+com.auth0.lock.input.email.error : com_auth0_lock_input_error_email
+com.auth0.lock.input.email.placeholder : com_auth0_lock_hint_email
+com.auth0.lock.input.password.placeholder : com_auth0_lock_hint_password
+com.auth0.lock.database.button.tos : com_auth0_lock_sign_up_terms
+com.auth0.lock.database.forgot.success.message : com_auth0_lock_db_change_password_message_success
+com.auth0.lock.database.login.success.message : com_auth0_lock_database_login_success_message
+com.auth0.lock.forgot.message : com_auth0_lock_forgot_message
+com.auth0.lock.forgot.title : com_auth0_lock_title_change_password
+com.auth0.lock.submit.send_email.title : com_auth0_lock_action_send_email
+com.auth0.lock.submit.login.title : com_auth0_lock_action_log_in
+com.auth0.lock.submit.signup.title : com_auth0_lock_action_sign_up
+com.auth0.lock.error.fallback : com_auth0_lock_unrecoverable_error_title
+com.auth0.lock.error.forgot.fallback : com_auth0_lock_db_message_change_password_error
+com.auth0.lock.error.password.lowercase_letters : com_auth0_lock_password_strength_lowercase_letters
+com.auth0.lock.error.password.no_more_identical : com_auth0_lock_password_strength_identical_chars
+com.auth0.lock.error.password.numbers : com_auth0_lock_password_strength_numbers
+com.auth0.lock.error.password.should_contain : com_auth0_lock_password_strength_title_must_have
+com.auth0.lock.error.password.special_characters : com_auth0_lock_password_strength_special_chars
+com.auth0.lock.error.password.uppercase_letters : com_auth0_lock_password_strength_uppercase_letters
+com.auth0.lock.error.signup.fallback : com_auth0_lock_db_sign_up_error_message
+com.auth0.lock.error.signup.password_history : com_auth0_lock_db_signup_password_already_used_error_message
+com.auth0.lock.error.signup.password_strength_error : com_auth0_lock_db_signup_password_not_strong_error_message
+com.auth0.lock.error.signup.user_exists : com_auth0_lock_db_signup_user_already_exists_error_message
+com.auth0.lock.error.signup.invalid_password : com_auth0_lock_input_error_password
+com.auth0.lock.error.password.at_least_length : com_auth0_lock_password_strength_chars_length
+com.auth0.lock.error.authentication.invalid_user_password : com_auth0_lock_db_login_error_invalid_credentials_message
+
+2eq-fz-boo.normaltitle : end_flight_title
+4yz-kg-zkz.normaltitle : submit_title
+7qo-vn-m2p.title : review_flight_plan
+
 
 
 

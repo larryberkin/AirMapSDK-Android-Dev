@@ -2,7 +2,6 @@ package com.airmap.airmapsdk.models.status;
 
 import com.airmap.airmapsdk.models.AirMapBaseModel;
 import com.airmap.airmapsdk.models.Coordinate;
-import com.airmap.airmapsdk.models.permits.AirMapAvailablePermit;
 import com.airmap.airmapsdk.models.status.properties.AirMapAirportProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapControlledAirspaceProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapEmergencyProperties;
@@ -15,20 +14,14 @@ import com.airmap.airmapsdk.models.status.properties.AirMapTfrProperties;
 import com.airmap.airmapsdk.models.status.properties.AirMapWildfireProperties;
 import com.airmap.airmapsdk.networking.services.MappingService;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
-/**
- * Created by Vansh Gandhi on 6/15/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 @SuppressWarnings("unused")
 @Deprecated
 public class AirMapStatusAdvisory implements Serializable, AirMapBaseModel {
@@ -40,12 +33,11 @@ public class AirMapStatusAdvisory implements Serializable, AirMapBaseModel {
     private String state;
     private String country;
     private Date lastUpdated;
-    private AirMapStatus.StatusColor color;
+    private AirMapColor color;
     private int distance;
     private Coordinate coordinate;
     private AirMapStatusRequirement requirements;
     private String geometryString;
-    private List<AirMapAvailablePermit> availablePermits;
 
     private AirMapAirportProperties airportProperties;
     private AirMapHeliportProperties heliportProperties;
@@ -77,31 +69,24 @@ public class AirMapStatusAdvisory implements Serializable, AirMapBaseModel {
     @Override
     public AirMapStatusAdvisory constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setName(json.optString("name"));
-            setOrganizationId(json.optString("organization_id"));
+            setId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setOrganizationId(optString(json, "organization_id"));
             setRequirements(new AirMapStatusRequirement(json.optJSONObject("requirements")));
-            String typeString = json.optString("type");
+            String typeString = optString(json, "type");
             setType(MappingService.AirMapAirspaceType.fromString(typeString));
-            setCountry(json.optString("country"));
+            setCountry(optString(json, "country"));
             setDistance(json.optInt("distance"));
-            setCity(json.optString("city"));
-            setState(json.optString("state"));
-            setColor(AirMapStatus.StatusColor.fromString(json.optString("color")));
-            setGeometryString(json.optString("geometry"));
+            setCity(optString(json, "city"));
+            setState(optString(json, "state"));
+            setColor(AirMapColor.fromString(optString(json, "color")));
+            setGeometryString(optString(json, "geometry"));
             double lat = json.optDouble("latitude");
             double lng = json.optDouble("longitude");
             if (lat != Double.NaN && lng != Double.NaN) {
                 setCoordinate(new Coordinate(lat, lng));
             }
-            setLastUpdated(getDateFromIso8601String(json.optString("last_updated")));
-
-            List<AirMapAvailablePermit> availablePermits = new ArrayList<>();
-            JSONArray availablePermitsJSON = json.optJSONArray("available_permits");
-            for (int j = 0; availablePermitsJSON != null && j < availablePermitsJSON.length(); j++) {
-                availablePermits.add(new AirMapAvailablePermit(availablePermitsJSON.optJSONObject(j)));
-            }
-            setAvailablePermits(availablePermits);
+            setLastUpdated(getDateFromIso8601String(optString(json, "last_updated")));
 
             JSONObject properties = json.optJSONObject("properties");
             if (type == MappingService.AirMapAirspaceType.Airport) {
@@ -210,11 +195,11 @@ public class AirMapStatusAdvisory implements Serializable, AirMapBaseModel {
         return this;
     }
 
-    public AirMapStatus.StatusColor getColor() {
+    public AirMapColor getColor() {
         return color;
     }
 
-    public AirMapStatusAdvisory setColor(AirMapStatus.StatusColor color) {
+    public AirMapStatusAdvisory setColor(AirMapColor color) {
         this.color = color;
         return this;
     }
@@ -333,15 +318,6 @@ public class AirMapStatusAdvisory implements Serializable, AirMapBaseModel {
 
     public AirMapStatusAdvisory setGeometryString(String geometryString) {
         this.geometryString = geometryString;
-        return this;
-    }
-
-    public List<AirMapAvailablePermit> getAvailablePermits() {
-        return availablePermits;
-    }
-
-    public AirMapStatusAdvisory setAvailablePermits(List<AirMapAvailablePermit> availablePermits) {
-        this.availablePermits = availablePermits;
         return this;
     }
 

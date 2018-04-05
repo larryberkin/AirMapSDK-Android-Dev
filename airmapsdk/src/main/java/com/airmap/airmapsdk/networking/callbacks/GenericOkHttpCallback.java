@@ -1,9 +1,5 @@
 package com.airmap.airmapsdk.networking.callbacks;
 
-import android.os.Handler;
-import android.os.Looper;
-
-import com.airmap.airmapsdk.AirMapLog;
 import com.airmap.airmapsdk.models.AirMapBaseModel;
 import com.airmap.airmapsdk.util.Utils;
 
@@ -14,14 +10,10 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import timber.log.Timber;
 
-/**
- * Created by Vansh Gandhi on 7/21/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
 public class GenericOkHttpCallback extends GenericBaseOkHttpCallback {
-
-    private static final String TAG = "GenericOkHttpCallback";
 
     public GenericOkHttpCallback(AirMapCallback listener, Class<? extends AirMapBaseModel> classToInstantiate) {
         super(listener, classToInstantiate);
@@ -29,25 +21,31 @@ public class GenericOkHttpCallback extends GenericBaseOkHttpCallback {
 
     @Override
     public void onResponse(Call call, Response response) {
+        ResponseBody body = response.body();
         if (listener == null) {
+            if (body != null) {
+                body.close();
+            }
             return; //Don't need to do anything if no listener was provided
         }
 
         String jsonString;
         try {
-            jsonString = response.body().string();
-        } catch (IOException e) {
+            jsonString = body.string();
+        } catch (Exception e) {
             failed(e);
             return;
         } finally {
-            response.body().close();
+            if (body != null) {
+                body.close();
+            }
         }
 
         JSONObject result = null;
         try {
             result = new JSONObject(jsonString);
         } catch (JSONException e) {
-            AirMapLog.e("AirMapCallback", jsonString);
+            Timber.e(e, "JSON parsing error for jsonString: %s", jsonString);
         }
 
         if (!response.isSuccessful() || !Utils.statusSuccessful(result)) {

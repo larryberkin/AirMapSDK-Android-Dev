@@ -4,11 +4,6 @@ import com.mapbox.mapboxsdk.annotations.Polygon;
 import com.mapbox.mapboxsdk.annotations.Polyline;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
-/**
- * Created by Vansh Gandhi on 10/30/16.
- * Copyright © 2016 AirMap, Inc. All rights reserved.
- */
-
 public class CircleContainer implements Container {
     public Polygon circle;
     public Polyline outline;

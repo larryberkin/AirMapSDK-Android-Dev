@@ -10,10 +10,6 @@ import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
-/**
- * Created by collin@airmap.com on 10/2/17.
- */
-
 public class TrafficMarkerOptions extends BaseMarkerOptions<TrafficMarker, TrafficMarkerOptions> {
 
     private AirMapTraffic traffic;

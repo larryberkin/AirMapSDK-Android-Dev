@@ -12,19 +12,16 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
 import com.airmap.airmapsdk.AirMapException;
-import com.airmap.airmapsdk.AirMapLog;
-import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.models.flight.AirMapFlight;
-import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdk.models.traffic.AirMapTraffic;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.AirMapTrafficListener;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.ui.views.AirMapMapView;
 import com.airmap.airmapsdktest.R;
+import com.airmap.airmapsdktest.Utils;
 import com.airmap.airmapsdktest.ui.TrafficMarker;
 import com.airmap.airmapsdktest.ui.TrafficMarkerOptions;
-import com.airmap.airmapsdktest.Utils;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -35,13 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by collin@airmap.com on 9/29/17.
- */
+import timber.log.Timber;
 
-public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.MapListener, AirMapTrafficListener {
-
-    private static final String TAG = "TrafficDemoActivity";
+public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.OnMapLoadListener, AirMapTrafficListener {
 
     private Toolbar toolbar;
     private AirMapMapView mapView;
@@ -66,11 +59,11 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.M
 
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
-        mapView.setMapListener(this);
+        mapView.addOnMapLoadListener(this);
     }
 
     @Override
-    public void onMapReady() {
+    public void onMapLoaded() {
         mapView.getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.0195, -118.4912), 12.5));
 
         AirMap.getCurrentFlight(new AirMapCallback<AirMapFlight>() {
@@ -91,7 +84,7 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.M
                     AirMap.enableTrafficAlerts(TrafficDemoActivity.this);
                     Toast.makeText(TrafficDemoActivity.this, "Enabling traffic alerts", Toast.LENGTH_SHORT).show();
 
-                // if not, user needs to create flight first
+                    // if not, user needs to create flight first
                 } else {
                     Toast.makeText(TrafficDemoActivity.this, "No active flight. Please create a flight first.", Toast.LENGTH_SHORT).show();
                 }
@@ -99,22 +92,14 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.M
 
             @Override
             protected void onError(AirMapException e) {
-                AirMapLog.e(TAG, "Get current flight failed", e);
+                Timber.e(e, "Get current flight failed");
             }
         });
     }
 
     @Override
-    public void onMapLoaded() {}
-
-    @Override
-    public void onMapFailed(AirMapMapView.MapFailure failure) {}
-
-    @Override
-    public void onRulesetsChanged(List<AirMapRuleset> availableRulesets, List<AirMapRuleset> selectedRulesets) {}
-
-    @Override
-    public void onAdvisoryStatusChanged(AirMapAirspaceStatus status) {}
+    public void onMapFailed(AirMapMapView.MapFailure reason) {
+    }
 
     // Mapbox requires lifecycle
     @Override
@@ -139,6 +124,7 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.M
     public void onStop() {
         super.onStop();
         mapView.onStop();
+        mapView.removeOnMapLoadListener(this);
 
         AirMap.disableTrafficAlerts();
         textToSpeech.shutdown();
@@ -225,7 +211,7 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.M
     }
 
     /**
-     *  Audio alert
+     * Audio alert
      */
     protected void sayTraffic() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
@@ -236,16 +222,14 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.M
     }
 
     public void showTrafficAlert(@NonNull AirMapTraffic traffic) {
-        boolean useMetric = Utils.useMetric(this);
-
         LatLng activeFlightLocation = Utils.getLatLngFromCoordinate(currentFlight.getCoordinate());
         double distanceInMeters = activeFlightLocation.distanceTo(Utils.getLatLngFromCoordinate(traffic.getCoordinate()));
-        double distance = useMetric ? distanceInMeters / 1000 : Utils.metersToMiles(distanceInMeters);
-        double speed = useMetric ? Utils.ktsToKmh(traffic.getGroundSpeedKt()) : Utils.ktsToMph(traffic.getGroundSpeedKt());
+        double distance = Utils.metersToMiles(distanceInMeters);
+        double speed = Utils.ktsToMph(traffic.getGroundSpeedKt());
         double timeInHours = distance / speed;
         final StringBuilder trafficText = new StringBuilder()
                 .append(traffic.getProperties().getAircraftId()).append("\n")
-                .append(getString(useMetric ? R.string.distance_in_kilometers : R.string.distance_in_miles, distance)).append(" ")
+                .append(getString(R.string.distance_in_miles, distance)).append(" ")
                 .append(Utils.directionFromBearing(this, traffic.getTrueHeading())).append("\n")
                 .append(Utils.minutesToMinSec(this, timeInHours * 60));
 
