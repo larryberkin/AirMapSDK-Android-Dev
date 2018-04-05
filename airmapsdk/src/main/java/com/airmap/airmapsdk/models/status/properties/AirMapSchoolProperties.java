@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapSchoolProperties implements Serializable, AirMapBaseModel {
     private boolean building;
@@ -30,7 +32,7 @@ public class AirMapSchoolProperties implements Serializable, AirMapBaseModel {
         if (json != null) {
             setBuilding(json.optBoolean("building"));
             setWayArea(json.optDouble("way_area"));
-            setType(json.optString("type"));
+            setType(optString(json, "type"));
         }
         return this;
     }

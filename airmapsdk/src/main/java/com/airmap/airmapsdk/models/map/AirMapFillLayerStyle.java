@@ -9,6 +9,8 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 
 import org.json.JSONObject;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapFillLayerStyle extends AirMapLayerStyle {
 
     public final float fillOpacity;

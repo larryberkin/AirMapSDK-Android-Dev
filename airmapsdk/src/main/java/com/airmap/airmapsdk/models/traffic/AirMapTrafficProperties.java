@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapTrafficProperties implements Serializable, AirMapBaseModel {
     private String aircraftId;
@@ -29,8 +31,8 @@ public class AirMapTrafficProperties implements Serializable, AirMapBaseModel {
     @Override
     public AirMapTrafficProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setAircraftId(json.optString("aircraft_id"));
-            setAircraftType(json.optString("aircraft_type"));
+            setAircraftId(optString(json, "aircraft_id"));
+            setAircraftType(optString(json, "aircraft_type"));
         }
         return this;
     }

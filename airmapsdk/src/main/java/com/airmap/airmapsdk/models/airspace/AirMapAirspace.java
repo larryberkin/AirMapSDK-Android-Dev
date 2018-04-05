@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.List;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapAirspace implements Serializable, AirMapBaseModel {
 
     private String airspaceId;
@@ -31,12 +33,12 @@ public class AirMapAirspace implements Serializable, AirMapBaseModel {
     @Override
     public AirMapAirspace constructFromJson(JSONObject json) {
         if (json != null) {
-            setAirspaceId(json.optString("id"));
-            setName(json.optString("name"));
-            setCountry(json.optString("country"));
-            setState(json.optString("state"));
-            setCity(json.optString("city"));
-            setAirspaceType(MappingService.AirMapAirspaceType.fromString(json.optString("type")));
+            setAirspaceId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setCountry(optString(json, "country"));
+            setState(optString(json, "state"));
+            setCity(optString(json, "city"));
+            setAirspaceType(MappingService.AirMapAirspaceType.fromString(optString(json, "type")));
             setGeometry(AirMapGeometry.getGeometryFromGeoJSON(json.optJSONObject("geometry")));
             try {
                 JSONObject propertyBoundaryJson = json.optJSONObject("related_geometry").optJSONObject("property_boundary").optJSONObject("geometry");

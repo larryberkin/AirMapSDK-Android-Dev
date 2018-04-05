@@ -11,11 +11,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public abstract class AirMapGeometry implements Serializable {
     public static AirMapGeometry getGeometryFromGeoJSON(JSONObject geoJson) {
         if (geoJson != null) {
-            String geoType = geoJson.optString("type").toLowerCase();
+            String geoType = optString(geoJson, "type").toLowerCase();
             if (geoType.equals("polygon")) {
                 List<Coordinate> coordinates = new ArrayList<>();
                 JSONArray coordArray = geoJson.optJSONArray("coordinates").optJSONArray(0);

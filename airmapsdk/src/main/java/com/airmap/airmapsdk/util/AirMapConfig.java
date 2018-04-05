@@ -30,7 +30,7 @@ public class AirMapConfig {
 
     public static boolean isStage() {
         try {
-            return AirMap.getConfig().getJSONObject("airmap").optString("environment", "prod").equals("stage");
+            return AirMap.getConfig().getJSONObject("airmap").getString("environment").equals("stage");
         } catch (JSONException e) {
             Timber.e(e, "No environment key from airmap.config.json");
             return false;
@@ -76,7 +76,7 @@ public class AirMapConfig {
 
     public static String getApiOverride(String key, String fallback) {
         try {
-            return AirMap.getConfig().getJSONObject("airmap").getJSONObject("api_overrides").optString(key, fallback);
+            return AirMap.getConfig().getJSONObject("airmap").getJSONObject("api_overrides").getString(key);
         } catch (JSONException e) {
             Timber.w(e, "No overridden end point found in airmap.config.json for: %s", key);
             return fallback;
@@ -97,7 +97,7 @@ public class AirMapConfig {
             return AirMap.getConfig().getJSONObject("app").getString("about_url");
         } catch (JSONException e) {
             Timber.w(e, "No About URL found in airmap.config.json using fallback");
-            return "https://" + getDomain() + "/about-us";
+            return "https://" + getDomain();
         }
     }
 

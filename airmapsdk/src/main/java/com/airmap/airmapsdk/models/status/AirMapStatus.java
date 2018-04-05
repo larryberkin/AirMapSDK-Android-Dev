@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @Deprecated
 public class AirMapStatus implements Serializable, AirMapBaseModel {
 
@@ -50,7 +52,7 @@ public class AirMapStatus implements Serializable, AirMapBaseModel {
             }
             setAdvisories(advisories);
             setMaxSafeRadius(json.optInt("max_safe_distance"));
-            setAdvisoryColor(AirMapColor.fromString(json.optString("advisory_color")));
+            setAdvisoryColor(AirMapColor.fromString(optString(json, "advisory_color")));
         }
         return this;
     }

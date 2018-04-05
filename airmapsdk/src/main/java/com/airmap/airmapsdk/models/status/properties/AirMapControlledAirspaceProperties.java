@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapControlledAirspaceProperties implements Serializable, AirMapBaseModel {
 
@@ -26,8 +28,8 @@ public class AirMapControlledAirspaceProperties implements Serializable, AirMapB
     @Override
     public AirMapControlledAirspaceProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setClassAirspace(json.optString("classAirspace"));
-            setAirportIdentifier(json.optString("airportIdentifier"));
+            setClassAirspace(optString(json, "classAirspace"));
+            setAirportIdentifier(optString(json, "airportIdentifier"));
             setLaanc(json.optBoolean("laanc"));
             setAuthorization(json.optBoolean("authorization"));
         }

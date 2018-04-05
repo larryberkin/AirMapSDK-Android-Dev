@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapFlightBriefing implements Serializable, AirMapBaseModel {
 
@@ -36,8 +37,8 @@ public class AirMapFlightBriefing implements Serializable, AirMapBaseModel {
     @Override
     public AirMapBaseModel constructFromJson(JSONObject json) {
         if (json != null) {
-            color = json.optString("color");
-            createdAt = getDateFromIso8601String(json.optString("created_at"));
+            color = optString(json, "color");
+            createdAt = getDateFromIso8601String(optString(json, "created_at"));
 
             rulesets = new ArrayList<>();
             if (json.has("rulesets")) {

@@ -2,6 +2,8 @@ package com.airmap.airmapsdk.models;
 
 import org.json.JSONObject;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapToken implements AirMapBaseModel {
 
     private String authToken;
@@ -16,7 +18,7 @@ public class AirMapToken implements AirMapBaseModel {
     @Override
     public AirMapToken constructFromJson(JSONObject json) {
         if (json != null) {
-            setAuthToken(json.optString("id_token"));
+            setAuthToken(optString(json, "id_token"));
         }
         return this;
     }

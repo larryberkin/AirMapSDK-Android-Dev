@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 @SuppressWarnings("unused")
 @Deprecated
@@ -68,24 +69,24 @@ public class AirMapStatusAdvisory implements Serializable, AirMapBaseModel {
     @Override
     public AirMapStatusAdvisory constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setName(json.optString("name"));
-            setOrganizationId(json.optString("organization_id"));
+            setId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setOrganizationId(optString(json, "organization_id"));
             setRequirements(new AirMapStatusRequirement(json.optJSONObject("requirements")));
-            String typeString = json.optString("type");
+            String typeString = optString(json, "type");
             setType(MappingService.AirMapAirspaceType.fromString(typeString));
-            setCountry(json.optString("country"));
+            setCountry(optString(json, "country"));
             setDistance(json.optInt("distance"));
-            setCity(json.optString("city"));
-            setState(json.optString("state"));
-            setColor(AirMapColor.fromString(json.optString("color")));
-            setGeometryString(json.optString("geometry"));
+            setCity(optString(json, "city"));
+            setState(optString(json, "state"));
+            setColor(AirMapColor.fromString(optString(json, "color")));
+            setGeometryString(optString(json, "geometry"));
             double lat = json.optDouble("latitude");
             double lng = json.optDouble("longitude");
             if (lat != Double.NaN && lng != Double.NaN) {
                 setCoordinate(new Coordinate(lat, lng));
             }
-            setLastUpdated(getDateFromIso8601String(json.optString("last_updated")));
+            setLastUpdated(getDateFromIso8601String(optString(json, "last_updated")));
 
             JSONObject properties = json.optJSONObject("properties");
             if (type == MappingService.AirMapAirspaceType.Airport) {

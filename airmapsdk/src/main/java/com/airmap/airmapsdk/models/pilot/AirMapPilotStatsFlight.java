@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 @SuppressWarnings("unused")
 public class AirMapPilotStatsFlight implements Serializable, AirMapBaseModel {
@@ -27,7 +28,7 @@ public class AirMapPilotStatsFlight implements Serializable, AirMapBaseModel {
     public AirMapPilotStatsFlight constructFromJson(JSONObject json) {
         if (json != null) {
             setTotal(json.optInt("total"));
-            setLastFlightTime(getDateFromIso8601String(json.optString("last_flight_time")));
+            setLastFlightTime(getDateFromIso8601String(optString(json, "last_flight_time")));
         }
         return this;
     }

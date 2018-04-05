@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class MapStyle {
 
     private List<AirMapLayerStyle> layerStyles;
@@ -19,7 +21,7 @@ public class MapStyle {
         layerStyles = new ArrayList<>();
         for (int i = 0; layersArray != null && i < layersArray.length(); i++) {
             JSONObject layerJson = layersArray.optJSONObject(i);
-            if (layerJson.optString("id").contains("airmap")) {
+            if (optString(layerJson, "id").contains("airmap")) {
                 layerStyles.add(AirMapLayerStyle.fromJson(layerJson));
             }
         }

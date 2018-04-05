@@ -8,6 +8,8 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapLineLayerStyle extends AirMapLayerStyle {
 
     private final float lineWidth;

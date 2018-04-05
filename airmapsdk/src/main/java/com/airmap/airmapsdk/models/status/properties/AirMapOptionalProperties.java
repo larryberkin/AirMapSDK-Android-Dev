@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapOptionalProperties implements AirMapBaseModel, Serializable {
 
@@ -22,8 +24,8 @@ public class AirMapOptionalProperties implements AirMapBaseModel, Serializable {
     @Override
     public AirMapOptionalProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setUrl(json.optString("url"));
-            setDescription(json.optString("description"));
+            setUrl(optString(json, "url"));
+            setDescription(optString(json, "description"));
         }
         return this;
     }

@@ -26,6 +26,7 @@ import timber.log.Timber;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
 import static com.airmap.airmapsdk.util.Utils.getIso8601StringFromDate;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
 
@@ -75,13 +76,13 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
     @Override
     public AirMapFlightPlan constructFromJson(JSONObject json) {
         if (json != null) {
-            setPlanId(json.optString("id"));
-            setFlightId(json.optString("flight_id"));
+            setPlanId(optString(json, "id"));
+            setFlightId(optString(json, "flight_id"));
             setTakeoffCoordinate(new Coordinate(json.optDouble("takeoff_latitude", 0), json.optDouble("takeoff_longitude", 0)));
             setMaxAltitude((float) json.optDouble("max_altitude_agl"));
             setNotify(json.optBoolean("notify"));
-            setPilotId(json.optString("pilot_id"));
-            setAircraftId(json.optString("aircraft_id", null));
+            setPilotId(optString(json, "pilot_id"));
+            setAircraftId(optString(json, "aircraft_id"));
             setPublic(json.optBoolean("public"));
             setBuffer((float) json.optDouble("buffer"));
 
@@ -93,7 +94,7 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
             rulesetIds = new ArrayList<>();
             JSONArray rulesetsJson = json.optJSONArray("rulesets");
             for (int i = 0; rulesetsJson != null && i < rulesetsJson.length(); i++) {
-                rulesetIds.add(rulesetsJson.optString(i));
+                rulesetIds.add(optString(rulesetsJson, i));
             }
 
             flightFeatureValues = new HashMap<>();
@@ -110,13 +111,13 @@ public class AirMapFlightPlan implements Serializable, AirMapBaseModel {
 
             //Created at
             if (json.has("created_at")) {
-                setCreatedAt(getDateFromIso8601String(json.optString("created_at")));
+                setCreatedAt(getDateFromIso8601String(optString(json, "created_at")));
             } else if (json.has("creation_date")) {
-                setCreatedAt(getDateFromIso8601String(json.optString("creation_date")));
+                setCreatedAt(getDateFromIso8601String(optString(json, "creation_date")));
             }
 
-            String startTime = json.optString("start_time");
-            String endTime = json.optString("end_time");
+            String startTime = optString(json, "start_time");
+            String endTime = optString(json, "end_time");
             if (!TextUtils.isEmpty(startTime) && !startTime.equals("now")) {
                 // if start date is before now, set it to now and shift end time
                 Date startDate = getDateFromIso8601String(startTime);

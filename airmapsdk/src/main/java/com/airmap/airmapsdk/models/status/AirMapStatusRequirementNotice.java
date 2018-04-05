@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapStatusRequirementNotice implements Serializable, AirMapBaseModel {
     private boolean digital;
@@ -31,7 +33,7 @@ public class AirMapStatusRequirementNotice implements Serializable, AirMapBaseMo
     public AirMapStatusRequirementNotice constructFromJson(JSONObject json) {
         if (json != null) {
             setDigital(json.optBoolean("digital"));
-            setPhoneNumber(json.optString("phone"));
+            setPhoneNumber(optString(json, "phone"));
         }
         return this;
     }

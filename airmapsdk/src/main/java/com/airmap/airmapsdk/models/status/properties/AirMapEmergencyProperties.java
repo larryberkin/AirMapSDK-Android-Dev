@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapEmergencyProperties implements AirMapBaseModel, Serializable {
 
@@ -25,8 +27,8 @@ public class AirMapEmergencyProperties implements AirMapBaseModel, Serializable 
     @Override
     public AirMapEmergencyProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setAgencyId(json.optString("agency_id"));
-            setEffectiveDate(Utils.getDateFromIso8601String(json.optString("date_effective")));
+            setAgencyId(optString(json, "agency_id"));
+            setEffectiveDate(Utils.getDateFromIso8601String(optString(json, "date_effective")));
         }
         return this;
     }

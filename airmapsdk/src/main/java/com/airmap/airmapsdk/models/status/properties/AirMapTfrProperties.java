@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapTfrProperties implements Serializable, AirMapBaseModel {
     private String url;
@@ -30,9 +32,9 @@ public class AirMapTfrProperties implements Serializable, AirMapBaseModel {
     @Override
     public AirMapTfrProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setUrl(json.optString("url"));
-            setStartTime(Utils.getDateFromIso8601String(json.optString("effective_start", null)));
-            setEndTime(Utils.getDateFromIso8601String(json.optString("effective_end", null)));
+            setUrl(optString(json, "url"));
+            setStartTime(Utils.getDateFromIso8601String(optString(json, "effective_start", null)));
+            setEndTime(Utils.getDateFromIso8601String(optString(json, "effective_end", null)));
         }
         return this;
     }

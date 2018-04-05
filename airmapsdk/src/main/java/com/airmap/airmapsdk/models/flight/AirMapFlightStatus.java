@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapFlightStatus implements Serializable, AirMapBaseModel {
     public enum AirMapFlightStatusType {
@@ -53,9 +55,9 @@ public class AirMapFlightStatus implements Serializable, AirMapBaseModel {
     @Override
     public AirMapFlightStatus constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setManagerId(json.optString("manager_id"));
-            String statusType = json.optString("status");
+            setId(optString(json, "id"));
+            setManagerId(optString(json, "manager_id"));
+            String statusType = optString(json, "status");
             setStatus(AirMapFlightStatusType.fromString(statusType));
         }
         return this;

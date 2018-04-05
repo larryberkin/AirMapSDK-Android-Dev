@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapSpecialUseProperties implements Serializable, AirMapBaseModel {
     private boolean currentlyActive;
@@ -28,7 +30,7 @@ public class AirMapSpecialUseProperties implements Serializable, AirMapBaseModel
     public AirMapSpecialUseProperties constructFromJson(JSONObject json) {
         if (json != null) {
             setCurrentlyActive(json.optBoolean("currentlyActive"));
-            setDescription(json.optString("description"));
+            setDescription(optString(json, "description"));
         }
         return this;
     }

@@ -4,17 +4,23 @@
         package="com.airmap.airmapsdk">
 
     <!--Permissions-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/> <!--Required by MQTT library-->
     <uses-permission android:name="android.permission.WAKE_LOCK"/> <!--Required by MQTT library-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!--Required by MQTT library-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!--Required by MQTT library-->
 
-    <uses-feature android:name="android.hardware.location.network"/>
+    <uses-feature android:name="android.hardware.location.network" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
     <application>
         <service android:name="org.eclipse.paho.android.service.MqttService"/>
         <service android:name="com.mapbox.services.android.telemetry.service.TelemetryService"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
 
         <activity
             android:name="com.auth0.android.lock.LockActivity"

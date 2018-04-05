@@ -20,6 +20,7 @@ import com.mapbox.services.commons.models.Position;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,14 +44,33 @@ public class Utils {
     public static final String REFRESH_TOKEN_KEY = "AIRMAP_SDK_REFRESH_TOKEN";
 
     /**
-     * Return the value mapped by the given key, or {@code null} if not present or null.
+     * Return the value mapped by the given key, or fallback if not present or null.
      */
     public static String optString(JSONObject json, String key) {
+        return optString(json, key, "");
+    }
+
+    public static String optString(JSONObject json, String key, String fallback) {
         // http://code.google.com/p/android/issues/detail?id=13830
         if (json.isNull(key))
+            return fallback;
+        else
+            return json.optString(key, fallback);
+    }
+
+    /**
+     * Return the value mapped by the given index, or fallback if not present or null.
+     */
+    public static String optString(JSONArray json, int index) {
+        return optString(json, index, "");
+    }
+
+    public static String optString(JSONArray json, int index, String fallback) {
+        // http://code.google.com/p/android/issues/detail?id=13830
+        if (json.isNull(index))
             return null;
         else
-            return json.optString(key, null);
+            return json.optString(index, fallback);
     }
 
     public static Float dpToPixels(Context context, int dp) {
@@ -165,8 +185,8 @@ public class Utils {
         return null;
     }
 
-    public static boolean statusSuccessful(JSONObject object) {
-        return object != null && object.optString("status").equalsIgnoreCase("success");
+    public static boolean statusSuccessful(JSONObject json) {
+        return json != null && optString(json, "status").equalsIgnoreCase("success");
     }
 
     public static void error(AirMapCallback listener, Exception e) {
@@ -497,5 +517,10 @@ public class Utils {
             }
 
             return positions;
+    }
+
+    public static boolean useGPSForLocation(Context context) {
+        // by default, GPS is not used
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.setting_location_provider), true);
     }
 }

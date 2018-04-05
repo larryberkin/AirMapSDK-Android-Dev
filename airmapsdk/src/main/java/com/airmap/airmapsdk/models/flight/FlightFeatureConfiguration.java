@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class FlightFeatureConfiguration implements AirMapBaseModel {
 
     private String flightFeatureId;
@@ -62,21 +64,21 @@ public class FlightFeatureConfiguration implements AirMapBaseModel {
         private double conversionFactor;
         private String unit;
 
-        public ValueConfiguration(JSONObject jsonObject) {
-            if (jsonObject != null) {
-                JSONArray values = jsonObject.optJSONArray("preset_values");
+        public ValueConfiguration(JSONObject json) {
+            if (json != null) {
+                JSONArray values = json.optJSONArray("preset_values");
 
                 presets = new ArrayList<>();
                 for (int i = 0; i < values.length(); i++) {
                     presets.add(values.optDouble(i));
                 }
 
-                int defaultIndex = jsonObject.optInt("default_value_index");
+                int defaultIndex = json.optInt("default_value_index");
                 setDefaultValue(presets.get(defaultIndex));
 
-                setConversionFactor(jsonObject.optDouble("conversion_factor", 1));
+                setConversionFactor(json.optDouble("conversion_factor", 1));
 
-                setUnit(jsonObject.optString("unit"));
+                setUnit(optString(json, "unit"));
             }
         }
 

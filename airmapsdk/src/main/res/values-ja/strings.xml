@@ -131,25 +131,11 @@
   <!-- Login message when a user's account has been blacklisted. -->
   <string name="invalid_email_domain">あなたのアカウントはブラックリストに入りました。security@airmap.comまでご連絡ください。</string>
   <!-- Login message when a user must verify their email address -->
-  <string name="verify_email_log_in_again">メールアドレスを確認する必要があります。メールボックスをご確認ください。</string>
+  <string name="verify_email_log_in_again">システムからメールを送りました。「承認する」をクリックしてアカウント作成を完了してください。</string>
   <!-- Login message when a user failed to authenticate -->
   <string name="auth_error_unauthorized">未許可</string>
   <!-- Navigation title for failed login attempt -->
   <string name="auth_failed_login_title">アラート</string>
-  <string name="available_permits">利用可能な許可証</string>
-  <string name="existing_permits">すでにお持ちの許可証</string>
-  <string name="unavailable_permits">有効でない許可証</string>
-  <string name="select_a_permit_description">お持ちの許可証でこの飛行エリアを飛行できる条件を満たしているのは以下のものです。</string>
-  <string name="no_available_permits_for_flight">このエリアでは、1回限り有効な許可証だけを利用できます。この飛行経路は複数のエリアにまたがっており、異なる許可証が必要です。</string>
-  <!-- Class = "UINavigationItem"; title = "Select Permit"; ObjectID = "pFU-ok-j6g"; Note = "AVAILABLE_PERMITS_TITLE|Title for the list of available permits a user can choose from"; AirMapUIObjectId = "pFU-ok-j6g.title"; -->
-  <string name="select_a_permit">許可証を選択</string>
-  <string name="single_use">1回のみ利用</string>
-  <string name="available_permit_row_title_validity">有効期間</string>
-  <string name="available_permit_row_value_single_use_false">いいえ</string>
-  <string name="available_permit_row_value_single_use_true">はい</string>
-  <string name="available_permit_section_header_custom_properties">フォームのフィールド (*必須)</string>
-  <string name="description">概要</string>
-  <string name="permit_details">詳細</string>
   <!-- Abbreviation for East -->
   <string name="cardinal_direction_e">東</string>
   <!-- Abbreviation for East North East -->
@@ -221,12 +207,12 @@
   <string name="com.auth0.lock.error.recoverable.message">インターネット接続を確認してください</string>
   <string name="com.auth0.lock.error.recoverable.title">ログインボックスを読み込めませんでした</string>
   <string name="com_auth0_lock_db_sign_up_error_message">サインアップ中にエラーが発生しました</string>
-  <string name="com_auth0_lock_input_error_password">パスワードが違います</string>
+  <string name="com_auth0_lock_input_error_password">パスワードが不適切です。上記ルールをご確認ください。</string>
   <string name="com.auth0.lock.error.signup.password_dictionary_error">推測しやすいパスワードです</string>
   <string name="com_auth0_lock_db_signup_password_already_used_error_message">前のパスワードと同じものは使えません</string>
   <string name="com.auth0.lock.error.signup.password_no_user_info_error">パスワードにユーザー情報が含まれています。</string>
   <string name="com_auth0_lock_db_signup_password_not_strong_error_message">パスワードが弱すぎます。</string>
-  <string name="com_auth0_lock_db_signup_user_already_exists_error_message">このユーザーはすでに存在します。</string>
+  <string name="com_auth0_lock_db_signup_user_already_exists_error_message">このユーザーはすでに存在します。ログイン画面からログインしてください。</string>
   <string name="com.auth0.lock.error.unrecoverable.button">問い合わせ</string>
   <string name="com.auth0.lock.error.unrecoverable.default">不明なエラーが発生しました。\nテクニカルサポートに連絡してください。</string>
   <string name="com.auth0.lock.error.unrecoverable.invalid_credentials">Auth0 Credential、Client ID、ドメイン、のいずれかが不正です。</string>
@@ -237,6 +223,7 @@
   <string name="com.auth0.lock.error.unrecoverable.title">リクエストを解決できません</string>
   <string name="com_auth0_lock_forgot_message">メールアドレスと新しいパスワードを入力してください。確認のためEメールを送信します。</string>
   <string name="com_auth0_lock_title_change_password">パスワードをリセット</string>
+  <string name="com.auth0.lock.header.default_title">Auth0</string>
   <string name="com_auth0_lock_input_error_email">有効なメールアドレスをご利用ください</string>
   <string name="com_auth0_lock_hint_email">メールアドレス</string>
   <string name="com.auth0.lock.input.email_username.placeholder">ユーザー名／メールアドレス</string>
@@ -254,20 +241,8 @@
   <string name="com.auth0.lock.multifactor.title">2段階認証</string>
   <string name="com.auth0.lock.passwordless.sms.country.header">国を選択してください</string>
   <string name="com.auth0.lock.passwordless.sms.country.search">検索</string>
-  <string name="com.auth0.lock.strategy.localized.aol"/>
-  <string name="com.auth0.lock.strategy.localized.baidu"/>
-  <string name="com.auth0.lock.strategy.localized.bitbucket"/>
-  <string name="com.auth0.lock.strategy.localized.dropbox"/>
-  <string name="com.auth0.lock.strategy.localized.dwolla"/>
-  <string name="com.auth0.lock.strategy.localized.ebay"/>
-  <string name="com.auth0.lock.strategy.localized.evernote"/>
-  <string name="com.auth0.lock.strategy.localized.evernote_sandbox"/>
-  <string name="com.auth0.lock.strategy.localized.exact"/>
-  <string name="com.auth0.lock.strategy.localized.facebook"/>
-  <string name="com.auth0.lock.strategy.localized.fitbit"/>
-  <string name="com.auth0.lock.strategy.localized.github"/>
-  <string name="com.auth0.lock.strategy.localized.google"/>
-  <string name="com.auth0.lock.strategy.localized.instagram"/>
+  <string name="com.auth0.lock.strategy.localized.amazon">AMAZON</string>
+  <string name="com.auth0.lock.strategy.localized.aol">AOL</string>
   <string name="com_auth0_lock_social_log_in">%1$s でログイン</string>
   <string name="com_auth0_lock_social_sign_up">%1$s でサインアップ</string>
   <string name="com_auth0_lock_action_log_in">ログイン</string>
@@ -405,12 +380,6 @@
   <string name="manufacturers_title">ドローンメーカー</string>
   <!-- Class = "UINavigationItem"; title = "Models"; ObjectID = "9xB-Yl-FrO"; Note = "MODELS_TITLE|Title for the view that displays a list of all aircraft models"; AirMapUIObjectId = "9xB-Yl-FrO.title"; -->
   <string name="models_title">モデル</string>
-  <!-- Class = "UIButton"; normalTitle = "Done"; ObjectID = "Iz2-Va-oce"; Note = "PERMIT_DETAILS_DONE_BUTTON|Title for the button that dismisses the keyboard when a user is done editing a text field"; AirMapUIObjectId = "Iz2-Va-oce.normalTitle"; -->
-  <string name="done">終了</string>
-  <!-- Class = "UIButton"; normalTitle = "Select Permit"; ObjectID = "RX7-4I-r3s"; Note = "PERMIT_DETAILS_SELECT_PERMIT_BUTTON|Title for the button that selects the currently displayed permit and dismisses the view"; AirMapUIObjectId = "RX7-4I-r3s.normalTitle"; -->
-  <string name="airmap_select_permit">許可証を選択</string>
-  <!-- Class = "UINavigationItem"; title = "Permit"; ObjectID = "uxj-wa-owq"; Note = "PERMIT_DETAILS_TITLE|Title for the view that displays permit details"; AirMapUIObjectId = "uxj-wa-owq.title"; -->
-  <string name="permit_details_title">許可証</string>
   <!-- No comment provided by engineer. -->
   <!-- Table section title for other selectable countries -->
   <string name="phone_country_section_other_country">その他</string>
@@ -438,7 +407,8 @@
   <string name="phone_verification_try_again">もう一度試してください</string>
   <!-- Message presented to a user when the SMS code they input is incorrect and verification of that code has failed -->
   <string name="phone_verification_verification_failed">電話番号確認に失敗しました</string>
-  <string name="pilot_permit_expiration_format">有効期限 %1$s</string>
+  <!-- Format for displaying the given + family name of a user. 1) given name 2) family name -->
+  <string name="pilot_full_name_format">%2$s%1$s</string>
   <!-- Table row label for FAA registration number -->
   <string name="pilot_profile_faa_registration">連邦航空局登録番号</string>
   <!-- Label for the pilot profile email -->
@@ -461,14 +431,6 @@
   <string name="pilot_profile_statistics_format">機体数 %1$s、フライト回数 %2$s</string>
   <!-- Class = "UINavigationItem"; title = "Pilot Profile"; ObjectID = "q0o-oq-I1W"; Note = "PILOT_PROFILE_TITLE|Title for view where a user can modify their user profile"; AirMapUIObjectId = "q0o-oq-I1W.title"; -->
   <string name="pilot_profile_title">パイロットのプロフィール</string>
-  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "2jl-c2-qqx"; Note = "REQUIRED_PERMITS_NEXT_BUTTON|Button label that allows the user to advance to the next step of flight creation"; AirMapUIObjectId = "2jl-c2-qqx.normalTitle"; -->
-  <string name="required_permits_next_button">次へ</string>
-  <string name="airmap_select_different_permit">別の許可証を選択</string>
-  <string name="airmap_select_a_permit">許可証を選択</string>
-  <!-- Class = "UILabel"; text = "Operating in this flight area requires a permit from each of the following authorities:"; ObjectID = "HLI-qV-iML"; Note = "REQUIRED_PERMITS_TABLE_HEADER|Copy that explains to the user that they are required to satisfy the permit requirements listed below."; AirMapUIObjectId = "HLI-qV-iML.text"; -->
-  <string name="requires_permits_from_authorities">このエリアを飛行するには、以下の各機関から許可を受ける必要があります:</string>
-  <!-- Class = "UINavigationItem"; title = "Permits"; ObjectID = "747-Q2-1CI"; Note = "REQUIRED_PERMITS_TITLE|Title for the view where a user can select from a list of required permits"; AirMapUIObjectId = "747-Q2-1CI.title"; -->
-  <string name="permits">許可証</string>
   <string name="review_flight_plane_title">フライトプラン</string>
   <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "tCa-zT-0iZ"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_NEXT_BUTTON|Button that allows a user to advance to the next step of flight planning"; AirMapUIObjectId = "tCa-zT-0iZ.normalTitle"; -->
   <string name="review_flight_plan_details_next_button">次へ</string>
@@ -506,7 +468,6 @@
   <string name="submit">申請する</string>
   <string name="review_flight_plan_tab_title_digital_notice">通知</string>
   <string name="review_flight_plan_tab_title_flight">フライト</string>
-  <string name="review_flight_plan_tab_title_permits">許可証</string>
   <!-- Class = "UINavigationItem"; title = "Review Flight Plan"; ObjectID = "7qo-VN-M2p"; Note = "REVIEW_FLIGHT_PLAN_TITLE|Title for view where user can review a flight plan"; AirMapUIObjectId = "7qo-VN-M2p.title"; -->
   <string name="review_flight_plan_title">フライトプランを確認</string>
   <!-- Label for the section header that displays all the Optional rulesets -->

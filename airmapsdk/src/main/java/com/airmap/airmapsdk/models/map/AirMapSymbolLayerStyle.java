@@ -6,6 +6,8 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 
 import org.json.JSONObject;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapSymbolLayerStyle extends AirMapLayerStyle {
 
     public final String iconImage;

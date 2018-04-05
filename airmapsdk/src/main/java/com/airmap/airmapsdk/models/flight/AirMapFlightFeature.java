@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapFlightFeature implements Serializable, AirMapBaseModel {
 
     public enum Status {
@@ -148,12 +150,12 @@ public class AirMapFlightFeature implements Serializable, AirMapBaseModel {
 
     @Override
     public AirMapBaseModel constructFromJson(JSONObject json) {
-        setFlightFeature(json.optString("flight_feature"));
-        setStatus(Status.fromString(json.optString("status")));
-        setInputType(InputType.fromText(json.optString("input_type")));
-        setDescription(json.optString("description"));
-        setMeasurementType(MeasurementType.fromText(json.optString("measurement_type")));
-        setMeasurementUnit(MeasurementUnit.fromText(json.optString("measurement_unit")));
+        setFlightFeature(optString(json, "flight_feature"));
+        setStatus(Status.fromString(optString(json, "status")));
+        setInputType(InputType.fromText(optString(json, "input_type")));
+        setDescription(optString(json, "description"));
+        setMeasurementType(MeasurementType.fromText(optString(json, "measurement_type")));
+        setMeasurementUnit(MeasurementUnit.fromText(optString(json, "measurement_unit")));
         setCalculated(json.optBoolean("is_calculated"));
         return this;
     }

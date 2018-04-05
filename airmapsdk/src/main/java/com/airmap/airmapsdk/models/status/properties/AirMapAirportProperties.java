@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapAirportProperties implements Serializable, AirMapBaseModel {
     private String icao;
@@ -40,15 +42,15 @@ public class AirMapAirportProperties implements Serializable, AirMapBaseModel {
     @Override
     public AirMapAirportProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setIcao(json.optString("icao"));
-            setPhone(json.optString("phone"));
-            setOwnership(json.optString("ownership"));
+            setIcao(optString(json, "icao"));
+            setPhone(optString(json, "phone"));
+            setOwnership(optString(json, "ownership"));
             setIfr(json.optBoolean("ifr"));
-            setIata(json.optString("iata"));
+            setIata(optString(json, "iata"));
             setPaved(json.optBoolean("paved"));
             setTower(json.optBoolean("tower"));
             setElevation(json.optInt("elevation"));
-            setIcaoCountry(json.optString("icao_country"));
+            setIcaoCountry(optString(json, "icao_country"));
             setLongestRunway(json.optInt("longestRunway"));
             List<AirMapAirportRunway> runways = new ArrayList<>();
             JSONArray runwaysArray = json.optJSONArray("runways");

@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import static com.airmap.airmapsdk.util.Utils.getDateFromIso8601String;
+import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class AirMapAdvisory implements Serializable, AirMapBaseModel {
     private String id;
@@ -72,29 +73,24 @@ public class AirMapAdvisory implements Serializable, AirMapBaseModel {
     @Override
     public AirMapAdvisory constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setName(json.optString("name"));
-            setOrganizationId(json.optString("organization_id"));
-            String typeString = json.optString("type");
-            setType(MappingService.AirMapAirspaceType.fromString(typeString));
-            setCountry(json.optString("country"));
+            setId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setOrganizationId(optString(json, "organization_id"));
+            setType(MappingService.AirMapAirspaceType.fromString(optString(json, "type")));
+            setCountry(optString(json, "country"));
             setDistance(json.optInt("distance"));
-            setCity(json.optString("city"));
-            setState(json.optString("state"));
-            setColor(AirMapColor.fromString(json.optString("color")));
-            setGeometryString(json.optString("geometry"));
+            setCity(optString(json, "city"));
+            setState(optString(json, "state"));
+            setColor(AirMapColor.fromString(optString(json, "color")));
+            setGeometryString(optString(json, "geometry"));
             double lat = json.optDouble("latitude");
             double lng = json.optDouble("longitude");
             if (lat != Double.NaN && lng != Double.NaN) {
                 setCoordinate(new Coordinate(lat, lng));
             }
 
-            if (!json.isNull("last_updated")) {
-                String lastUpdated = json.optString("last_updated");
-                setLastUpdated(getDateFromIso8601String(lastUpdated));
-            } else {
-                setLastUpdated(null);
-            }
+            String lastUpdated = optString(json, "last_updated");
+            setLastUpdated(getDateFromIso8601String(lastUpdated));
 
             if (json.has("requirements")) {
                 setRequirements(new AirMapStatusRequirement(json.optJSONObject("requirements")));

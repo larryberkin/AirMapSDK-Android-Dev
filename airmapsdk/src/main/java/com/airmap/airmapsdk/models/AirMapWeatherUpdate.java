@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapWeatherUpdate implements AirMapBaseModel, Serializable {
 
     private Date time;
@@ -30,11 +32,11 @@ public class AirMapWeatherUpdate implements AirMapBaseModel, Serializable {
     @Override
     public AirMapWeatherUpdate constructFromJson(JSONObject json) {
         if (json != null) {
-            String time = json.optString("time");
+            String time = optString(json, "time");
             setTime(Utils.getDateFromIso8601String(time));
-            setTimezone(json.optString("timezone"));
-            setCondition(json.optString("condition"));
-            setIcon(json.optString("icon", "").replace("-", "_"));
+            setTimezone(optString(json, "timezone"));
+            setCondition(optString(json, "condition"));
+            setIcon(optString(json, "icon").replace("-", "_"));
 
             JSONObject windJSON = json.optJSONObject("wind");
             if (windJSON != null) {

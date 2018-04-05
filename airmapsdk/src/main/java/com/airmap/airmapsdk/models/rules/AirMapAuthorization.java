@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapAuthorization implements AirMapBaseModel, Serializable{
 
     public enum Status {
@@ -52,9 +54,9 @@ public class AirMapAuthorization implements AirMapBaseModel, Serializable{
         if (json.has("authority")) {
             setAuthority(new AirMapAuthority(json.optJSONObject("authority")));
         }
-        setStatus(Status.fromText(json.optString("status")));
-        setMessage(json.optString("message"));
-        setDescription(json.optString("description"));
+        setStatus(Status.fromText(optString(json, "status")));
+        setMessage(optString(json, "message"));
+        setDescription(optString(json, "description"));
         return this;
     }
 

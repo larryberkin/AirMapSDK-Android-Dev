@@ -153,7 +153,7 @@ public class TelemetryDemoActivity extends BaseActivity {
     private void drag(LatLng newLocation, boolean doneDragging) {
         myMarker.setPosition(newLocation);
 
-        AirMap.getTelemetryService().sendPositionMessage(currentFlight, newLocation.getLatitude(), newLocation.getLongitude(), 0, (float) newLocation.getAltitude(), 1f);
+        AirMap.getTelemetryService().sendPositionMessage(currentFlight.getFlightId(), newLocation.getLatitude(), newLocation.getLongitude(), 0, (float) newLocation.getAltitude(), 1f);
     }
 
     // Mapbox requires lifecycle

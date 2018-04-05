@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapPowerPlantProperties implements Serializable, AirMapBaseModel {
     private String tech;
@@ -27,7 +29,7 @@ public class AirMapPowerPlantProperties implements Serializable, AirMapBaseModel
     @Override
     public AirMapPowerPlantProperties constructFromJson(JSONObject json) {
         if (json != null) {
-            setTech(json.optString("tech"));
+            setTech(optString(json, "tech"));
             setPlantCode(json.optInt("plant_code"));
         }
         return this;

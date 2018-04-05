@@ -7,5 +7,5 @@ public interface AnalyticsTracker {
 
     void logEvent(String section, String action, String label, String value);
 
-    void report(Exception e);
+    void report(Throwable t);
 }

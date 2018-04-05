@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <!-- 1Password Extension Error Message -->
+  <string name="end_flight_title">Ukončení letu</string>
+  <string name="submit_title">Souhlasím</string>
+  <string name="review_flight_plan">Zkontrolujte letový plán</string>
+  <!-- Class = "UINavigationItem"; title = "Airspace Advisories"; ObjectID = "yk1-9H-q3n"; Note = "ADVISORIES_TITLE|Title for view that shows a list of airspace advisories"; AirMapUIObjectId = "yk1-9H-q3n.title"; -->
+  <string name="airmap_airspace_advisories">Upozornění v prostoru</string>
+  <!-- Label for advisories that are stup to receive digital notice -->
+  <string name="accepts_digital_notice">Přijmout upozornění</string>
+  <!-- Displayed when an advisory has not provided a contact phone -->
+  <string name="no_known_number">Nebylo poskytnuto telefonní číslo</string>
+  <!-- Label and format for displaying the end time of temporary flight restriction -->
+  <string name="advisory_tfr_ends_format">Končí: %1$s</string>
+  <!-- Never ending duration for a TFR -->
+  <string name="advisory_tfr_permanent">Trvalý</string>
+  <!-- Label and format for displaying the start time of temporary flight restriction -->
+  <string name="airmap_starts">Zahájení: %1$s</string>
+  <!-- Format and unit for wildfire advisory in the area unit acres -->
+  <string name="advisory_wildfire_size_format_acres">%1$s Akrů</string>
+  <!-- Format and unit for wildfire advisory in the area unit hectares -->
+  <string name="advisory_wildfire_size_format_hectares">%1$s Hektarů</string>
+  <!-- Label for wildfire advisory cells where size is unknown -->
+  <string name="unknown_size">Velikost neznámá</string>
+  <!-- Call to action when a user has not selected an aircraft -->
+  <string name="aircraft_select_aircraft">Výběr stroje</string>
+  <!-- Title to display for the view creating a new aircraft -->
+  <string name="airmap_title_activity_create_aircraft">Vytvoření stroje</string>
+  <!-- Title to display for the view when updating an existing aircraft -->
+  <string name="airmap_edit_aircraft">Aktualizovat stroj</string>
+  <!-- Name for airspace type Aerial Recreational Area -->
+  <string name="airspace_type_aerial_rec_area">Letecká rekreační oblast</string>
+  <!-- Name for airspace type Airport -->
+  <string name="airspace_type_airport">Letiště</string>
+  <!-- Name for airspace type AMA Field (Academy of Model Aeronautics) -->
+  <string name="airspace_type_ama_field">Modelářské letiště</string>
+  <!-- Name for airspace type City -->
+  <string name="airspace_type_city">Město</string>
+  <!-- Name for airspace type Controlled Airspace -->
+  <string name="airspace_type_controlled">Řízená oblast</string>
+  <!-- Name for airspace type Country -->
+  <string name="airspace_type_country">Země</string>
+  <!-- Name for airspace type County -->
+  <string name="airspace_type_county">Okres</string>
+  <!-- Name for airspace type Custom -->
+  <string name="airspace_type_custom">Uživatelský</string>
+  <!-- Name for airspace type Embassy -->
+  <string name="airspace_type_embassy">Velvyslanectví</string>
+  <!-- Name for airspace type Emergency -->
+  <string name="airspace_type_emergency">První aktivita odpovídače</string>
+  <!-- Name for airspace type Federal Building -->
+  <string name="airspace_type_federal_building">Federální budova</string>
+  <!-- Name for airspace type Flight Information Region -->
+  <string name="airspace_type_fir">Oblast s letovou informační službou</string>
+  <!-- Name for airspace type Fire -->
+  <string name="airspace_type_fire">Požár</string>
+  <!-- Name for airspace type Gliderport -->
+  <string name="airspace_type_gliderport">Oblast výskytu Kluzáků</string>
+  <!-- Name for airspace type Hazard Area -->
+  <string name="airspace_type_hazard_area">Nebezpečná oblast</string>
+  <!-- Name for airspace type Heliport -->
+  <string name="airspace_type_heliport">Heliport</string>
+  <!-- Name for airspace type Highway -->
+  <string name="airspace_type_highway">Dálnice</string>
+  <!-- Name for airspace type Hospital -->
+  <string name="airspace_type_hospital">Nemocnice</string>
+  <!-- Name for airspace type Industrial Property -->
+  <string name="airspace_type_industrial_property">Průmyslová oblast</string>
+  <!-- Name for airspace type Japan Base Admin (Smallest unit of Japanse administrative units) -->
+  <string name="airspace_type_japan_base">Japonská základna</string>
+  <!-- Name for airspace type Military Property -->
+  <string name="airspace_type_military_property">Vojenská oblast</string>
+  <!-- Name for airspace type National Park -->
+  <string name="airspace_type_national_park">Národní Park</string>
+  <!-- Name for airspace type NOTAM -->
+  <string name="airspace_type_notam">NOTAM</string>
+  <!-- Name for airspace type Police Station -->
+  <string name="airspace_type_police_station">Policejní stanice</string>
+  <!-- Name for airspace type Powerline -->
+  <string name="airspace_type_powerline">Elektrické vedení</string>
+  <!-- Name for airspace type Power Plant -->
+  <string name="airspace_type_power_plant">Elektrárna</string>
+  <!-- Name for airspace type Prison -->
+  <string name="airspace_type_prison">Věznice</string>
+  <!-- Name for airspace type Railway -->
+  <string name="airspace_type_railway">Železnice</string>
+  <!-- Name for airspace type Residential Property -->
+  <string name="airspace_type_residential_property">Obydlená oblast</string>
+  <!-- Name for airspace type School -->
+  <string name="airspace_type_school">Škola</string>
+  <!-- Name for airspace type Seaplane Base -->
+  <string name="airspace_type_seaplane_base">Základna hydroplánů</string>
+  <!-- Name for airspace type Special Use Airspace -->
+  <string name="airspace_type_special_use">Prostor se speciálním užíváním</string>
+  <!-- Name for airspace type Stadium -->
+  <string name="airspace_type_stadium">Stadión</string>
+  <!-- Name for airspace type State -->
+  <string name="airspace_type_state">Stát</string>
+  <!-- Name for airspace type Subprefecture -->
+  <string name="airspace_type_subprefecture">Podprovincie</string>
+  <!-- Name for airspace type Supercity (Japan related) -->
+  <string name="airspace_type_supercity">Velkoměsto</string>
+  <!-- Name for airspace type FAA Temporary Flight Restriction -->
+  <string name="airspace_type_tfr_faa">Dočasně omezená oblast (TFR)</string>
+  <!-- Name for airspace type Ultralight Field -->
+  <string name="airspace_type_ulm_field">Oblast pro Ultralighty</string>
+  <!-- Generic catchall placeholder/name for airspace type is new and unknown at time of development but present via the advisories or map sources -->
+  <string name="airspace_type_unclassified">Nezařazené</string>
+  <!-- Name for airspace type University -->
+  <string name="airspace_type_university">Univerzita</string>
+  <!-- Name for airspace type Waterway -->
+  <string name="airspace_type_waterway">Vodní toky</string>
+  <!-- Name for airspace type WildFire -->
+  <string name="airspace_type_wildfire">Požáry</string>
+  <!-- No comment provided by engineer. -->
+  <!-- 1Password Extension Error Message -->
+  <!-- The request with the authority has been accepted -->
+  <string name="authorization_accepted">Schváleno</string>
+  <!-- The request with the authority has been cancelled -->
+  <string name="authorization_cancelled_submission">Ověření zamítnuto</string>
+  <!-- The request with the authority has not been requested -->
+  <string name="authorization_not_requested">Ověření není vyžadováno</string>
+  <!-- The request with the authority has been made and a response is pending -->
+  <string name="authorization_pending">Autorizace se vyřizuje</string>
+  <!-- The request with the authority has been rejected -->
+  <string name="authorization_rejected">Autorizace zamítnuta</string>
+  <!-- The request with the authority will be rejected once the flight plan is submitted -->
+  <string name="authorization_rejected_upon_submission">Zamítnutí žádosti</string>
+  <!-- The request with the authority will be accepted once the flight plan is submitted -->
+  <string name="authorization_upon_submission">Autorizace na žádost</string>
+  <!-- Login message when a user's account has been blacklisted. -->
+  <string name="invalid_email_domain">Váš účet je na černé listině. Kontaktujte prosím security@airmap.com</string>
+  <!-- Login message when a user must verify their email address -->
+  <string name="verify_email_log_in_again">Vaše e-mailová adresa musí být ověřena. Zkontrolujte Vaší schránku.</string>
+  <!-- Login message when a user failed to authenticate -->
+  <string name="auth_error_unauthorized">Neoprávněný</string>
+  <!-- Navigation title for failed login attempt -->
+  <string name="auth_failed_login_title">Upozornění</string>
+  <!-- Abbreviation for East -->
+  <string name="cardinal_direction_e">E</string>
+  <!-- Abbreviation for East North East -->
+  <string name="cardinal_direction_ene">ENE</string>
+  <!-- Abbreviation for East South East -->
+  <string name="cardinal_direction_ese">ESE</string>
+  <!-- Abbreviation for North -->
+  <string name="cardinal_direction_n">N</string>
+  <!-- Abbreviation for North East -->
+  <string name="cardinal_direction_ne">NE</string>
+  <!-- Abbreviation for North North East -->
+  <string name="cardinal_direction_nnne">NNE</string>
+  <!-- Abbreviation for North North West -->
+  <string name="cardinal_direction_nnw">NNW</string>
+  <!-- Abbreviation for North West -->
+  <string name="cardinal_direction_nw">NW</string>
+  <!-- Abbreviation for South -->
+  <string name="cardinal_direction_s">S</string>
+  <!-- Abbreviation for South East -->
+  <string name="cardinal_direction_se">SE</string>
+  <!-- Abbreviation for South South East -->
+  <string name="cardinal_direction_sse">SSE</string>
+  <!-- Abbreviation for South South West -->
+  <string name="cardinal_direction_ssw">SSW</string>
+  <!-- Abbreviation for South West -->
+  <string name="cardinal_direction_sw">SW</string>
+  <!-- Abbreviation for West -->
+  <string name="cardinal_direction_w">W</string>
+  <!-- Abbreviation for West North West -->
+  <string name="cardinal_direction_wnw">WNW</string>
+  <!-- Abbreviation for West South West -->
+  <string name="cardinal_direction_wsw">WSW</string>
+  <string name="cfbundlename">${PRODUKTOVÝ_NÁZEV}</string>
+  <string name="com_auth0_lock_action_forgot_password">Nepamatujete si své heslo?</string>
+  <string name="com_auth0_lock_sign_up_terms">Registrací souhlasím se smluvními podmínkami aplikace a zásadami ochrany osobních údajů</string>
+  <string name="com_auth0_lock_db_change_password_message_success">Právě jsme vám zaslali email k obnovení hesla</string>
+  <string name="com_auth0_lock_database_login_success_message">Úspěšně jste se přihlásili.</string>
+  <string name="com_auth0_lock_mode_log_in">Přihlášení</string>
+  <string name="com_auth0_lock_mode_sign_up">Registrace</string>
+  <string name="com_auth0_lock_forms_separator">nebo</string>
+  <string name="com.auth0.lock.database.signup.success.message">Děkujeme za registraci.</string>
+  <string name="com.auth0.lock.database.tos.sheet.cancel">Zrušit</string>
+  <string name="com.auth0.lock.database.tos.sheet.privacy">Zásady ochrany osobních údajů</string>
+  <string name="com.auth0.lock.database.tos.sheet.title">Podmínky poskytování služeb</string>
+  <string name="com.auth0.lock.enterprise.sso.message">Zadejte prosím vaše firemní ověření</string>
+  <string name="com.auth0.lock.enterprise.sso.message_at">Zadejte prosím vaše firemní ověření %1$s</string>
+  <string name="com.auth0.lock.enterprise.sso.title">JEDNODUCHÉ PODEPISOVÁNÍ ZAPNUTO</string>
+  <string name="com.auth0.lock.error.authentication.blocked_user">UŽIVATEL JE ZABLOKOVÁN</string>
+  <string name="com.auth0.lock.error.authentication.fallback">OMLOUVÁME SE, NĚCO SE POKAZILO PŘI POKUSU O PŘIHLÁŠENÍ.</string>
+  <string name="com_auth0_lock_db_login_error_invalid_credentials_message">ŠPATNÉ HESLO NEBO EMAIL.</string>
+  <string name="com.auth0.lock.error.authentication.mfa_invalid_code">ŠPATNÝ KÓD.</string>
+  <string name="com.auth0.lock.error.authentication.no_connection">OMLOUVÁME SE, NELZE NAJÍT PLATNÉ PŘIPOJENÍ PRO UŽIVATELE.</string>
+  <string name="com.auth0.lock.error.authentication.password_change_required">HESLO JE NUTNÉ AKTUALIZOVAT, Z DŮVODU PRVNÍHO PŘIHLÁŠENÍ NEBO PROTOŽE PLATNOST HESLA VYPRŠELA.</string>
+  <string name="com.auth0.lock.error.authentication.password_leaked">TOTO PŘIHLÁŠENÍ BYLO BLOKOVÁNO PRO ZJIŠTĚNÍ UNIKNUTÍ VAŠEHO HESLA NA JINÉ STRÁNCE. POSLALI JSME VÁM EMAIL S POKYNY JAK PŘIHLÁŠENÍ ODBLOKOVAT.</string>
+  <string name="com.auth0.lock.error.authentication.too_many_attempts">VÁŠ ÚČET BYL ZABLOKOVÁN PO VÍCE NESPRÁVNÝCH POKUSECH O PŘIHLÁŠENÍ.</string>
+  <string name="com_auth0_lock_unrecoverable_error_title">NĚCO SE POKAZILO.\nKONTAKTUJTE PROSÍM TECHNICKOU PODPORU.</string>
+  <string name="com_auth0_lock_db_message_change_password_error">OMLOUVÁME SE, NĚCO SE POKAZILO PŘI POKUSU O ZMĚNU HESLA.</string>
+  <string name="com_auth0_lock_password_strength_chars_length">Minimálně %d znaků délka </string>
+  <string name="com.auth0.lock.error.password.contain_at_least">Obsahují alespoň %1$s z následujících %2$s typů znaků:</string>
+  <string name="com_auth0_lock_password_strength_lowercase_letters">Malá písmena (a-z)</string>
+  <string name="com.auth0.lock.error.password.non_empty">Heslo nesmí být prázdné</string>
+  <string name="com_auth0_lock_password_strength_identical_chars">Nesmí se opakovat více než %1$d identických znaků za sebou (např., \"%2$s\" není povoleno)</string>
+  <string name="com_auth0_lock_password_strength_numbers">Čísla (tj. 0-9)</string>
+  <string name="com_auth0_lock_password_strength_title_must_have">Mělo by obsahovat:</string>
+  <string name="com_auth0_lock_password_strength_special_chars">Speciální znaky (např. !@#$%^&amp;*)</string>
+  <string name="com_auth0_lock_password_strength_uppercase_letters">Velká písmena (A-Z)</string>
+  <string name="com.auth0.lock.error.passwordless.invalid_link">OMLOUVÁME SE, VYSKYTL SE PROBLÉM S ODKAZEM. VYŽÁDEJTE SI NOVÝ ODKAZ PROSÍM.</string>
+  <string name="com.auth0.lock.error.passwordless.signup_disabled">NOVÉ REGISTRACE JSOU ZAKÁZÁNY PRO TENTO ÚČET, PROSÍM KONTAKTUJTE SPRÁVCE.</string>
+  <string name="com.auth0.lock.error.recoverable.button">Opakovat</string>
+  <string name="com.auth0.lock.error.recoverable.message">Zkontrolujte prosím internetové připojení.</string>
+  <string name="com.auth0.lock.error.recoverable.title">Nelze načíst přihlašovací pole</string>
+  <string name="com_auth0_lock_db_sign_up_error_message">OMLOUVÁME SE, NĚCO SE POKAZILO V PRŮBĚHU PŘIHLAŠOVÁNÍ.</string>
+  <string name="com_auth0_lock_input_error_password">NEPLATNÉ HESLO.</string>
+  <string name="com.auth0.lock.error.signup.password_dictionary_error">PŘÍLIŠ SLABÉ HESLO.</string>
+  <string name="com_auth0_lock_db_signup_password_already_used_error_message">HESLO BYLO JIŽ POUŽITO.</string>
+  <string name="com.auth0.lock.error.signup.password_no_user_info_error">HESLO NA ZÁKLADĚ INFORMACÍ UŽIVATELE.</string>
+  <string name="com_auth0_lock_db_signup_password_not_strong_error_message">SLABÉ HESLO.</string>
+  <string name="com_auth0_lock_db_signup_user_already_exists_error_message">UŽIVATEL JIŽ EXISTUJE.</string>
+  <string name="com.auth0.lock.error.unrecoverable.button">Kontakt podpora</string>
+  <string name="com.auth0.lock.error.unrecoverable.default">Něco se pokazilo.\nKontaktujte prosím Technickou podporu.</string>
+  <string name="com.auth0.lock.error.unrecoverable.invalid_credentials">Vaše Auth0 ověření ClientID a/nebo Doména jsou neplatné.</string>
+  <string name="com.auth0.lock.error.unrecoverable.invalid_options">Nastavení konfigurace selhalo s: %1$s</string>
+  <string name="com.auth0.lock.error.unrecoverable.message">Došlo k neočekáváné chybě při nastavení přihlašovacího pole.</string>
+  <string name="com.auth0.lock.error.unrecoverable.message.no_action">Došlo k neočekáváné chybě při nastavení přihlašovacího pole, kontaktujte prosím Technickou podporu.</string>
+  <string name="com.auth0.lock.error.unrecoverable.no_connections">Pro tohoto klienta nenalezeny žádné metody ověřování. zkontrolujte nastavení vašeho klienta.</string>
+  <string name="com.auth0.lock.error.unrecoverable.title">Váš požadavek nelze vyřešit</string>
+  <string name="com_auth0_lock_forgot_message">Zadejte svůj email a nové heslo. Zašleme vám email s potvrzením změny hesla.</string>
+  <string name="com_auth0_lock_title_change_password">Obnovit heslo</string>
+  <string name="com.auth0.lock.header.default_title">Auth0</string>
+  <string name="com_auth0_lock_input_error_email">Musí být platný email</string>
+  <string name="com_auth0_lock_hint_email">Email</string>
+  <string name="com.auth0.lock.input.email_username.placeholder">Uživatelské jméno/Email</string>
+  <string name="com.auth0.lock.input.empty.error">Nesmí být prázdné</string>
+  <string name="com.auth0.lock.input.generic.error">Neplatný přístup</string>
+  <string name="com.auth0.lock.input.otp.error">Musí být platný číselný kód</string>
+  <string name="com.auth0.lock.input.otp.placeholder">Kód</string>
+  <string name="com_auth0_lock_hint_password">Heslo</string>
+  <string name="com.auth0.lock.input.phone.error">Platné telefonní číslo</string>
+  <string name="com.auth0.lock.input.phone.placeholder">Telefonní číslo</string>
+  <string name="com.auth0.lock.input.policy.error">Heslo nesplňuje podmínky</string>
+  <string name="com.auth0.lock.input.username.error">Může obsahovat pouze mezi %1$s až %2$s alfanumerickými znaky a \'_\'.</string>
+  <string name="com.auth0.lock.input.username.placeholder">Uživatelské jméno</string>
+  <string name="com.auth0.lock.multifactor.message">Zadejte prosím ověřovací kód vygenerovaný aplikací.</string>
+  <string name="com.auth0.lock.multifactor.title">Ověření ve dvou krocích</string>
+  <string name="com.auth0.lock.passwordless.sms.country.header">Vyberte zemi</string>
+  <string name="com.auth0.lock.passwordless.sms.country.search">Hledat</string>
+  <string name="com.auth0.lock.strategy.localized.amazon">AMAZON</string>
+  <string name="com.auth0.lock.strategy.localized.aol">AOL</string>
+  <string name="com.auth0.lock.strategy.localized.baidu">百度</string>
+  <string name="com.auth0.lock.strategy.localized.bitbucket">BITBUCKET</string>
+  <string name="com.auth0.lock.strategy.localized.dropbox">DROPBOX</string>
+  <string name="com.auth0.lock.strategy.localized.dwolla">DWOLLA</string>
+  <string name="com.auth0.lock.strategy.localized.ebay">EBAY</string>
+  <string name="com.auth0.lock.strategy.localized.evernote">EVERNOTE</string>
+  <string name="com.auth0.lock.strategy.localized.evernote_sandbox">EVERNOTE (SANDBOX)</string>
+  <string name="com.auth0.lock.strategy.localized.exact">EXACT</string>
+  <string name="com.auth0.lock.strategy.localized.facebook">FACEBOOK</string>
+  <string name="com.auth0.lock.strategy.localized.fitbit">FITBIT</string>
+  <string name="com.auth0.lock.strategy.localized.github">GITHUB</string>
+  <string name="com.auth0.lock.strategy.localized.google">GOOGLE</string>
+  <string name="com.auth0.lock.strategy.localized.instagram">INSTAGRAM</string>
+  <string name="com.auth0.lock.strategy.localized.linkedin">LINKEDIN</string>
+  <string name="com.auth0.lock.strategy.localized.microsoft">MICROSOFT účet</string>
+  <string name="com.auth0.lock.strategy.localized.miicard">MIICARD</string>
+  <string name="com.auth0.lock.strategy.localized.paypal">PAYPAL</string>
+  <string name="com.auth0.lock.strategy.localized.paypal_sandbox">PAYPAL (SANDBOX)</string>
+  <string name="com.auth0.lock.strategy.localized.planning_center">PLANNING CENTER</string>
+  <string name="com.auth0.lock.strategy.localized.renren">人人</string>
+  <string name="com.auth0.lock.strategy.localized.salesforce">SALESFORCE</string>
+  <string name="com.auth0.lock.strategy.localized.salesforce_community">SALESFORCE COMMUNITY</string>
+  <string name="com.auth0.lock.strategy.localized.salesforce_sandbox">SALESFORCE (SANDBOX)</string>
+  <string name="com.auth0.lock.strategy.localized.shopify">SHOPIFY</string>
+  <string name="com.auth0.lock.strategy.localized.soundcloud">SOUNDCLOUD</string>
+  <string name="com.auth0.lock.strategy.localized.the_city">THE CITY</string>
+  <string name="com.auth0.lock.strategy.localized.the_city_sandbox">THE CITY (SANDBOX)</string>
+  <string name="com.auth0.lock.strategy.localized.thirty_seven_signals">37 SIGNALS</string>
+  <string name="com.auth0.lock.strategy.localized.twitter">TWITTER</string>
+  <string name="com.auth0.lock.strategy.localized.vkontakte">VKONTAKTE</string>
+  <string name="com.auth0.lock.strategy.localized.weibo">新浪微博</string>
+  <string name="com.auth0.lock.strategy.localized.wordpress">WORDPRESS</string>
+  <string name="com.auth0.lock.strategy.localized.yahoo">YAHOO!</string>
+  <string name="com.auth0.lock.strategy.localized.yammer">YAMMER</string>
+  <string name="com.auth0.lock.strategy.localized.yandex">YANDEX</string>
+  <string name="com_auth0_lock_social_log_in">PŘIHLÁŠENÍ S %1$s</string>
+  <string name="com_auth0_lock_social_sign_up">REGISTRACE S %1$s</string>
+  <string name="com_auth0_lock_action_log_in">PŘIHLÁŠENÍ</string>
+  <string name="com.auth0.lock.submit.send_code.title">POSLAT</string>
+  <string name="com_auth0_lock_action_send_email">POSLAT EMAIL</string>
+  <string name="com_auth0_lock_action_sign_up">REGISTRACE</string>
+  <string name="com.auth0.passwordless.code.reminder">Neobdržel jste kód?</string>
+  <string name="com.auth0.passwordless.email.code.sent">Byl odeslán email s kódem %1$s</string>
+  <string name="com.auth0.passwordless.email.title">Zadejte email pro vytvoření registrace.</string>
+  <string name="com.auth0.passwordless.email.title.social">V opačném případě zadejte svůj email pro přihlášení nebo vytvoření účtu.</string>
+  <string name="com.auth0.passwordless.link.reminder">Neobdržel jste odkaz?</string>
+  <string name="com.auth0.passwordless.link.sent">Poslali jsme vám odkaz k přihlášení %1$s</string>
+  <string name="com.auth0.passwordless.sms.code.sent">SMS s kódem byla odeslána na %1$s</string>
+  <string name="com.auth0.passwordless.sms.country.cell.detail">%1$s</string>
+  <string name="com.auth0.passwordless.sms.country.cell.label">%1$s</string>
+  <string name="com.auth0.passwordless.sms.title">Zadejte vaše telefonní číslo pro vytvoření registrace.</string>
+  <string name="com.auth0.passwordless.sms.title.social">Zadejte telefonní číslo pro přihlášení nebo vytvoření účtu.</string>
+  <!-- Class = "UILabel"; text = "Make & Model"; ObjectID = "XDN-d5-eoX"; Note = "CREATE_AIRCRAFT_MAKE_AND_MODEL|Label for the row label that displays the Make and Model of an aircraft"; AirMapUIObjectId = "XDN-d5-eoX.text"; -->
+  <string name="create_aircraft_make_and_model">Výrobce a model</string>
+  <!-- Class = "UITextField"; placeholder = "Nickname"; ObjectID = "blN-px-yT6"; Note = "CREATE_AIRCRAFT_NICKNAME|Placeholder label for the textfield where a user inputs the nickname for an aircraft"; AirMapUIObjectId = "blN-px-yT6.placeholder"; -->
+  <string name="airmap_nickname">Nick</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "K03-vU-4zj"; Note = "CREATE_AIRCRAFT_SAVE_BUTTON|Title for the button that saves a user's changes to a new or existing aircraft"; AirMapUIObjectId = "K03-vU-4zj.normalTitle"; -->
+  <string name="create_aircraft_save_button">Uložit</string>
+  <!-- Class = "UINavigationItem"; title = "Create Aircraft"; ObjectID = "Z9F-I6-niw"; Note = "CREATE_AIRCRAFT_TITLE|Title for the view where you can create a new aircraft"; AirMapUIObjectId = "Z9F-I6-niw.title"; -->
+  <string name="create_aircraft">Vytvořit stroj</string>
+  <!-- A generic server error message with an associated error code -->
+  <string name="error_generic_format">Chyba serveru. (%s)</string>
+  <!-- Response serialization failure error -->
+  <string name="error_serialization">Server vrátil nezpracovanou odpověď.</string>
+  <!-- Server failure error -->
+  <string name="error_server">Server nemohl dokončit požadavek.</string>
+  <!-- Authorization failure error -->
+  <string name="error_unauthorized">Neoprávněný přístup. Zkontrolujte přihlašovací údaje.</string>
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- Possible error from keychain. -->
+  <!-- 1Password Extension Error Message -->
+  <!-- 1Password Extension Error Message -->
+  <!-- 1Password Extension Error Message -->
+  <!-- 1Password Extension Error Message -->
+  <!-- 1Password Extension Error Message -->
+  <!-- 1Password Extension Error Message -->
+  <!-- Class = "UINavigationItem"; title = "FAQs"; ObjectID = "W7d-Gh-IMB"; Note = "FAQS_TITLE|Title for view that shows answers to frequently asked questions (FAQs)."; AirMapUIObjectId = "W7d-Gh-IMB.title"; -->
+  <string name="faqs">FAQ</string>
+  <string name="flight_data_cell_button_done">HOTOVO</string>
+  <string name="now">Nyní</string>
+  <!-- Class = "UIButton"; normalTitle = "Area"; ObjectID = "Yyg-xF-uSz"; Note = "FLIGHT_DRAWING_MODE_AREA|Label for button that enables area-based flight planning"; AirMapUIObjectId = "Yyg-xF-uSz.normalTitle"; -->
+  <string name="airmap_polygon">Oblast</string>
+  <!-- Class = "UIButton"; normalTitle = "Path"; ObjectID = "IAP-O7-VzM"; Note = "FLIGHT_DRAWING_MODE_PATH|Label for button that enables path-based flight planning"; AirMapUIObjectId = "IAP-O7-VzM.normalTitle"; -->
+  <string name="airmap_path">Trasa</string>
+  <!-- Class = "UIButton"; normalTitle = "Point"; ObjectID = "Fti-S4-xfH"; Note = "FLIGHT_DRAWING_MODE_POINT|Label for button that enables point-based flight planning"; AirMapUIObjectId = "Fti-S4-xfH.normalTitle"; -->
+  <string name="airmap_circle">Bod</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "kPh-hd-dib"; Note = "FLIGHT_DRAWING_NEXT_BUTTON|Label for button that allows a user to advance to the next step of flight planning"; AirMapUIObjectId = "kPh-hd-dib.normalTitle"; -->
+  <string name="flight_drawing_next_button">Další</string>
+  <!-- The radius around a point-based flight's center -->
+  <string name="airmap_buffer">Poloměr</string>
+  <!-- Class = "UINavigationItem"; title = "Create Flight"; ObjectID = "ViV-2h-qM5"; Note = "FLIGHT_DRAWING_TITLE|Title for view that allows a user to draw out a flight plan"; AirMapUIObjectId = "ViV-2h-qM5.title"; -->
+  <string name="flight_drawing_title">Vytvořit let</string>
+  <!-- Call to action to fine-tune the geometry of a flight. -->
+  <string name="airmap_done_drawing_tip">Přetáhněte libovolný bod, který chcete přesunout. Přetáhněte libovolný středový bod pro přidání nového bodu.</string>
+  <!-- Call to action to drag a point to the trash to delete. -->
+  <string name="airmap_delete_tip">Přetáhněte bod, který chcete smazat do koše</string>
+  <!-- Call to action to draw an area-based flight. -->
+  <string name="airmap_draw_freehand_area">Zakreslit oblast letu</string>
+  <!-- Call to action to draw a path-based flight. -->
+  <string name="airmap_draw_freehand_path">Kreslit trasu letu</string>
+  <!-- Call to action to drag the center position of a point-based flight. -->
+  <string name="flight_drawing_tooltip_cta_postiion_point">Přetáhněte středový bod k umístění oblasti letu.</string>
+  <!-- Call to action to tap the icon to begin drawing a flight area. -->
+  <string name="airmap_freehand_tip_area">Kliknutím na ikonu ruky nakreslete letovou oblast.</string>
+  <!-- Call to action to tap the icon to begin drawing a flight path. -->
+  <string name="airmap_freehand_tip_path">Kliknutím na ikonu ruky nakreslete trasu letu.</string>
+  <!-- Displayed when the user has drawn an invalid shaping, overlapping with conflicting permitted zones -->
+  <string name="airmap_flight_area_overlap_permit_conflict">Oblast letu se nemůže překrývat se zónami s požadavkem na povolení.</string>
+  <!-- Call to action to fix self-intersecting geometries of an area-based flight. -->
+  <string name="airmap_error_overlap">Neplatná oblast letu. Nastavte letový prostor tak, aby se sám nepřekrýval.</string>
+  <!-- The width of a path-based flight extending outward from the centerline -->
+  <string name="airmap_width">Šířka</string>
+  <!-- Title for the button to advance to the next screen -->
+  <string name="airmap_next">Další</string>
+  <!-- Title for the button to save and create the flight -->
+  <string name="airmap_save">Uložit</string>
+  <!-- Call to action title for the user to select an aircraft -->
+  <string name="flight_plan_row_title_aircraft">Výběr stroje</string>
+  <!-- Title for the row displaying the name of the aircraft -->
+  <string name="flight_plan_row_title_aircraft_name">Stroj</string>
+  <!-- Title for the row displaying flight plan altitude -->
+  <string name="airmap_max_altitude">Letová výška</string>
+  <!-- Title for the row displaying flight plan buffer -->
+  <string name="flight_plan_row_title_buffer">Vyrovnávací paměť</string>
+  <!-- Title for the row displaying flight plan duration -->
+  <string name="airmap_duration">Výdrž</string>
+  <!-- Title for the row displaying flight plan max altitude AGL (above ground level) -->
+  <string name="flight_plan_row_title_max_altitude">Max výška AGL</string>
+  <!-- Call to action title for the user to select a pilot profile -->
+  <string name="select_pilot_profile">Výběr profilu</string>
+  <!-- Title for the row displaying flight plan radius -->
+  <string name="flight_plan_row_title_radius">Poloměr</string>
+  <!-- Title for the row displaying flight plan start time -->
+  <string name="starts">Zahájení</string>
+  <!-- Title for the section displaying the pilot and aircraft details -->
+  <string name="pilot_and_aircraft_header">Pilot a Stroj</string>
+  <!-- Title for the section displaying flight plan details -->
+  <string name="flight_details">Let</string>
+  <!-- Title for the section displaying social sharing features -->
+  <string name="airmap_share_my_flight">Sdílet let</string>
+  <string name="date_and_time">Datum a Čas</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncsocketclosederror">Relace ukončena vzdáleným přístupem</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncsocketconnecttimeouterror">Vypršel čas pro připojení k hostiteli</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncsocketothererror">Pokus o vytvoření relace z FD selhal. getpeername () selhalo</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncsocketreadmaxedouterror">Popis operace dosáhl nastavené maximální délky</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncsocketreadtimeouterror">Vypršel čas přečtení</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncsocketwritetimeouterror">Vypršel čas zápisu</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncudpsocketclosederror">Relace ukončena</string>
+  <!-- No comment provided by engineer. -->
+  <string name="gcdasyncudpsocketsendtimeouterror">Odeslání vypršelo</string>
+  <!-- Invalid amount of jwt parts -->
+  <!-- Invalid JWT token base64Url value -->
+  <!-- Invalid JSON value inside base64Url -->
+  <!-- The request with the authority will be reviewed manually sometime after the flight plan is submitted -->
+  <string name="manual_authorization">Manuální autorizace čekající na vyřízení</string>
+  <!-- Class = "UINavigationItem"; title = "Manufacturers"; ObjectID = "a84-JL-ndb"; Note = "MANUFACTURERS_TITLE|Title for the view that displays a list of all aircraft manufacturers"; AirMapUIObjectId = "a84-JL-ndb.title"; -->
+  <string name="manufacturers_title">Výrobci</string>
+  <!-- Class = "UINavigationItem"; title = "Models"; ObjectID = "9xB-Yl-FrO"; Note = "MODELS_TITLE|Title for the view that displays a list of all aircraft models"; AirMapUIObjectId = "9xB-Yl-FrO.title"; -->
+  <string name="models_title">Modely</string>
+  <!-- No comment provided by engineer. -->
+  <!-- Table section title for other selectable countries -->
+  <string name="phone_country_section_other_country">Další</string>
+  <!-- Table section title for the currently selected country -->
+  <string name="phone_country_section_selected_country">Vybraná země</string>
+  <!-- Class = "UINavigationItem"; title = "Select Country"; ObjectID = "dcW-Vd-KfC"; Note = "PHONE_COUNTRY_TITLE|Title for the view that allows a user to select their phone numbers country"; AirMapUIObjectId = "dcW-Vd-KfC.title"; -->
+  <string name="phone_country_title">Vyber Zemi</string>
+  <!-- Class = "UILabel"; text = "SMS Code"; ObjectID = "p8q-LE-2ew"; Note = "PHONE_VERIFICATION_CODE_HEADER|Header text for view where a user can input their SMS verification code"; AirMapUIObjectId = "p8q-LE-2ew.text"; -->
+  <string name="phone_verification_code_header">SMS Kód</string>
+  <!-- Class = "UITextField"; placeholder = "Code"; ObjectID = "dDO-AY-LlB"; Note = "PHONE_VERIFICATION_CODE_PLACEHOLDER|Placeholder label for the textfield where a user can input their SMS verification code"; AirMapUIObjectId = "dDO-AY-LlB.placeholder"; -->
+  <string name="phone_verification_code_placeholder">Kód</string>
+  <!-- Class = "UINavigationItem"; title = "Verify Phone Number"; ObjectID = "MVj-Qg-sch"; Note = "PHONE_VERIFICATION_CODE_TITLE|Title for the view where a user can verify an SMS token"; AirMapUIObjectId = "MVj-Qg-sch.title"; -->
+  <string name="phone_verification_code_title">Ověření telefonního čísla</string>
+  <!-- Class = "UILabel"; text = "By providing your number, you agree to receive texts about your flights at this number. Carrier message & data rates may apply.\n\nAirMap will send you a text message when your digital notice has been successfully submitted.\n"; ObjectID = "2Na-rR-yZi"; Note = "PHONE_VERIFICATION_HEADER|Copy describing the process of verifying your phone number"; AirMapUIObjectId = "2Na-rR-yZi.text"; -->
+  <string name="airmap_phone_number_disclaimer">Zadáním svého čísla souhlasíte s tím, že obdržíte na tomto čísle zprávy o vašich letech. Zprávy a data mohou být dále využita.\n\nAirMap vám zašle potvrzující zprávu po úspěšném odeslání.</string>
+  <!-- Class = "UITextField"; placeholder = "Phone Number"; ObjectID = "vme-QM-SG8"; Note = "PHONE_VERIFICATION_PHONE|Placeholder label for the text field where a user types their phone number"; AirMapUIObjectId = "vme-QM-SG8.placeholder"; -->
+  <string name="phone_verification_phone">Telefonní číslo</string>
+  <!-- Message that is presented after a phone verification has failed, encouraging the user to send a new code to the phone number provided -->
+  <string name="phone_verification_request_new_sms_code">Vyžádejte si nový kód SMS</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "lre-WH-pt9"; Note = "PHONE_VERIFICATION_SAVE_BUTTON|Title for button that allows the user to submit the SMS code for verification"; AirMapUIObjectId = "lre-WH-pt9.normalTitle"; -->
+  <string name="phone_verification_save_button">Souhlasím</string>
+  <!-- Class = "UINavigationItem"; title = "Phone Number Verification"; ObjectID = "4g7-2z-c9g"; Note = "PHONE_VERIFICATION_TITLE|Title for view that allows a user to verify their phone number"; AirMapUIObjectId = "4g7-2z-c9g.title"; -->
+  <string name="phone_number_verification">Ověření telefonního čísla</string>
+  <!-- Message that is presented after a phone verification has failed, encouraging the user to try again -->
+  <string name="phone_verification_try_again">Zkusit znovu</string>
+  <!-- Message presented to a user when the SMS code they input is incorrect and verification of that code has failed -->
+  <string name="phone_verification_verification_failed">Ověření telefonního čísla selhalo</string>
+  <!-- Table row label for FAA registration number -->
+  <string name="pilot_profile_faa_registration">Registrační značka od CAA</string>
+  <!-- Label for the pilot profile email -->
+  <string name="email">Email</string>
+  <!-- Label for the pilot profile first name -->
+  <string name="first_name">Jméno</string>
+  <!-- Label for the pilot profile last name -->
+  <string name="last_name">Příjmení</string>
+  <!-- Label for the pilot profile phone -->
+  <string name="pilot_profile_label_phone">Telefon</string>
+  <!-- Label for the pilot profile username -->
+  <string name="pilot_profile_label_username">Uživatelské jméno</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "kCX-rY-nIt"; Note = "PILOT_PROFILE_SAVE_BUTTON|Title for the button that saves any changes to a user's profile"; AirMapUIObjectId = "kCX-rY-nIt.normalTitle"; -->
+  <string name="pilot_profile_save_button">Uložit</string>
+  <!-- Section header for the pilot profile additional info section -->
+  <string name="pilot_profile_section_additional">Další informace</string>
+  <!-- Section header for the pilot profile personal info section -->
+  <string name="airmap_personal_information">Osobní informace</string>
+  <!-- Format for displaying a user's number of aircraft and flights -->
+  <string name="pilot_profile_statistics_format">%1$s Stroj, %2$s Lety</string>
+  <!-- Class = "UINavigationItem"; title = "Pilot Profile"; ObjectID = "q0o-oq-I1W"; Note = "PILOT_PROFILE_TITLE|Title for view where a user can modify their user profile"; AirMapUIObjectId = "q0o-oq-I1W.title"; -->
+  <string name="pilot_profile_title">Profil pilota</string>
+  <string name="review_flight_plane_title">Letový plán</string>
+  <!-- Class = "UIButton"; normalTitle = "Next"; ObjectID = "tCa-zT-0iZ"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_NEXT_BUTTON|Button that allows a user to advance to the next step of flight planning"; AirMapUIObjectId = "tCa-zT-0iZ.normalTitle"; -->
+  <string name="review_flight_plan_details_next_button">Další</string>
+  <string name="review_flight_plan_details_public_flight_value_true">Ano</string>
+  <string name="review_flight_plan_details_radius">Poloměr</string>
+  <string name="airmap_aircraft_stats">Stroj</string>
+  <string name="review_flight_plan_details_row_title_altitude">Letová výška</string>
+  <string name="review_flight_plan_details_row_title_duration">Ukončení</string>
+  <string name="review_flight_plan_details_row_title_ends">Ukončení</string>
+  <string name="review_flight_plan_details_row_title_public">Zveřejnit</string>
+  <string name="review_flight_plan_details_row_title_starts">Zahájení</string>
+  <string name="review_flight_plan_details_section_header_aircraft">Stroj</string>
+  <string name="review_flight_plan_details_section_header_details">Detaily</string>
+  <string name="review_flight_plan_details_section_header_social">Sdílet let</string>
+  <string name="review_flight_plan_details_start_time_now">Nyní</string>
+  <!-- Class = "UINavigationItem"; title = "Create Flight"; ObjectID = "HM6-qn-wuK"; Note = "REVIEW_FLIGHT_PLAN_DETAILS_TITLE|Title for view that allows a user to adjust the details of a new flight"; AirMapUIObjectId = "HM6-qn-wuK.title"; -->
+  <string name="airmap_title_activity_create_flight">Vytvořit let</string>
+  <!-- Class = "UIButton"; normalTitle = "End Flight"; ObjectID = "2Eq-Fz-bOO"; Note = "REVIEW_FLIGHT_PLAN_END_BUTTON|Label for button that ends an active flight"; AirMapUIObjectId = "2Eq-Fz-bOO.normalTitle"; -->
+  <string name="end_flight">Ukončit let</string>
+  <!-- Displayed for authorities that are setup to receive digital notice -->
+  <string name="review_flight_plan_notices_tab_accepts_notice">Přijmutí digitálního upozornění</string>
+  <!-- Displayed for authorities that are NOT setup to receive digital notice -->
+  <string name="review_flight_plan_notices_tab_does_not_accept_notice">Následující autority v této oblasti neakceptují digitální upozornění</string>
+  <!-- Displayed in the flight plan review notices tab when there are no notices to display -->
+  <string name="review_flight_plan_notices_tab_section_header_no_notices">Na tento let nejsou žádné oznámení.</string>
+  <!-- Class = "UILabel"; text = "Digital Notice Accepted"; ObjectID = "39m-XX-eZ2"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_ACCEPTED|Header for section that shows what organizations accept digital notice"; AirMapUIObjectId = "39m-XX-eZ2.text"; -->
+  <string name="airmap_digital_notice_accepted">Oznámení přijato</string>
+  <!-- Class = "UILabel"; text = "The following authorities in this area do not accept digital notice"; ObjectID = "lll-ta-VAP"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_HEADER_NOTICE_NOT_ACCEPTED|Header for section that shows what organizations do not accept digital notice"; AirMapUIObjectId = "lll-ta-VAP.text"; -->
+  <string name="airmap_not_accept_notice">Následující autority v této oblasti neakceptují digitální upozornění</string>
+  <!-- Class = "UIButton"; normalTitle = "Review"; ObjectID = "V59-8d-Sdh"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_REVIEW_BUTON|Title for the button that allows the user to advance to the next step to review their flight plan"; AirMapUIObjectId = "V59-8d-Sdh.normalTitle"; -->
+  <string name="airmap_review">Posouzení</string>
+  <!-- Class = "UINavigationItem"; title = "Flight Notice"; ObjectID = "Uk3-p4-sdr"; Note = "REVIEW_FLIGHT_PLAN_NOTICE_TITLE|Title for view that displays digital notice that can be submitted to supported organizations"; AirMapUIObjectId = "Uk3-p4-sdr.title"; -->
+  <string name="airmap_flight_notice">Letové oznámení</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "4YZ-kG-zkZ"; Note = "REVIEW_FLIGHT_PLAN_SUBMIT_BUTTON|Label for button that submits and creates a new flight"; AirMapUIObjectId = "4YZ-kG-zkZ.normalTitle"; -->
+  <string name="submit">Souhlasím</string>
+  <string name="review_flight_plan_tab_title_digital_notice">Upozornění</string>
+  <string name="review_flight_plan_tab_title_flight">Let</string>
+  <!-- Class = "UINavigationItem"; title = "Review Flight Plan"; ObjectID = "7qo-VN-M2p"; Note = "REVIEW_FLIGHT_PLAN_TITLE|Title for view where user can review a flight plan"; AirMapUIObjectId = "7qo-VN-M2p.title"; -->
+  <string name="review_flight_plan_title">Posouzení letového plánu</string>
+  <!-- Label for the section header that displays all the Optional rulesets -->
+  <string name="rulesets_section_optional">Volitelný</string>
+  <!-- Label for the section header that displays all the Pick One rulesets -->
+  <string name="rulesets_section_pick_one">Vybrat jeden</string>
+  <!-- Label for the section header that displays all the Required rulesets -->
+  <string name="rulesets_section_required">Vyžadováno</string>
+  <!-- Label for rulesets that can be optionally enabled by the user -->
+  <string name="ruleset_selection_type_optional">Volitelný</string>
+  <!-- Label for rulesets that are part of a group in which one and only one ruleset can be enabled by the user -->
+  <string name="ruleset_selection_type_pickone">Vybrat jeden</string>
+  <!-- Label for rulesets that must be enabled by the user -->
+  <string name="ruleset_selection_type_required">Vyžadováno</string>
+  <string name="rules_generic_title">Pravidla pro lokalitu</string>
+  <!-- Class = "UINavigationItem"; title = "Select Aircraft"; ObjectID = "7vR-GS-NPr"; Note = "SELECT_AIRCRAFT_TITLE|Title for the view where you can select an aircraft for a flight"; AirMapUIObjectId = "7vR-GS-NPr.title"; -->
+  <string name="select_aircraft">Výběr stroje</string>
+  <!-- Class = "UILabel"; text = "SMS Code"; ObjectID = "oG7-qM-t5D"; Note = "SMS_LOGIN_CODE_HEADER|Header text for view where a user can input their SMS verification code"; AirMapUIObjectId = "oG7-qM-t5D.text"; -->
+  <string name="sms_login_code_header">SMS kód</string>
+  <!-- Class = "UITextField"; placeholder = "Code"; ObjectID = "L0X-0f-Pm9"; Note = "SMS_LOGIN_CODE_PLACEHOLDER|Placeholder label for the textfield where a user can input their SMS verification code"; AirMapUIObjectId = "L0X-0f-Pm9.placeholder"; -->
+  <string name="sms_login_code_placeholder">Kód</string>
+  <!-- Class = "UIButton"; normalTitle = "Submit"; ObjectID = "ERY-u7-YqH"; Note = "SMS_LOGIN_CODE_SUBMIT_BUTTON|Title for button that allows a user to submit an SMS code for verification"; AirMapUIObjectId = "ERY-u7-YqH.normalTitle"; -->
+  <string name="sms_login_code_submit_button">Souhlasím</string>
+  <!-- Class = "UINavigationItem"; title = "Verify Code"; ObjectID = "7C4-bp-tif"; Note = "SMS_LOGIN_CODE_TITLE|Title for the view where a user enters their SMS verification code"; AirMapUIObjectId = "7C4-bp-tif.title"; -->
+  <string name="sms_login_code_title">Ověřit kód</string>
+  <!-- Class = "UITextField"; placeholder = "Phone Number"; ObjectID = "61d-PT-JN7"; Note = "SMS_LOGIN_PHONE_NUMBER_PLACEHOLDER|Label for field that the user types their phone number into"; AirMapUIObjectId = "61d-PT-JN7.placeholder"; -->
+  <string name="sms_login_phone_number_placeholder">Telefonní číslo</string>
+  <!-- Class = "UIButton"; normalTitle = "Save"; ObjectID = "cdb-du-WXE"; Note = "SMS_LOGIN_SAVE_BUTTON|Label for button that allows the user to submit their phone number for verification"; AirMapUIObjectId = "cdb-du-WXE.normalTitle"; -->
+  <string name="sms_login_save_button">Uložit</string>
+  <!-- Class = "UINavigationItem"; title = "Login"; ObjectID = "CJG-Jj-2c2"; Note = "SMS_LOGIN_TITLE|Title for view that allows a user to login via SMS"; AirMapUIObjectId = "CJG-Jj-2c2.title"; -->
+  <string name="sms_login_title">Přihlášení</string>
+  <!-- Description for status advisory color Green -->
+  <string name="informational">Informační</string>
+  <!-- Description for status advisory color Orange -->
+  <string name="status_orange_description">Vyžadována akce</string>
+  <!-- Description for status advisory color Red -->
+  <string name="flight_strictly_regulated">Přísná regulace letu</string>
+  <!-- Description for status advisory color Yellow -->
+  <string name="advisories">Upozornění</string>
+  <!-- No comment provided by engineer. -->
+  <!-- No comment provided by engineer. -->
+  <!-- No comment provided by engineer. -->
+  <!-- No comment provided by engineer. -->
+  <!-- No comment provided by engineer. -->
+  <string name="tile_layer_aerial_rec_areas">Letecká rekreační oblast</string>
+  <string name="tile_layer_airports">Letiště</string>
+  <string name="tile_layer_cities">Města</string>
+  <string name="tile_layer_class_b">Řízená oblast Třída B</string>
+  <string name="tile_layer_class_c">Řízená oblast Třída C</string>
+  <string name="tile_layer_class_d">Řízená oblast Třída D</string>
+  <string name="tile_layer_class_e">Řízená oblast Třída E</string>
+  <string name="tile_layer_controlled_airspace">ŘÍzený prostor (B, C, D &amp; E)</string>
+  <string name="tile_layer_custom">Uživatelský</string>
+  <string name="tile_layer_emergencies">První aktivita odpovídače</string>
+  <string name="tile_layer_fires">Požáry</string>
+  <string name="tile_layer_hazard_areas">Nebezpečné oblasti</string>
+  <string name="tile_layer_heliports">Heliporty</string>
+  <string name="tile_layer_hospitals">Nemocnice</string>
+  <string name="tile_layer_national_parks">Národní parky</string>
+  <string name="tile_layer_noaa">NOAA Chráněné námořní oblasti</string>
+  <string name="tile_layer_power_plants">Elektrárny</string>
+  <string name="tile_layer_prisons">Věznice</string>
+  <string name="tile_layer_private_airports">Soukromá letiště</string>
+  <string name="tile_layer_prohibited">Zakázaný vzdušný prostor</string>
+  <string name="tile_layer_restricted_airspace">Vyhrazený vzdušný prostor</string>
+  <string name="tile_layer_schools">Školy</string>
+  <string name="tile_layer_tfr_faa">Dočasné omezení letu</string>
+  <string name="tile_layer_universities">Univerzity</string>
+  <!-- Format for traffic alerts. 1) aircraft id, 2) altitude, 3) distance, 4) direction, 5) time -->
+  <string name="traffic_alert_with_aircraft_id_and_distance_format">Provoz %1$s\nLetová výška %2$s\n%3$s %4$s %5$s</string>
+  <!-- Format for traffic alerts. 1) aircraft id, 2) altitude, 3) ground speed -->
+  <string name="traffic_alert_with_aircraft_id_format">Provoz %1$s\nLetová výška %2$s\n%3$s</string>
+  <!-- Name for the imperial system of measurement -->
+  <string name="units_imperial">Univerzální</string>
+  <!-- Name for the metric system of measurement -->
+  <string name="units_metric">Metrický</string>
+  <!-- Unit and format for displaying nautical miles -->
+  <string name="units_nautical_mile_format">%s NM</string>
+  <!-- Unit and format for displaying speed in knots -->
+  <string name="units_speed_format_knots">%s kts</string>
+  <!-- Unit and format for displaying speed in meters per second -->
+  <string name="units_speed_format_meters_per_second">%s m/s</string>
+  <!-- Unit and format for displaying speed in miles per hour -->
+  <string name="units_speed_format_miles_per_hour">%s mph</string>
+  <!-- Unit and format for displaying a speed range in meters per second -->
+  <string name="units_speed_range_format_meters_per_second">%1$s-%2$s m/s</string>
+  <!-- Unit and format for displaying a speed range in miles per hour -->
+  <string name="units_speed_range_format_miles_per_hour">%1$s-%2$s mph</string>
+  <!-- Unit and format for displaying temperature in Celcius -->
+  <string name="units_temperature_celcius_format">%1$s°C</string>
+  <!-- Unit and format for displaying temperature in Fahrenheit -->
+  <string name="units_temperature_fahrenheit_format">%1$s°F</string>
+  <!-- Possible error from keychain. -->
+  <!-- The request with the authority has been accepted -->
+  <string name="validation_accepted">Ověřeno</string>
+  <!-- No validation request has been filed -->
+  <string name="validation_not_requested">Ověření není vyžadováno</string>
+  <!-- The request with the authority has been made and a response is pending -->
+  <string name="validation_pending">Ověření čeká na schválení</string>
+  <!-- The request with the authority has been rejected -->
+  <string name="validation_rejected">Odmítnutí chybějících informací</string>
+</resources>

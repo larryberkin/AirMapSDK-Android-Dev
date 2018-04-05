@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public abstract class AirMapLayerStyle {
 
     public final String id;
@@ -34,10 +36,6 @@ public abstract class AirMapLayerStyle {
         filter = getFilter(json.optJSONArray("filter"));
     }
 
-    public static String optString(JSONObject jsonObject, String key) {
-        return jsonObject.optString(key);
-    }
-
     public boolean isBackgroundStyle() {
         return id.contains("background");
     }
@@ -50,7 +48,7 @@ public abstract class AirMapLayerStyle {
         }
 
         Filter.Statement filter;
-        String operator = filterJsonArray.optString(0);
+        String operator = optString(filterJsonArray, 0);
         final Object[] operands = new Object[filterJsonArray.length() - 1];
         for (int i = 0; i < operands.length; i++) {
             operands[i] = filterJsonArray.opt(i + 1);
@@ -122,7 +120,8 @@ public abstract class AirMapLayerStyle {
     public static Function getFillColorFunction(JSONObject fillColor) {
         String property = optString(fillColor, "property");
         String type = optString(fillColor, "type");
-        String defaultColor = fillColor.optString("default", "#000000");
+        optString(fillColor, "default", "#000000");
+        String defaultColor = optString(fillColor, "default", "#000000");
         JSONArray stopsArray = fillColor.optJSONArray("stops");
 
         switch (type) {

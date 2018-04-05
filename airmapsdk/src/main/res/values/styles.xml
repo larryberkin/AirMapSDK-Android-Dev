@@ -31,8 +31,8 @@
         <item name="Auth0.DarkPrimaryColor">@color/airmap_navy</item>
     </style>
 
-    <style name="CustomLocationLayer" parent="LocationLayer">
-        <item name="accuracyAlpha">0</item>
+    <style name="CustomLocationLayer" parent="mapbox_LocationLayer">
+        <item name="mapbox_accuracyAlpha">0</item>
     </style>
 
 </resources>

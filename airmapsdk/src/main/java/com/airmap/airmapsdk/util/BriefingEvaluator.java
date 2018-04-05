@@ -3,7 +3,6 @@ package com.airmap.airmapsdk.util;
 import com.airmap.airmapsdk.models.flight.AirMapEvaluation;
 import com.airmap.airmapsdk.models.flight.AirMapFlightBriefing;
 import com.airmap.airmapsdk.models.flight.AirMapFlightFeature;
-import com.airmap.airmapsdk.models.flight.AirMapFlightPlan;
 import com.airmap.airmapsdk.models.rules.AirMapRule;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 
@@ -16,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import timber.log.Timber;
 
 public class BriefingEvaluator {
 
@@ -97,16 +98,6 @@ public class BriefingEvaluator {
         return flightFeatures;
     }
 
-    public static boolean isApplicableFlightFeature(AirMapRule rule, AirMapFlightFeature flightFeature) {
-        if (rule.getStatus() != AirMapRule.Status.NotConflicting) {
-            if (!flightFeature.isCalculated()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static AirMapRule.Status getStatus(AirMapFlightBriefing briefing) {
         // set worst status to overall status
         AirMapRule.Status overallStatus = AirMapRule.Status.NotConflicting;
@@ -140,6 +131,7 @@ public class BriefingEvaluator {
 
     public static LinkedHashMap<AirMapRule.Status,List<AirMapRule>> getRulesWithFlightFeatures(AirMapRuleset ruleset, AirMapEvaluation evaluation) {
         LinkedHashMap<AirMapRule.Status,List<AirMapRule>> ruleStatusMap = new LinkedHashMap<>();
+        // pre-populate status for correct order
         ruleStatusMap.put(AirMapRule.Status.Conflicting, new ArrayList<AirMapRule>());
         ruleStatusMap.put(AirMapRule.Status.MissingInfo, new ArrayList<AirMapRule>());
         ruleStatusMap.put(AirMapRule.Status.InformationRules, new ArrayList<AirMapRule>());
@@ -151,11 +143,25 @@ public class BriefingEvaluator {
                 rules = ruleStatusMap.get(rule.getStatus());
             }
 
+            AirMapRule evaluationRule = getRuleFromEvaluation(evaluation, rule);
             for (AirMapFlightFeature flightFeature : CopyCollections.copy(rule.getFlightFeatures())) {
-                AirMapFlightFeature evaluationFlightFeature = getFlightFeatureFromEvaluation(evaluation, flightFeature);
-                if (evaluationFlightFeature != null && isApplicableFlightFeature(rule, evaluationFlightFeature)) {
+                AirMapFlightFeature evaluationFlightFeature = getFlightFeatureFromEvaluation(evaluationRule, flightFeature);
+                if (evaluationFlightFeature == null) {
                     rule.getFlightFeatures().remove(flightFeature);
+                    Timber.e("No match found for %s in evaluation", flightFeature.getFlightFeature());
+                    continue;
+                }
+
+                boolean ruleIsFailingDueToInput = rule.getStatus() != AirMapRule.Status.NotConflicting && !evaluationFlightFeature.isCalculated();
+                boolean requiresInputBasedOnEvaluation = !evaluationFlightFeature.isCalculated() && evaluationRule.getStatus() != AirMapRule.Status.NotConflicting;
+
+                // replace flight feature with the one from evaluation (includes the question)
+                if (ruleIsFailingDueToInput || requiresInputBasedOnEvaluation) {
+                    rule.getFlightFeatures().remove(flightFeature);
+                    evaluationFlightFeature.setStatus(flightFeature.getStatus());
                     rule.getFlightFeatures().add(evaluationFlightFeature);
+
+                // otherwise hide flight feature
                 } else {
                     rule.getFlightFeatures().remove(flightFeature);
                 }
@@ -165,17 +171,32 @@ public class BriefingEvaluator {
             ruleStatusMap.put(rule.getStatus(), rules);
         }
 
+        // strip out empty sections
+        for (AirMapRule.Status status : new HashSet<>(ruleStatusMap.keySet())) {
+            if (ruleStatusMap.get(status).isEmpty()) {
+                ruleStatusMap.remove(status);
+            }
+        }
+
         return ruleStatusMap;
     }
 
-    private static AirMapFlightFeature getFlightFeatureFromEvaluation(AirMapEvaluation evaluation, AirMapFlightFeature flightFeature) {
+    private static AirMapRule getRuleFromEvaluation(AirMapEvaluation evaluation, AirMapRule rule) {
         for (AirMapRuleset ruleset : evaluation.getRulesets()) {
-            for (AirMapRule rule : ruleset.getRules()) {
-                for (AirMapFlightFeature evaluationFlightFeature : rule.getFlightFeatures()) {
-                    if (evaluationFlightFeature.getFlightFeature().equals(flightFeature.getFlightFeature())) {
-                        return evaluationFlightFeature;
-                    }
+            for (AirMapRule evaluationRule : ruleset.getRules()) {
+                if (rule.getShortText().equals(evaluationRule.getShortText())) {
+                    return evaluationRule;
                 }
+            }
+        }
+
+        return null;
+    }
+
+    private static AirMapFlightFeature getFlightFeatureFromEvaluation(AirMapRule evaluationRule, AirMapFlightFeature flightFeature) {
+        for (AirMapFlightFeature evaluationFlightFeature : evaluationRule.getFlightFeatures()) {
+            if (evaluationFlightFeature.getFlightFeature().equals(flightFeature.getFlightFeature())) {
+                return evaluationFlightFeature;
             }
         }
 

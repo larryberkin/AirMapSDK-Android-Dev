@@ -15,6 +15,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable {
 
     public enum Type {
@@ -90,23 +92,23 @@ public class AirMapRuleset implements Serializable, AirMapBaseModel, Comparable 
     @Override
     public AirMapRuleset constructFromJson(JSONObject json) {
         if (json != null) {
-            setId(json.optString("id"));
-            setName(json.optString("name"));
-            setShortName(Utils.optString(json, "short_name"));
+            setId(optString(json, "id"));
+            setName(optString(json, "name"));
+            setShortName(optString(json, "short_name"));
 
             JSONObject jurisdictionObject = json.optJSONObject("jurisdiction");
             if (jurisdictionObject != null) {
                 setJurisdiction(new AirMapJurisdiction(jurisdictionObject));
             }
-            setSummary(Utils.optString(json, "description"));
-            setType(Type.fromString(json.optString("selection_type")));
+            setSummary(optString(json, "description"));
+            setType(Type.fromString(optString(json, "selection_type")));
 
             setDefault(json.optBoolean("default"));
 
             layers = new ArrayList<>();
-            JSONArray layersJSON = json.has("layers") ? json.optJSONArray("layers") : json.optJSONArray("airspace_types");
-            for (int i = 0; layersJSON != null && i < layersJSON.length(); i++) {
-                layers.add(layersJSON.optString(i));
+            JSONArray layersJson = json.has("layers") ? json.optJSONArray("layers") : json.optJSONArray("airspace_types");
+            for (int i = 0; layersJson != null && i < layersJson.length(); i++) {
+                layers.add(optString(layersJson, i));
             }
 
             rules = new ArrayList<>();

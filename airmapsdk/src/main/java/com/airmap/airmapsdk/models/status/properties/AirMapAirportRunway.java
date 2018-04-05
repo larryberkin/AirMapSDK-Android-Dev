@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 @SuppressWarnings("unused")
 public class AirMapAirportRunway implements AirMapBaseModel, Serializable {
 
@@ -24,7 +26,7 @@ public class AirMapAirportRunway implements AirMapBaseModel, Serializable {
     @Override
     public AirMapAirportRunway constructFromJson(JSONObject json) {
         if (json != null) {
-            setName(json.optString("name"));
+            setName(optString(json, "name"));
             setLength(json.optInt("length"));
             setBearing(json.optInt("bearing"));
         }

@@ -7,7 +7,7 @@ def libVersion = '2.0.0-beta.6'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 27
@@ -29,10 +29,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
-    aaptOptions {
-        additionalParameters '--utf16' // Allows emoji in XML
-    }
 }
 
 dependencies {
@@ -42,7 +38,7 @@ dependencies {
     testCompile "org.robolectric:robolectric:3.4.2"
 
     // support
-    def supportLibraryVersion = '27.0.2'
+    def supportLibraryVersion = '27.1.0'
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:cardview-v7:$supportLibraryVersion"
@@ -56,10 +52,10 @@ dependencies {
     compile "com.google.android.gms:play-services-location:$playServicesVersion"
 
     // mapbox
-    compile 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.4.1'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.3.0'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.9'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.9'
+    compile 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.5.0'
+    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.4.0'
+    compile 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.10'
+    compile 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.10'
 
     // shared libraries
     compile 'joda-time:joda-time:2.9.9'
@@ -70,11 +66,8 @@ dependencies {
     compile 'com.auth0.android:auth0:1.12.1'
 
     // other
-    compile 'com.squareup.okhttp3:okhttp:3.9.1' // Upgrade to 3.10.0 as soon as it is released to fix TLS None crash
+    compile 'com.squareup.okhttp3:okhttp:3.10.0'
     compile 'com.jakewharton.timber:timber:4.6.0'
-    compile 'com.github.bumptech.glide:glide:3.8.0' //Using Glide instead of Picasso because it is more efficient for the app's tutorial images
-    compile 'com.github.bumptech.glide:okhttp3-integration:1.5.0@aar'
-    compile 'com.nakama.arraypageradapter:arraypageradapter:0.1.1'
     compile 'org.bitbucket.b_c:jose4j:0.6.1'
     compile 'com.google.protobuf:protobuf-java:3.5.0'
     compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'

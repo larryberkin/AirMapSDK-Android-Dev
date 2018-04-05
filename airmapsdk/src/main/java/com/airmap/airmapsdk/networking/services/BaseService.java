@@ -2,6 +2,7 @@ package com.airmap.airmapsdk.networking.services;
 
 import com.airmap.airmapsdk.util.AirMapConfig;
 
+import static com.airmap.airmapsdk.util.AirMapConfig.getApiOverride;
 import static com.airmap.airmapsdk.util.AirMapConfig.getAuth0Host;
 import static com.airmap.airmapsdk.util.AirMapConfig.getDomain;
 import static com.airmap.airmapsdk.util.Utils.getMqttDebugUrl;
@@ -37,7 +38,7 @@ public class BaseService {
     protected static final String flightEndUrl = flightByIdUrl + "end/"; //Replace %s with id using String.format
     protected static final String flightStartCommUrl = flightByIdUrl + "start-comm/"; //Replace %s with id using String.format
     protected static final String flightEndCommUrl = flightByIdUrl + "end-comm/"; //Replace %s with id using String.format
-    protected static final String flightPlanUrl = flightBaseUrl + "plan/";
+    protected static final String flightPlanUrl = getApiOverride("flightplan", flightBaseUrl + "plan/");
     protected static final String flightPlanByFlightIdUrl = flightBaseUrl + "%s/" + "plan/";
     protected static final String flightPlanPatchUrl = flightPlanUrl + "%s/";
     protected static final String flightPlanBriefingUrl = flightPlanPatchUrl + "briefing";
@@ -83,8 +84,8 @@ public class BaseService {
     protected static final String situationalAwarenessChannel = "uav/traffic/sa/%s"; //Replace %s with id using String.format
 
     //Telemetry
-    protected static final String telemetryBaseUrl = "api-udp-telemetry." + (STAGING ? "stage." : "") + getDomain();
-    protected static final int telemetryPort = 16060;
+    protected static final String telemetryBaseUrl = STAGING ? ("api.k8s.stage.airmap.com") : ("api-udp-telemetry." + (STAGING ? "stage." : "") + getDomain());
+    protected static final int telemetryPort = STAGING ? 32003 : 16060;
 
     //Auth
     protected static final String loginUrl = "https://" + getAuth0Host() + "/delegation";
@@ -96,7 +97,7 @@ public class BaseService {
 
     //Rules
     protected static final String rulesetsVersion = STAGING ? getStagingUrl() : "v1/";
-    protected static final String rulesetBaseUrl = AirMapConfig.getApiOverride("rules", baseUrl + "rules/" + rulesetsVersion);
+    protected static final String rulesetBaseUrl = getApiOverride("rules", baseUrl + "rules/" + rulesetsVersion);
     protected static final String rulesetsByIdUrl = rulesetBaseUrl + "rule/"; //Replace %s with id using String.format
     protected static final String rulesetByIdUrl = rulesetBaseUrl + "%s/"; //Replace %s with id using String.format
     protected static final String rulesByIdUrl = rulesetBaseUrl + "%s/"; //Replace %s with id using String.format

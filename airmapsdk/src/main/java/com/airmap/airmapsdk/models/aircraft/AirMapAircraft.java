@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapAircraft implements Serializable, AirMapBaseModel {
 
     private String aircraftId;
@@ -24,8 +26,8 @@ public class AirMapAircraft implements Serializable, AirMapBaseModel {
     @Override
     public AirMapAircraft constructFromJson(JSONObject json) {
         if (json != null) {
-            setAircraftId(json.optString("id"));
-            setNickname(json.optString("nickname"));
+            setAircraftId(optString(json, "id"));
+            setNickname(optString(json, "nickname"));
             setModel(new AirMapAircraftModel(json.optJSONObject("model")));
         }
         return this;

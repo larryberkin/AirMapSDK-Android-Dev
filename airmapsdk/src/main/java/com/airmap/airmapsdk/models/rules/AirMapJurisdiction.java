@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.airmap.airmapsdk.util.Utils.optString;
+
 public class AirMapJurisdiction implements Serializable, AirMapBaseModel {
 
     public enum RegionCategory {
@@ -75,8 +77,8 @@ public class AirMapJurisdiction implements Serializable, AirMapBaseModel {
     @Override
     public AirMapBaseModel constructFromJson(JSONObject json) {
         setId(json.optInt("id"));
-        setName(json.optString("name"));
-        setRegion(RegionCategory.fromString(json.optString("region")));
+        setName(optString(json, "name"));
+        setRegion(RegionCategory.fromString(optString(json, "region")));
 
         JSONArray rulesetsJSON = json.optJSONArray("rulesets");
         rulesets = new HashSet<>();
