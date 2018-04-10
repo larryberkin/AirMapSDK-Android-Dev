@@ -505,18 +505,22 @@ public class Utils {
         return false;
     }
 
-    public static List<Position> getPositionsFromFeature(ArrayList coordinates) {
-            List<Position> positions = new ArrayList<>();
-            for (Object o : coordinates) {
+    public static List<Position> getPositionsFromFeature(Object coordinates) {
+        List<Position> positions = new ArrayList<>();
+        if (coordinates instanceof Position) {
+            positions.add((Position) coordinates);
+        } else if (coordinates instanceof ArrayList) {
+            ArrayList list = (ArrayList) coordinates;
+            for (Object o : list) {
                 if (o instanceof ArrayList) {
-                    positions.addAll(getPositionsFromFeature((ArrayList) o));
+                    positions.addAll(getPositionsFromFeature(o));
                 } else if (o instanceof Position) {
                     Position position = (Position) o;
                     positions.add(position);
                 }
             }
-
-            return positions;
+        }
+        return positions;
     }
 
     public static boolean useGPSForLocation(Context context) {
