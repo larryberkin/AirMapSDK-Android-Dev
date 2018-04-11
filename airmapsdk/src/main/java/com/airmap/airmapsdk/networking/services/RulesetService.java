@@ -10,6 +10,7 @@ import com.airmap.airmapsdk.models.flight.AirMapFlightBriefing;
 import com.airmap.airmapsdk.models.rules.AirMapJurisdiction;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdk.models.shapes.AirMapGeometry;
+import com.airmap.airmapsdk.models.shapes.AirMapPoint;
 import com.airmap.airmapsdk.models.shapes.AirMapPolygon;
 import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
@@ -97,8 +98,7 @@ public class RulesetService extends BaseService {
 
     static Call getRulesets(Coordinate coordinate, AirMapCallback<List<AirMapRuleset>> listener) {
         Map<String, Object> params = new HashMap<>();
-        params.put("latitude", String.valueOf(coordinate.getLatitude()));
-        params.put("longitude", String.valueOf(coordinate.getLongitude()));
+        params.put("geometry", new AirMapPoint(coordinate));
         return AirMap.getClient().postWithJsonBody(rulesetBaseUrl, params, new GenericListOkHttpCallback(listener, AirMapRuleset.class));
     }
 
