@@ -30,6 +30,8 @@ import java.util.List;
 
 import timber.log.Timber;
 
+import static com.airmap.airmapsdktest.Utils.getBitmap;
+
 public class TelemetryDemoActivity extends BaseActivity {
 
     private Toolbar toolbar;
@@ -66,7 +68,7 @@ public class TelemetryDemoActivity extends BaseActivity {
                             // add a marker for our flight
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .position(currentFlight.getCoordinate().toMapboxLatLng())
-                                    .icon(IconFactory.getInstance(TelemetryDemoActivity.this).fromBitmap(Utils.getBitmap(TelemetryDemoActivity.this, R.drawable.current_flgiht_marker_icon)));
+                                    .icon(IconFactory.getInstance(TelemetryDemoActivity.this).fromBitmap(getBitmap(TelemetryDemoActivity.this, R.drawable.current_flgiht_marker_icon)));
 
                             myMarker = map.addMarker(markerOptions);
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(flight.getCoordinate().toMapboxLatLng(), 12.5));

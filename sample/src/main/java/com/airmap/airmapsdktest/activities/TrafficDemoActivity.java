@@ -34,6 +34,12 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
+import static com.airmap.airmapsdk.util.Utils.metersToMiles;
+import static com.airmap.airmapsdktest.Utils.directionFromBearing;
+import static com.airmap.airmapsdktest.Utils.getBitmap;
+import static com.airmap.airmapsdktest.Utils.ktsToMph;
+import static com.airmap.airmapsdktest.Utils.minutesToMinSec;
+
 public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.OnMapLoadListener, AirMapTrafficListener {
 
     private Toolbar toolbar;
@@ -76,7 +82,7 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.O
                     // add a marker for our flight
                     MarkerOptions markerOptions = new MarkerOptions()
                             .position(currentFlight.getCoordinate().toMapboxLatLng())
-                            .icon(IconFactory.getInstance(TrafficDemoActivity.this).fromBitmap(Utils.getBitmap(TrafficDemoActivity.this, R.drawable.current_flgiht_marker_icon)));
+                            .icon(IconFactory.getInstance(TrafficDemoActivity.this).fromBitmap(getBitmap(TrafficDemoActivity.this, R.drawable.current_flgiht_marker_icon)));
 
                     mapView.getMap().addMarker(markerOptions);
 
@@ -182,7 +188,7 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.O
                     marker.setIcon(getIcon(traffic));
                 }
                 marker.setTraffic(traffic);
-                LatLng latLng = Utils.getLatLngFromCoordinate(traffic.getCoordinate());
+                LatLng latLng = traffic.getCoordinate().toMapboxLatLng();
                 final ValueAnimator markerAnimator = ObjectAnimator.ofObject(marker, "position", new LatLngEvaluator(), marker.getPosition(), latLng); //Animate the traffic's location from old position to new position
                 markerAnimator.setDuration(1000);
                 markerAnimator.setInterpolator(new LinearInterpolator());
@@ -214,24 +220,20 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.O
      * Audio alert
      */
     protected void sayTraffic() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            textToSpeech.speak(getString(R.string.traffic), TextToSpeech.QUEUE_FLUSH, null, null);
-        } else {
-            textToSpeech.speak(getString(R.string.traffic), TextToSpeech.QUEUE_FLUSH, null);
-        }
+        textToSpeech.speak(getString(R.string.traffic), TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
     public void showTrafficAlert(@NonNull AirMapTraffic traffic) {
-        LatLng activeFlightLocation = Utils.getLatLngFromCoordinate(currentFlight.getCoordinate());
-        double distanceInMeters = activeFlightLocation.distanceTo(Utils.getLatLngFromCoordinate(traffic.getCoordinate()));
-        double distance = Utils.metersToMiles(distanceInMeters);
-        double speed = Utils.ktsToMph(traffic.getGroundSpeedKt());
+        LatLng activeFlightLocation = currentFlight.getCoordinate().toMapboxLatLng();
+        double distanceInMeters = activeFlightLocation.distanceTo(traffic.getCoordinate().toMapboxLatLng());
+        double distance = metersToMiles(distanceInMeters);
+        double speed = ktsToMph(traffic.getGroundSpeedKt());
         double timeInHours = distance / speed;
         final StringBuilder trafficText = new StringBuilder()
                 .append(traffic.getProperties().getAircraftId()).append("\n")
                 .append(getString(R.string.distance_in_miles, distance)).append(" ")
-                .append(Utils.directionFromBearing(this, traffic.getTrueHeading())).append("\n")
-                .append(Utils.minutesToMinSec(this, timeInHours * 60));
+                .append(directionFromBearing(this, traffic.getTrueHeading())).append("\n")
+                .append(minutesToMinSec(this, timeInHours * 60));
 
         Toast.makeText(this, trafficText.toString(), Toast.LENGTH_SHORT).show();
     }
@@ -256,11 +258,11 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.O
         IconFactory factory = IconFactory.getInstance(this);
         int id = 0;
         if (traffic.getTrafficType() == AirMapTraffic.TrafficType.SituationalAwareness) {
-            id = getResources().getIdentifier("sa_traffic_marker_icon_" + Utils.directionFromBearing(this, traffic.getTrueHeading()).toLowerCase(), "drawable", getPackageName());
+            id = getResources().getIdentifier("sa_traffic_marker_icon_" + directionFromBearing(this, traffic.getTrueHeading()).toLowerCase(), "drawable", getPackageName());
         } else if (traffic.getTrafficType() == AirMapTraffic.TrafficType.Alert) {
-            id = getResources().getIdentifier("traffic_marker_icon_" + Utils.directionFromBearing(this, traffic.getTrueHeading()).toLowerCase(), "drawable", getPackageName());
+            id = getResources().getIdentifier("traffic_marker_icon_" + directionFromBearing(this, traffic.getTrueHeading()).toLowerCase(), "drawable", getPackageName());
         }
-        return factory.fromBitmap(Utils.getBitmap(this, id));
+        return factory.fromBitmap(Utils.Companion.getBitmap(this, id));
     }
 
     private class LatLngEvaluator implements TypeEvaluator<LatLng> {
