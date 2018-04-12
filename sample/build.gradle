@@ -21,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -29,6 +33,5 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'com.marshalchen.ultimaterecyclerview:library:0.7.3'
     implementation 'com.jakewharton.timber:timber:4.6.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.3.1'
     implementation project(':AirMapSDK-Android:airmapsdk')
 }
