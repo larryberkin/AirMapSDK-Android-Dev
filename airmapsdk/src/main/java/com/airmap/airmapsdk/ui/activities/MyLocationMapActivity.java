@@ -30,15 +30,13 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.mapbox.android.core.location.LocationEngineListener;
+import com.mapbox.android.core.location.LocationEnginePriority;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerMode;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.style.layers.CannotAddLayerException;
 import com.mapbox.mapboxsdk.style.sources.CannotAddSourceException;
-import com.mapbox.services.android.telemetry.location.LocationEngine;
-import com.mapbox.services.android.telemetry.location.LocationEngineListener;
-import com.mapbox.services.android.telemetry.location.LocationEnginePriority;
 
 import timber.log.Timber;
 
@@ -296,7 +294,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
             }
 
             if (requestLocationPermissionIfNeeded() && locationLayerPlugin != null) {
-                locationLayerPlugin.setLocationLayerEnabled(LocationLayerMode.TRACKING);
+                locationLayerPlugin.setLocationLayerEnabled(true);
             }
         } catch (CannotAddLayerException | CannotAddSourceException e) {
             Timber.e(e, "Unable to add location layer");

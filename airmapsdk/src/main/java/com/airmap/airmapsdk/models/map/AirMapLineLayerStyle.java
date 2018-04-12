@@ -1,6 +1,6 @@
 package com.airmap.airmapsdk.models.map;
 
-import com.mapbox.mapboxsdk.style.functions.Function;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
@@ -14,9 +14,9 @@ public class AirMapLineLayerStyle extends AirMapLayerStyle {
 
     private final float lineWidth;
     private final float lineOpacity;
-    private final Function lineOpacityFunction;
+    private final Expression lineOpacityFunction;
     private final String lineColor;
-    private final Function lineColorFunction;
+    private final Expression lineColorFunction;
     private final Float[] lineDashArray;
 
     protected AirMapLineLayerStyle(JSONObject json) {

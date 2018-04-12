@@ -2,7 +2,7 @@ package com.airmap.airmapsdk.models.map;
 
 import android.text.TextUtils;
 
-import com.mapbox.mapboxsdk.style.functions.Function;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
@@ -14,9 +14,9 @@ import static com.airmap.airmapsdk.util.Utils.optString;
 public class AirMapFillLayerStyle extends AirMapLayerStyle {
 
     public final float fillOpacity;
-    public final Function fillOpacityFunction;
+    public final Expression fillOpacityFunction;
     public final String fillColor;
-    public final Function fillColorFunction;
+    public final Expression fillColorFunction;
     public final String fillOutlineColor;
 
     protected AirMapFillLayerStyle(JSONObject json) {

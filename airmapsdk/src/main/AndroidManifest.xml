@@ -16,7 +16,7 @@
 
     <application>
         <service android:name="org.eclipse.paho.android.service.MqttService"/>
-        <service android:name="com.mapbox.services.android.telemetry.service.TelemetryService"/>
+        <service android:name="com.mapbox.android.telemetry.TelemetryService"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

@@ -19,9 +19,9 @@ import com.airmap.airmapsdk.util.CopyCollections;
 import com.airmap.airmapsdk.util.RetryWithDelay;
 import com.airmap.airmapsdk.util.ThrottleablePublishSubject;
 import com.google.gson.JsonObject;
+import com.mapbox.geojson.Feature;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.geometry.VisibleRegion;
-import com.mapbox.services.commons.geojson.Feature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import rx.Observable;
@@ -255,8 +254,7 @@ public class MapDataController {
                     public void call(final Subscriber<? super List<AirMapJurisdiction>> subscriber) {
 
                         // query map for jurisdictions
-                        List<Feature> features = map.getMap().queryRenderedFeatures(new RectF(map.getLeft(),
-                                map.getTop(), map.getRight(), map.getBottom()), "jurisdictions");
+                        List<Feature> features = map.getMap().queryRenderedFeatures(new RectF(map.getLeft(), map.getTop(), map.getRight(), map.getBottom()), "jurisdictions");
 
                         if (features.isEmpty()) {
                             Timber.d("Features are empty");
@@ -267,7 +265,7 @@ public class MapDataController {
                         List<AirMapJurisdiction> jurisdictions = new ArrayList<>();
                         for (Feature feature : features) {
                             try {
-                                JsonObject propertiesJSON = feature.getProperties();
+                                JsonObject propertiesJSON = feature.properties();
                                 JSONObject jurisdictionJSON = new JSONObject(propertiesJSON.get("jurisdiction").getAsString());
 
                                 jurisdictions.add(new AirMapJurisdiction(jurisdictionJSON));

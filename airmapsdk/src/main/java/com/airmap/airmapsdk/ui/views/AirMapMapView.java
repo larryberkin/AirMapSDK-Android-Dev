@@ -22,14 +22,17 @@ import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.MappingService;
 import com.airmap.airmapsdk.util.Utils;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Geometry;
+import com.mapbox.geojson.Point;
+import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.style.layers.Filter;
-import com.mapbox.services.commons.geojson.Feature;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.services.commons.models.Position;
 
 import java.util.ArrayList;
@@ -257,7 +260,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
         PointF clickPoint = map.getProjection().toScreenLocation(point);
         int slop = Utils.dpToPixels(getContext(), 10).intValue();
         RectF clickRect = new RectF(clickPoint.x - slop, clickPoint.y - slop, clickPoint.x + slop, clickPoint.y + slop);
-        Filter.Statement filter = Filter.has("id");
+        Expression filter = Expression.has("id");
 
         final List<Feature> selectedFeatures = map.queryRenderedFeatures(clickRect, filter);
         if (selectedFeatures.isEmpty()) {
@@ -405,20 +408,21 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
             LatLngBounds cameraBounds = map.getProjection().getVisibleRegion().latLngBounds;
             LatLngBounds.Builder advisoryLatLngsBuilder = new LatLngBounds.Builder();
             boolean zoom = false;
+            Geometry geometry = featureClicked.geometry();
 
-            if (featureClicked.getGeometry().getCoordinates() instanceof ArrayList) {
-                List<Position> positions = Utils.getPositionsFromFeature((ArrayList) featureClicked.getGeometry().getCoordinates());
-                for (Position position : positions) {
-                    LatLng latLng = new LatLng(position.getLatitude(), position.getLongitude());
+            if (geometry instanceof Polygon) {
+                List<Point> points = Utils.flatten(((Polygon) geometry).coordinates());
+                for (Point point : points) {
+                    LatLng latLng = new LatLng(point.latitude(), point.longitude());
                     advisoryLatLngsBuilder.include(latLng);
                     if (!cameraBounds.contains(latLng)) {
                         Timber.d("Camera position doesn't contain point");
                         zoom = true;
                     }
                 }
-            } else if (featureClicked.getGeometry().getCoordinates() instanceof Position) {
-                Position position = (Position) featureClicked.getGeometry().getCoordinates();
-                LatLng latLng = new LatLng(position.getLatitude(), position.getLongitude());
+            } else if (geometry instanceof Point) {
+                Point point = (Point) geometry;
+                LatLng latLng = new LatLng(point.latitude(), point.longitude());
                 advisoryLatLngsBuilder.include(latLng);
                 if (!cameraBounds.contains(latLng)) {
                     Timber.d("Camera position doesn't contain point");
@@ -438,7 +442,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
 
     public void highlight(AirMapAdvisory advisory) {
         RectF mapRectF = new RectF(getLeft(), getTop(), getRight(), getBottom());
-        Filter.Statement filter = Filter.has("id");
+        Expression filter = Expression.has("id");
         List<Feature> selectedFeatures = map.queryRenderedFeatures(mapRectF, filter);
 
         for (Feature feature : selectedFeatures) {

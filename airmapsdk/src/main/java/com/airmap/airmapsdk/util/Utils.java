@@ -519,6 +519,19 @@ public class Utils {
             return positions;
     }
 
+    public static List flatten(List unflattened) {
+        if (unflattened == null) return null;
+        List flattened = new ArrayList();
+        for (Object o : unflattened) {
+            if (o instanceof List) {
+                flattened.addAll(flatten((List) o));
+            } else {
+                flattened.add(o);
+            }
+        }
+        return flattened;
+    }
+
     public static boolean useGPSForLocation(Context context) {
         // by default, GPS is not used
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.setting_location_provider), true);

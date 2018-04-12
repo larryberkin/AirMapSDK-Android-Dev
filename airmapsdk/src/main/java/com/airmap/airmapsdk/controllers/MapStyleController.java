@@ -19,18 +19,17 @@ import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.networking.services.MappingService;
 import com.airmap.airmapsdk.ui.views.AirMapMapView;
 import com.airmap.airmapsdk.util.AirMapConstants;
+import com.mapbox.geojson.Feature;
 import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.BackgroundLayer;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
-import com.mapbox.mapboxsdk.style.layers.Filter;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
-import com.mapbox.mapboxsdk.style.layers.PropertyValue;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.TileSet;
 import com.mapbox.mapboxsdk.style.sources.VectorSource;
-import com.mapbox.services.commons.geojson.Feature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -198,7 +197,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
             highlightLayer.setProperties(PropertyFactory.lineColor("#f9e547"));
             highlightLayer.setProperties(PropertyFactory.lineWidth(4f));
             highlightLayer.setProperties(PropertyFactory.lineOpacity(0.9f));
-            Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
 
             try {
                 highlightLayer.setFilter(filter);
@@ -216,11 +215,11 @@ public class MapStyleController implements MapView.OnMapChangedListener {
     private void addTfrFilter(Layer layer) {
         long now = System.currentTimeMillis() / 1000;
         long in4Hrs = now + (4 * 60 * 60);
-        Filter.Statement validNowFilter = Filter.all(Filter.lt("start", now), Filter.gt("end", now));
-        Filter.Statement startsSoonFilter = Filter.all(Filter.gt("start", now), Filter.lt("start", in4Hrs));
-        Filter.Statement permanent = Filter.eq("permanent", "true");
-        Filter.Statement hasNoEnd = Filter.all(Filter.notHas("end"), Filter.notHas("base"));
-        Filter.Statement filter = Filter.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
+        Expression validNowFilter = Expression.all(Expression.lt(Expression.get("start"), now), Expression.gt(Expression.get("end"), now));
+        Expression startsSoonFilter = Expression.all(Expression.gt(Expression.get("start"), now), Expression.lt(Expression.get("start"), in4Hrs));
+        Expression permanent = Expression.eq(Expression.get("permanent"), Expression.get("true"));
+        Expression hasNoEnd = Expression.all(Expression.not(Expression.has("end")), Expression.not(Expression.has("base")));
+        Expression filter = Expression.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
         if (layer instanceof FillLayer) {
             ((FillLayer) layer).setFilter(filter);
         } else if (layer instanceof LineLayer) {
@@ -231,11 +230,11 @@ public class MapStyleController implements MapView.OnMapChangedListener {
     private void addNotamFilter(Layer layer) {
         long now = System.currentTimeMillis() / 1000;
         long in4Hrs = now + (4 * 60 * 60);
-        Filter.Statement validNowFilter = Filter.all(Filter.lt("start", now), Filter.gt("end", now));
-        Filter.Statement startsSoonFilter = Filter.all(Filter.gt("start", now), Filter.lt("start", in4Hrs));
-        Filter.Statement permanent = Filter.eq("permanent", "true");
-        Filter.Statement hasNoEnd = Filter.all(Filter.notHas("end"), Filter.notHas("base"));
-        Filter.Statement filter = Filter.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
+        Expression validNowFilter = Expression.all(Expression.lt(Expression.get("start"), now), Expression.gt(Expression.get("end"), now));
+        Expression startsSoonFilter = Expression.all(Expression.gt(Expression.get("start"), now), Expression.lt(Expression.get("start"), in4Hrs));
+        Expression permanent = Expression.eq(Expression.get("permanent"), Expression.get("true"));
+        Expression hasNoEnd = Expression.all(Expression.not(Expression.has("end")), Expression.not(Expression.has("base")));
+        Expression filter = Expression.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
         if (layer instanceof FillLayer) {
             ((FillLayer) layer).setFilter(filter);
         } else if (layer instanceof LineLayer) {
@@ -270,7 +269,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
     public void highlight(@NonNull Feature feature, AirMapAdvisory advisory) {
         // remove old highlight
         if (highlightLayer != null) {
-            Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
             highlightLayer.setFilter(filter);
         }
 
@@ -280,12 +279,12 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         highlightLayer.setSourceLayer(sourceId + "_" + advisory.getType().toString());
 
         // feature's airspace_id can be an int or string (tile server bug), so match on either
-        Filter.Statement filter;
+        Expression filter;
         try {
             int airspaceId = Integer.parseInt(advisory.getId());
-            filter = Filter.any(Filter.eq("id", advisory.getId()), Filter.eq("id", airspaceId));
+            filter = Expression.any(Expression.eq(Expression.get("id"), advisory.getId()), Expression.eq(Expression.get("id"), airspaceId));
         } catch (NumberFormatException e) {
-            filter = Filter.any(Filter.eq("id", advisory.getId()));
+            filter = Expression.any(Expression.eq(Expression.get("id"), advisory.getId()));
         }
         highlightLayer.setFilter(filter);
     }
@@ -296,7 +295,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
         // remove old highlight
         if (highlightLayer != null) {
-            Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
             highlightLayer.setFilter(filter);
         }
 
@@ -306,19 +305,19 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         highlightLayer.setSourceLayer(sourceId + "_" + type);
 
         // feature's airspace_id can be an int or string (tile server bug), so match on either
-        Filter.Statement filter;
+        Expression filter;
         try {
             int airspaceId = Integer.parseInt(id);
-            filter = Filter.any(Filter.eq("id", id), Filter.eq("id", airspaceId));
+            filter = Expression.any(Expression.eq(Expression.get("id"), id), Expression.eq(Expression.get("id"), airspaceId));
         } catch (NumberFormatException e) {
-            filter = Filter.any(Filter.eq("id", id));
+            filter = Expression.any(Expression.eq(Expression.get("id"), id));
         }
         highlightLayer.setFilter(filter);
     }
 
     public void unhighlight() {
         if (highlightLayer != null) {
-            Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
             highlightLayer.setFilter(filter);
         }
     }
@@ -343,6 +342,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
     public interface Callback {
         void onMapStyleLoaded();
+
         void onMapStyleReset();
     }
 }
