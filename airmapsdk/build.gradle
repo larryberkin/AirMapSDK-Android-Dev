@@ -29,49 +29,52 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:2.10.0"
-    testCompile "org.robolectric:robolectric:3.4.2"
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.10.0'
+    testImplementation 'org.robolectric:robolectric:3.4.2'
 
-    // support
-    def supportLibraryVersion = '27.1.1'
-    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-    compile "com.android.support:design:$supportLibraryVersion"
-    compile "com.android.support:cardview-v7:$supportLibraryVersion"
-    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    compile "com.android.support:support-annotations:$supportLibraryVersion"
-    compile "com.android.support:support-fragment:$supportLibraryVersion"
-    compile "com.android.support:support-v13:$supportLibraryVersion"
+    // Support Library
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    implementation "com.android.support:support-annotations:$supportLibraryVersion"
+    implementation "com.android.support:support-fragment:$supportLibraryVersion"
+    implementation "com.android.support:support-v13:$supportLibraryVersion"
 
-    // play services
-    def playServicesVersion = '12.0.1'
-    compile "com.google.android.gms:play-services-location:$playServicesVersion"
+    // Play Services
+    api "com.google.android.gms:play-services-location:$playServicesVersion"
 
-    // mapbox
-    compile 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.0-beta.7'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0-beta.2'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.10'
-    compile 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.10'
+    // Mapbox
+    api 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.0-beta.7'
+    api 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0-beta.2'
+    api 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.10'
+    api 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.10'
 
-    // shared libraries
-    compile 'joda-time:joda-time:2.9.9'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.googlecode.libphonenumber:libphonenumber:8.8.2'
-    compile 'online.devliving:securedpreferencestore:0.3.1' // Newer version available, but updating requires making some api changes within our code
-    compile 'com.auth0.android:lock:2.8.0'
-    compile 'com.auth0.android:auth0:1.12.1'
+    // Shared libraries
+    api 'joda-time:joda-time:2.9.9'
+    api 'io.reactivex:rxandroid:1.2.1'
+    api 'com.googlecode.libphonenumber:libphonenumber:8.8.2'
+    api 'online.devliving:securedpreferencestore:0.3.1'
+    api 'com.auth0.android:lock:2.8.0' // Newer version available, but updating requires making some api changes within our code
+    api 'com.auth0.android:auth0:1.12.1'
+    api 'com.squareup.okhttp3:okhttp:3.10.0'
+    api 'com.jakewharton.timber:timber:4.6.0'
 
-    // other
-    compile 'com.squareup.okhttp3:okhttp:3.10.0'
-    compile 'com.jakewharton.timber:timber:4.6.0'
-    compile 'org.bitbucket.b_c:jose4j:0.6.1'
-    compile 'com.google.protobuf:protobuf-java:3.5.0'
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    compile 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    // SDK specific libraries
+    implementation 'org.bitbucket.b_c:jose4j:0.6.1'
+    implementation 'com.google.protobuf:protobuf-java:3.5.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
 
 configurations {
