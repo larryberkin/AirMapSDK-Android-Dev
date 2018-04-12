@@ -19,4 +19,5 @@
     <string name="distance_in_meters">%1$s m</string>
     <string name="distance_in_miles">%1$.2f mi</string>
     <string name="minutes_seconds">%1$d min %2$d sec</string>
+    <string name="fly">FLY</string>
 </resources>
