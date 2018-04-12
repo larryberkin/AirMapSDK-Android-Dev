@@ -1,5 +1,7 @@
 package com.airmap.sample.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
@@ -35,6 +37,13 @@ import java.util.LinkedHashMap
 import timber.log.Timber
 
 class FlightBriefDemoActivity : BaseActivity() {
+
+    companion object {
+        @JvmStatic
+        fun Context.FlightBriefIntent(flightPlanId: String): Intent {
+            return Intent(this, FlightBriefDemoActivity::class.java).putExtra(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, flightPlanId)
+        }
+    }
 
     private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private val rulesRecyclerView by lazy { findViewById<RecyclerView>(R.id.rules_recycler_view) }

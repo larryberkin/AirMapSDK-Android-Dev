@@ -99,10 +99,12 @@ public class DemosActivity extends BaseActivity implements View.OnClickListener 
             startActivity(new Intent(this, TelemetryDemoActivity.class));
         } else {
             String flightPlanId = PreferenceManager.getDefaultSharedPreferences(this).getString(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, null);
-
-            Intent intent = new Intent(this, FlightBriefDemoActivity.class);
-            intent.putExtra(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, flightPlanId);
-            startActivity(intent);
+            if (flightPlanId != null) {
+                Intent intent = FlightBriefDemoActivity.Companion.FlightBriefIntent(this, flightPlanId);
+                startActivity(intent);
+            } else {
+                toast(this, "Please create a flight plan first");
+            }
         }
     }
 
