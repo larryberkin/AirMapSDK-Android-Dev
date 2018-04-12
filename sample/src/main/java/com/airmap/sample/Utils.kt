@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest
+package com.airmap.sample
 
 import android.annotation.TargetApi
 import android.content.Context

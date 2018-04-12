@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;

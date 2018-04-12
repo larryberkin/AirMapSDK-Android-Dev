@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -13,8 +13,8 @@ import com.airmap.airmapsdk.models.flight.AirMapFlight;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.util.AnnotationsFactory;
-import com.airmap.airmapsdktest.R;
-import com.airmap.airmapsdktest.Utils;
+import com.airmap.sample.R;
+import com.airmap.sample.Utils;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -30,7 +30,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static com.airmap.airmapsdktest.Utils.getBitmap;
+import static com.airmap.sample.Utils.getBitmap;
 
 public class TelemetryDemoActivity extends BaseActivity {
 

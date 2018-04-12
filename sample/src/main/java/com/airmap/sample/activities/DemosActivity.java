@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.LoginCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.util.AirMapConstants;
-import com.airmap.airmapsdktest.R;
+import com.airmap.sample.R;
 
 import timber.log.Timber;
 

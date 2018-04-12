@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,10 +12,10 @@ import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.ui.activities.MyLocationMapActivity;
 import com.airmap.airmapsdk.ui.views.AirMapMapView;
 import com.airmap.airmapsdk.ui.views.SwipeDisableableViewPager;
-import com.airmap.airmapsdktest.R;
-import com.airmap.airmapsdktest.fragments.AdvisoriesFragment;
-import com.airmap.airmapsdktest.fragments.MapFragment;
-import com.airmap.airmapsdktest.fragments.RulesetsFragment;
+import com.airmap.sample.R;
+import com.airmap.sample.fragments.AdvisoriesFragment;
+import com.airmap.sample.fragments.MapFragment;
+import com.airmap.sample.fragments.RulesetsFragment;
 
 import java.util.List;
 

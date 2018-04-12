@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
@@ -18,10 +18,10 @@ import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.AirMapTrafficListener;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.ui.views.AirMapMapView;
-import com.airmap.airmapsdktest.R;
-import com.airmap.airmapsdktest.Utils;
-import com.airmap.airmapsdktest.ui.TrafficMarker;
-import com.airmap.airmapsdktest.ui.TrafficMarkerOptions;
+import com.airmap.sample.R;
+import com.airmap.sample.Utils;
+import com.airmap.sample.ui.TrafficMarker;
+import com.airmap.sample.ui.TrafficMarkerOptions;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -35,10 +35,10 @@ import java.util.Locale;
 import timber.log.Timber;
 
 import static com.airmap.airmapsdk.util.Utils.metersToMiles;
-import static com.airmap.airmapsdktest.Utils.directionFromBearing;
-import static com.airmap.airmapsdktest.Utils.getBitmap;
-import static com.airmap.airmapsdktest.Utils.ktsToMph;
-import static com.airmap.airmapsdktest.Utils.minutesToMinSec;
+import static com.airmap.sample.Utils.directionFromBearing;
+import static com.airmap.sample.Utils.getBitmap;
+import static com.airmap.sample.Utils.ktsToMph;
+import static com.airmap.sample.Utils.minutesToMinSec;
 
 public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.OnMapLoadListener, AirMapTrafficListener {
 

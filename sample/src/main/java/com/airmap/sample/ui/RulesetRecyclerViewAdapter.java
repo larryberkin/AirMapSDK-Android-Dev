@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.ui;
+package com.airmap.sample.ui;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.airmap.airmapsdk.Analytics;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdk.ui.adapters.EmptyableAdapter;
-import com.airmap.airmapsdktest.R;
+import com.airmap.sample.R;
 import com.marshalchen.ultimaterecyclerview.gridSection.SectionedRecyclerViewAdapter;
 
 import java.util.ArrayList;

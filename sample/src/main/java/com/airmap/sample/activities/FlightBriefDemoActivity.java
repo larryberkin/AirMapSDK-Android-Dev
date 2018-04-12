@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -24,7 +24,7 @@ import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.ui.adapters.ExpandableRulesAdapter;
 import com.airmap.airmapsdk.util.AirMapConstants;
 import com.airmap.airmapsdk.util.BriefingEvaluator;
-import com.airmap.airmapsdktest.R;
+import com.airmap.sample.R;
 
 import org.json.JSONObject;
 

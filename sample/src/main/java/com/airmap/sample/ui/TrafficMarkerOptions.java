@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.ui;
+package com.airmap.sample.ui;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;

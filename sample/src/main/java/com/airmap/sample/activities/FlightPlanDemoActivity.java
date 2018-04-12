@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,8 +24,8 @@ import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
 import com.airmap.airmapsdk.ui.views.AirMapMapView;
 import com.airmap.airmapsdk.util.AirMapConstants;
-import com.airmap.airmapsdktest.R;
-import com.airmap.airmapsdktest.ui.FlightPlanDetailsAdapter;
+import com.airmap.sample.R;
+import com.airmap.sample.ui.FlightPlanDetailsAdapter;
 
 import org.json.JSONObject;
 

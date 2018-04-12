@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.fragments;
+package com.airmap.sample.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,8 +11,8 @@ import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.ui.activities.MyLocationMapActivity;
 import com.airmap.airmapsdk.ui.views.AirMapMapView;
-import com.airmap.airmapsdktest.R;
-import com.airmap.airmapsdktest.activities.MapDemoActivity;
+import com.airmap.sample.R;
+import com.airmap.sample.activities.MapDemoActivity;
 
 import java.util.List;
 

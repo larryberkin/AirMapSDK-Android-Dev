@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest;
+package com.airmap.sample;
 
 import android.app.Application;
 import android.support.multidex.MultiDexApplication;

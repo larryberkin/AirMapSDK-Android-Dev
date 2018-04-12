@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.activities;
+package com.airmap.sample.activities;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +16,7 @@ import com.airmap.airmapsdk.models.traffic.AirMapTraffic;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.callbacks.AirMapTrafficListener;
 import com.airmap.airmapsdk.networking.services.AirMap;
-import com.airmap.airmapsdktest.R;
+import com.airmap.sample.R;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;

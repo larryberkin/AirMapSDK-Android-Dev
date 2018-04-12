@@ -1,4 +1,4 @@
-package com.airmap.airmapsdktest.ui;
+package com.airmap.sample.ui;
 
 import com.airmap.airmapsdk.models.traffic.AirMapTraffic;
 import com.mapbox.mapboxsdk.annotations.Marker;
