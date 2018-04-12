@@ -197,7 +197,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
             highlightLayer.setProperties(PropertyFactory.lineColor("#f9e547"));
             highlightLayer.setProperties(PropertyFactory.lineWidth(4f));
             highlightLayer.setProperties(PropertyFactory.lineOpacity(0.9f));
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
 
             try {
                 highlightLayer.setFilter(filter);
@@ -217,7 +217,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         long in4Hrs = now + (4 * 60 * 60);
         Expression validNowFilter = Expression.all(Expression.lt(Expression.get("start"), now), Expression.gt(Expression.get("end"), now));
         Expression startsSoonFilter = Expression.all(Expression.gt(Expression.get("start"), now), Expression.lt(Expression.get("start"), in4Hrs));
-        Expression permanent = Expression.eq(Expression.get("permanent"), Expression.get("true"));
+        Expression permanent = Expression.eq(Expression.get("permanent"), true);
         Expression hasNoEnd = Expression.all(Expression.not(Expression.has("end")), Expression.not(Expression.has("base")));
         Expression filter = Expression.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
         if (layer instanceof FillLayer) {
@@ -232,7 +232,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         long in4Hrs = now + (4 * 60 * 60);
         Expression validNowFilter = Expression.all(Expression.lt(Expression.get("start"), now), Expression.gt(Expression.get("end"), now));
         Expression startsSoonFilter = Expression.all(Expression.gt(Expression.get("start"), now), Expression.lt(Expression.get("start"), in4Hrs));
-        Expression permanent = Expression.eq(Expression.get("permanent"), Expression.get("true"));
+        Expression permanent = Expression.eq(Expression.get("permanent"), true);
         Expression hasNoEnd = Expression.all(Expression.not(Expression.has("end")), Expression.not(Expression.has("base")));
         Expression filter = Expression.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
         if (layer instanceof FillLayer) {
@@ -269,7 +269,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
     public void highlight(@NonNull Feature feature, AirMapAdvisory advisory) {
         // remove old highlight
         if (highlightLayer != null) {
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
             highlightLayer.setFilter(filter);
         }
 
@@ -295,7 +295,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
         // remove old highlight
         if (highlightLayer != null) {
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
             highlightLayer.setFilter(filter);
         }
 
@@ -317,7 +317,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
     public void unhighlight() {
         if (highlightLayer != null) {
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), Expression.get("x")));
+            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
             highlightLayer.setFilter(filter);
         }
     }
