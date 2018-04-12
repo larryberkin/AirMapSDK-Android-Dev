@@ -39,80 +39,82 @@ public abstract class AirMapLayerStyle {
     public abstract Layer toMapboxLayer(Layer layerToClone, String sourceId);
 
     private static Expression getFilter(JSONArray filterJsonArray) {
-        return Expression.Converter.convert(new JsonParser().parse(filterJsonArray.toString()).getAsJsonArray());
-//        if (filterJsonArray == null) {
-//            return null;
-//        }
-//
-//        Expression filter;
-//        String operator = optString(filterJsonArray, 0);
-//        final Object[] operands = new Object[filterJsonArray.length() - 1];
-//        for (int i = 0; i < operands.length; i++) {
-//            operands[i] = filterJsonArray.opt(i + 1);
-//        }
-//
-//        Object operand1 = filterJsonArray.opt(1);
-//        Object operand2 = filterJsonArray.opt(2);
-//
-//        switch (operator) {
-//            case "all":
-//                filter = Expression.all(getStatements(operands));
-//                break;
-//            case "any":
-//                filter = Expression.any(getStatements(operands));
-//                break;
-//            case "none":
-//                filter = Expression.not(Expression.any(getStatements(operands)));
-//                break;
-//            case "has":
-//                filter = Expression.has((String) operand1);
-//                break;
-//            case "!has":
-//                filter = Expression.not(Expression.has((String) operand1));
-//                break;
-//            case "==":
-//                filter = Expression.eq(Expression.get((String) operand1), Expression.get((String) operand2));
-//                break;
-//            case "!=":
-//                filter = Expression.neq(Expression.get((String) operand1), Expression.get((String) operand2));
-//                break;
-//            case ">":
-//                filter = Expression.gt(Expression.get((String) operand1), Expression.get((String) operand2));
-//                break;
-//            case ">=":
-//                filter = Expression.gte(Expression.get((String) operand1), Expression.get((String) operand2));
-//                break;
-//            case "<":
-//                filter = Expression.lt(Expression.get((String) operand1), Expression.get((String) operand2));
-//                break;
-//            case "<=":
-//                filter = Expression.lte(Expression.get((String) operand1), Expression.get((String) operand2));
-//                break;
-//            case "in":
+        if (filterJsonArray == null) {
+            return null;
+        }
+//        return Expression.Converter.convert(new JsonParser().parse(filterJsonArray.toString()).getAsJsonArray());
+
+        Expression filter;
+        String operator = optString(filterJsonArray, 0);
+        final Object[] operands = new Object[filterJsonArray.length() - 1];
+        for (int i = 0; i < operands.length; i++) {
+            operands[i] = filterJsonArray.opt(i + 1);
+        }
+
+        Object operand1 = filterJsonArray.opt(1);
+        Object operand2 = filterJsonArray.opt(2);
+
+        switch (operator) {
+            case "all":
+                filter = Expression.all(getStatements(operands));
+                break;
+            case "any":
+                filter = Expression.any(getStatements(operands));
+                break;
+            case "none":
+                filter = Expression.not(Expression.any(getStatements(operands)));
+                break;
+            case "has":
+                filter = Expression.has((String) operand1);
+                break;
+            case "!has":
+                filter = Expression.not(Expression.has((String) operand1));
+                break;
+            case "==":
+                filter = Expression.eq(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                break;
+            case "!=":
+                filter = Expression.neq(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                break;
+            case ">":
+                filter = Expression.gt(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                break;
+            case ">=":
+                filter = Expression.gte(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                break;
+            case "<":
+                filter = Expression.lt(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                break;
+            case "<=":
+                filter = Expression.lte(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                break;
+            case "in":
+                filter = Expression.any(); // FIXME
 //                filter = Expression.in((String) operand1, Arrays.copyOfRange(operands, 1, operands.length));
-//                break;
-//            case "!in":
+                break;
+            case "!in":
+                filter = Expression.any(); // FIXME
 //                filter = Expression.notIn((String) operand1, Arrays.copyOfRange(operands, 1, operands.length));
-//                break;
-//            default:
-//                filter = new Expression("") {
-//                    @Override
-//                    public Object[] toArray() {
-//                        return new Object[0];
-//                    }
-//                };
-//        }
-//
-//        return filter;
+                break;
+            default:
+                filter = new Expression("") {
+                    @Override
+                    public Object[] toArray() {
+                        return new Object[0];
+                    }
+                };
+        }
+
+        return filter;
     }
 
-//    private static Expression[] getStatements(Object[] jsonArrays) {
-//        Expression[] statements = new Expression[jsonArrays.length];
-//        for (int i = 0; i < jsonArrays.length; i++) {
-//            statements[i] = getFilter((JSONArray) jsonArrays[i]);
-//        }
-//        return statements;
-//    }
+    private static Expression[] getStatements(Object[] jsonArrays) {
+        Expression[] statements = new Expression[jsonArrays.length];
+        for (int i = 0; i < jsonArrays.length; i++) {
+            statements[i] = getFilter((JSONArray) jsonArrays[i]);
+        }
+        return statements;
+    }
 
     public static Expression getFillColorFunction(JSONObject fillColor) {
         String property = optString(fillColor, "property");
