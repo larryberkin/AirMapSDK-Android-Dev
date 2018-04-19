@@ -1,12 +1,20 @@
 package com.airmap.airmapsdk.models.map;
 
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+
 import com.google.gson.JsonParser;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.Layer;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.PropertyValue;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.Arrays;
+
+import timber.log.Timber;
 
 import static com.airmap.airmapsdk.util.Utils.optString;
 
@@ -26,6 +34,7 @@ public abstract class AirMapLayerStyle {
         sourceLayer = optString(json, "source-layer");
         type = optString(json, "type");
         minZoom = (float) json.optDouble("minzoom", 0);
+        Timber.d("LayerStyle: %s %s %s %s %f", id, source, sourceLayer, type, minZoom);
 
         interactive = json.optBoolean("interactive", false);
 
@@ -42,13 +51,14 @@ public abstract class AirMapLayerStyle {
         if (filterJsonArray == null) {
             return null;
         }
-//        return Expression.Converter.convert(new JsonParser().parse(filterJsonArray.toString()).getAsJsonArray());
 
         Expression filter;
         String operator = optString(filterJsonArray, 0);
+        Timber.d("operator: %s", operator);
         final Object[] operands = new Object[filterJsonArray.length() - 1];
         for (int i = 0; i < operands.length; i++) {
             operands[i] = filterJsonArray.opt(i + 1);
+            Timber.d("operand[%d]: %s", i, operands[i]);
         }
 
         Object operand1 = filterJsonArray.opt(1);
@@ -71,33 +81,39 @@ public abstract class AirMapLayerStyle {
                 filter = Expression.not(Expression.has((String) operand1));
                 break;
             case "==":
-                filter = Expression.eq(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                if ("$type".equals(operand1)) {
+                    operand1 = Expression.geometryType();
+                } else {
+                    operand1 = Expression.get((String) operand1);
+                }
+                filter = Expression.eq((Expression) operand1, Expression.literal(operand2));
                 break;
             case "!=":
-                filter = Expression.neq(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                filter = Expression.neq(Expression.get((String) operand1), Expression.literal(operand2));
                 break;
             case ">":
-                filter = Expression.gt(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                filter = Expression.gt(Expression.get((String) operand1), Expression.literal(operand2));
                 break;
             case ">=":
-                filter = Expression.gte(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                filter = Expression.gte(Expression.get((String) operand1), Expression.literal(operand2));
                 break;
             case "<":
-                filter = Expression.lt(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                filter = Expression.lt(Expression.get((String) operand1), Expression.literal(operand2));
                 break;
             case "<=":
-                filter = Expression.lte(Expression.get((String) operand1), new Expression.ExpressionLiteral(operand2));
+                filter = Expression.lte(Expression.get((String) operand1), Expression.literal(operand2));
                 break;
             case "in":
-                filter = Expression.any(); // FIXME
-//                filter = Expression.in((String) operand1, Arrays.copyOfRange(operands, 1, operands.length));
+                // TODO: Verify this is correct way to implement "in"
+                filter = Expression.has(Expression.literal(operand1), Expression.literal(convertToExpressionArray(Arrays.copyOfRange(operands, 1, operands.length))));
                 break;
             case "!in":
-                filter = Expression.any(); // FIXME
-//                filter = Expression.notIn((String) operand1, Arrays.copyOfRange(operands, 1, operands.length));
+                // TODO: Verify this is correct way to implement "in"
+                filter = Expression.not(Expression.has(Expression.literal(operand1), Expression.literal(convertToExpressionArray(Arrays.copyOfRange(operands, 1, operands.length)))));
                 break;
             default:
                 filter = new Expression("") {
+                    @NonNull
                     @Override
                     public Object[] toArray() {
                         return new Object[0];
@@ -106,6 +122,14 @@ public abstract class AirMapLayerStyle {
         }
 
         return filter;
+    }
+
+    private static Expression[] convertToExpressionArray(Object[] operands) {
+        Expression[] expressions = new Expression[operands.length];
+        for (int i = 0; i < operands.length; i++) {
+            expressions[i] = Expression.literal(operands[i]);
+        }
+        return expressions;
     }
 
     private static Expression[] getStatements(Object[] jsonArrays) {
@@ -118,37 +142,43 @@ public abstract class AirMapLayerStyle {
 
     public static Expression getFillColorFunction(JSONObject fillColor) {
         String property = optString(fillColor, "property");
+        Timber.d("property: %s", property);
         String type = optString(fillColor, "type");
-        optString(fillColor, "default", "#000000");
         String defaultColor = optString(fillColor, "default", "#000000");
         JSONArray stopsArray = fillColor.optJSONArray("stops");
-        if (stopsArray != null) {
-            return Expression.Converter.convert(new JsonParser().parse(stopsArray.toString()).getAsJsonArray());
-        }
-        return null;
 
-//        switch (type) {
-//            case "categorical": {
-//                Expression.Stop[] stops;
-//                if (stopsArray != null) {
-//                    stops = new Expression.Stop[stopsArray.length()];
-//                    for (int i = 0; i < stopsArray.length(); i++) {
-//                        JSONArray stopArray = stopsArray.optJSONArray(i);
-//                        if (stopArray != null) {
-//                            Object value1 = stopArray.opt(0);
-//                            Object value2 = stopArray.opt(1);
-//                            stops[i] = (Expression.Stop.stop(value1, new PropertyValue("color", value2)));
-//                        }
-//                    }
-//                } else {
-//                    stops = new Expression.Stop[0];
-//                }
-//
+        switch (type) {
+            case "categorical": {
+                Expression.Stop[] stops;
+                if (stopsArray != null) {
+                    stops = new Expression.Stop[stopsArray.length()];
+                    for (int i = 0; i < stopsArray.length(); i++) {
+                        JSONArray stopArray = stopsArray.optJSONArray(i);
+                        Timber.d("stopArray: %s", stopArray.toString());
+                        if (stopArray != null) {
+                            Object value1 = stopArray.opt(0);
+                            Object value2 = stopArray.opt(1);
+
+//                            stops[i] = Expression.stop(value1, Color.parseColor((String) value2));
+                            stops[i] = Expression.stop(value1, Expression.color(Color.parseColor((String) value2)));
+//                            stops[i] = Expression.stop(value1, PropertyFactory.fillColor(Color.parseColor((String) value2)).getExpression());
+//                            stops[i] = Expression.stop(value1, new PropertyValue("color", value2));
+                        }
+                    }
+                } else {
+                    Timber.d("Empty stop");
+                    stops = new Expression.Stop[0];
+                }
+
+                // Expression.match() ??
+//                return Expression.step(Expression.get(property), Color.parseColor(defaultColor), stops);
+                return Expression.step(Expression.get(property), Expression.color(Color.parseColor(defaultColor)), stops);
+//                return Expression.step(Expression.get(property), PropertyFactory.fillColor(Color.parseColor(defaultColor)).getExpression(), stops);
 //                return Function.property(property, Stops.categorical(stops)).withDefaultValue(new PropertyValue("default", defaultColor));
-//            }
-//        }
-//
-//        return null;
+            }
+        }
+
+        return null;
     }
 
     public static Expression getFillOpacityFunction(JSONObject fillOpacity) {
@@ -156,33 +186,30 @@ public abstract class AirMapLayerStyle {
         String type = optString(fillOpacity, "type");
         float defaultOpacity = (float) fillOpacity.optDouble("default", 1.0f);
         JSONArray stopsArray = fillOpacity.optJSONArray("stops");
-        if (stopsArray != null) {
-            return Expression.Converter.convert(new JsonParser().parse(stopsArray.toString()).getAsJsonArray());
-        }
-        return null;
 
-//        switch (type) {
-//            case "categorical": {
-//                Expression.Stop[] stops;
-//                if (stopsArray != null) {
-//                    stops = new Expression.Stop[stopsArray.length()];
-//                    for (int i = 0; i < stopsArray.length(); i++) {
-//                        JSONArray stopArray = stopsArray.optJSONArray(i);
-//                        if (stopArray != null) {
-//                            Object value1 = stopArray.opt(0);
-//                            Object value2 = stopArray.opt(1);
-//                            stops[i] = (Stop.stop(value1, new PropertyValue("opacity", value2)));
-//                        }
-//                    }
-//                } else {
-//                    stops = new Expression.Stop[0];
-//                }
-//
-//                return Function.property(property, Stops.categorical(stops)).withDefaultValue(new PropertyValue("default", defaultOpacity));
-//            }
-//        }
-//
-//        return null;
+        switch (type) {
+            case "categorical": {
+                Expression.Stop[] stops;
+                if (stopsArray != null) {
+                    stops = new Expression.Stop[stopsArray.length()];
+                    for (int i = 0; i < stopsArray.length(); i++) {
+                        JSONArray stopArray = stopsArray.optJSONArray(i);
+                        if (stopArray != null) {
+                            Object value1 = stopArray.opt(0);
+                            Object value2 = stopArray.opt(1);
+                            stops[i] = (Expression.stop(value1, value2));
+                        }
+                    }
+                } else {
+                    Timber.d("Empty stop");
+                    stops = new Expression.Stop[0];
+                }
+
+                return Expression.step(Expression.get(property), defaultOpacity, stops);
+            }
+        }
+
+        return null;
     }
 
     public static AirMapLayerStyle fromJson(JSONObject jsonObject) {

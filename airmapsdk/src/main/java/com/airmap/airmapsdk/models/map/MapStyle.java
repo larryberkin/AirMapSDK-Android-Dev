@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 import static com.airmap.airmapsdk.util.Utils.optString;
 
 public class MapStyle {
