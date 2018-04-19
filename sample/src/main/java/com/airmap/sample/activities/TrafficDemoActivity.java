@@ -158,7 +158,7 @@ public class TrafficDemoActivity extends BaseActivity implements AirMapMapView.O
     public void onAddTraffic(List<AirMapTraffic> added) {
         boolean shouldSayTraffic = false;
         for (AirMapTraffic traffic : added) {
-            TrafficMarkerOptions trafficMarkerOptions = new TrafficMarkerOptions().setTraffic(traffic).icon(getIcon(traffic));
+            TrafficMarkerOptions trafficMarkerOptions = new TrafficMarkerOptions(traffic).icon(getIcon(traffic));
             TrafficMarker trafficMarker = (TrafficMarker) mapView.getMap().addMarker(trafficMarkerOptions);
             trafficMarkers.add(trafficMarker);
             showTrafficAlert(traffic);

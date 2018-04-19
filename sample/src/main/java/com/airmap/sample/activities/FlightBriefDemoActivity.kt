@@ -6,14 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.text.TextUtils
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-
+import android.view.*
 import com.airmap.airmapsdk.AirMapException
 import com.airmap.airmapsdk.models.Coordinate
 import com.airmap.airmapsdk.models.flight.AirMapFlightBriefing
@@ -25,16 +18,11 @@ import com.airmap.airmapsdk.networking.callbacks.AirMapCallback
 import com.airmap.airmapsdk.networking.services.AirMap
 import com.airmap.airmapsdk.ui.adapters.ExpandableRecyclerAdapter
 import com.airmap.airmapsdk.ui.adapters.ExpandableRulesAdapter
-import com.airmap.airmapsdk.ui.adapters.ExpandableRulesAdapter.RuleViewHolder
-import com.airmap.airmapsdk.ui.adapters.ExpandableRulesAdapter.SectionViewHolder
 import com.airmap.airmapsdk.util.AirMapConstants
 import com.airmap.airmapsdk.util.BriefingEvaluator
 import com.airmap.sample.R
-
-import java.util.Date
-import java.util.LinkedHashMap
-
 import timber.log.Timber
+import java.util.*
 
 class FlightBriefDemoActivity : BaseActivity() {
 
@@ -174,18 +162,10 @@ class FlightBriefDemoActivity : BaseActivity() {
      */
     private inner class BriefingAdapter internal constructor(rulesMap: LinkedHashMap<AirMapRule.Status, List<AirMapRule>>) : ExpandableRulesAdapter(rulesMap) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            when (viewType) {
-                ExpandableRecyclerAdapter.PARENT_VIEW_TYPE -> {
-                    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rule_section, parent, false)
-                    return SectionViewHolder(view)
-                }
-                ExpandableRecyclerAdapter.CHILD_VIEW_TYPE -> {
-                    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rule, parent, false)
-                    return RuleViewHolder(view)
-                }
-            }
-            return super.onCreateViewHolder(parent, viewType)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
+            ExpandableRecyclerAdapter.PARENT_VIEW_TYPE -> SectionViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_rule_section, parent, false))
+            ExpandableRecyclerAdapter.CHILD_VIEW_TYPE -> RuleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_rule, parent, false))
+            else -> super.onCreateViewHolder(parent, viewType)
         }
     }
 }
