@@ -3,6 +3,7 @@ package com.airmap.sample.ui
 import android.graphics.Bitmap
 import android.os.Parcel
 import android.os.Parcelable
+import com.airmap.airmapsdk.models.Coordinate
 
 import com.airmap.airmapsdk.models.traffic.AirMapTraffic
 import com.mapbox.mapboxsdk.annotations.BaseMarkerOptions
@@ -31,6 +32,8 @@ class TrafficMarkerOptions : BaseMarkerOptions<TrafficMarker, TrafficMarkerOptio
         val icon = IconFactory.recreate(iconId, iconBitmap)
         icon(icon)
         title(parcel.readString())
+        traffic = AirMapTraffic()
+        traffic.coordinate = Coordinate(position)
     }
 
     override fun getThis() = this
