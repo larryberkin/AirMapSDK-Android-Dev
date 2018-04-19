@@ -40,10 +40,7 @@ public class AirMapAuthenticationCallback extends AuthenticationCallback {
         AirMap.getPilot(new AirMapCallback<AirMapPilot>() {
             @Override
             public void onSuccess(final AirMapPilot response) {
-                if (activity == null || activity.isDestroyed() || activity.isFinishing()) {
-                    Timber.d("Activity was killed before login returned. However auth token was saved.");
-                    return;
-                }
+                Timber.d("get pilot succeeded");
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
@@ -56,9 +53,6 @@ public class AirMapAuthenticationCallback extends AuthenticationCallback {
             @Override
             public void onError(final AirMapException e) {
                 Timber.e(e, "get pilot failed");
-                if (activity == null || activity.isDestroyed() || activity.isFinishing()) {
-                    return;
-                }
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
