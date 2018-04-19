@@ -159,10 +159,7 @@ public abstract class AirMapLayerStyle {
                             Object value1 = stopArray.opt(0);
                             Object value2 = stopArray.opt(1);
 
-//                            stops[i] = Expression.stop(value1, Color.parseColor((String) value2));
                             stops[i] = Expression.stop(value1, Expression.color(Color.parseColor((String) value2)));
-//                            stops[i] = Expression.stop(value1, PropertyFactory.fillColor(Color.parseColor((String) value2)).getExpression());
-//                            stops[i] = Expression.stop(value1, new PropertyValue("color", value2));
                         }
                     }
                 } else {
@@ -170,11 +167,7 @@ public abstract class AirMapLayerStyle {
                     stops = new Expression.Stop[0];
                 }
 
-                // Expression.match() ??
-//                return Expression.step(Expression.get(property), Color.parseColor(defaultColor), stops);
                 return Expression.step(Expression.get(property), Expression.color(Color.parseColor(defaultColor)), stops);
-//                return Expression.step(Expression.get(property), PropertyFactory.fillColor(Color.parseColor(defaultColor)).getExpression(), stops);
-//                return Function.property(property, Stops.categorical(stops)).withDefaultValue(new PropertyValue("default", defaultColor));
             }
         }
 

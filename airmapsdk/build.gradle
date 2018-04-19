@@ -39,8 +39,8 @@ android {
 dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.10.0'
-    testImplementation 'org.robolectric:robolectric:3.4.2'
+    testImplementation 'org.mockito:mockito-core:2.18.0'
+    testImplementation 'org.robolectric:robolectric:3.8'
 
     // Support Library
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
@@ -55,7 +55,7 @@ dependencies {
     api "com.google.android.gms:play-services-location:$playServicesVersion"
 
     // Mapbox
-    api 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.0-beta.7'
+    api 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.1'
     api 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0-beta.2'
     api 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.10'
     api 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.10'
@@ -63,16 +63,16 @@ dependencies {
     // Shared libraries
     api 'joda-time:joda-time:2.9.9'
     api 'io.reactivex:rxandroid:1.2.1'
-    api 'com.googlecode.libphonenumber:libphonenumber:8.8.2'
-    api 'online.devliving:securedpreferencestore:0.3.1'
-    api 'com.auth0.android:lock:2.8.0' // Newer version available, but updating requires making some api changes within our code
-    api 'com.auth0.android:auth0:1.12.1'
+    api 'com.googlecode.libphonenumber:libphonenumber:8.9.4'
+    api 'online.devliving:securedpreferencestore:0.3.1' // Newer version available, but updating requires making some api changes within our code
+    api 'com.auth0.android:lock:2.8.3'
+    api 'com.auth0.android:auth0:1.12.2'
     api 'com.squareup.okhttp3:okhttp:3.10.0'
-    api 'com.jakewharton.timber:timber:4.6.0'
+    api 'com.jakewharton.timber:timber:4.7.0'
 
     // SDK specific libraries
-    implementation 'org.bitbucket.b_c:jose4j:0.6.1'
-    implementation 'com.google.protobuf:protobuf-java:3.5.0'
+    implementation 'org.bitbucket.b_c:jose4j:0.6.3'
+    implementation 'com.google.protobuf:protobuf-java:3.5.1'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
