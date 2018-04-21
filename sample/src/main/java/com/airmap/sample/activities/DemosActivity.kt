@@ -16,6 +16,7 @@ import com.airmap.airmapsdk.networking.services.AirMap
 import com.airmap.airmapsdk.util.AirMapConstants
 import com.airmap.sample.R
 import com.airmap.sample.activities.FlightBriefDemoActivity.Companion.FlightBriefIntent
+import com.airmap.sample.activities.MapDemoActivity.Companion.MapDemoIntent
 
 import timber.log.Timber
 
@@ -41,7 +42,7 @@ class DemosActivity : BaseActivity() {
         toolbar.title = title
         setSupportActionBar(toolbar)
 
-        mapCardView.setOnClickListener { startActivity(Intent(this, MapDemoActivity::class.java)) }
+        mapCardView.setOnClickListener { startActivity(MapDemoIntent()) }
         anonymousLoginCardView.setOnClickListener { startActivity(Intent(this, AnonymousLoginDemoActivity::class.java)) }
         flightPlanCardView.setOnClickListener { startActivity(Intent(this, FlightPlanDemoActivity::class.java)) }
         trafficCardView.setOnClickListener { startActivity(Intent(this, TrafficDemoActivity::class.java)) }
