@@ -18,6 +18,7 @@ import com.airmap.sample.R
 import com.airmap.sample.activities.FlightBriefDemoActivity.Companion.FlightBriefIntent
 import com.airmap.sample.activities.FlightPlanDemoActivity.Companion.FlightPlanDemoIntent
 import com.airmap.sample.activities.MapDemoActivity.Companion.MapDemoIntent
+import com.airmap.sample.activities.TrafficDemoActivity.Companion.TrafficDemoIntent
 
 import timber.log.Timber
 
@@ -45,8 +46,8 @@ class DemosActivity : BaseActivity() {
 
         mapCardView.setOnClickListener { startActivity(MapDemoIntent()) }
         flightPlanCardView.setOnClickListener { startActivity(FlightPlanDemoIntent()) }
+        trafficCardView.setOnClickListener { startActivity(TrafficDemoIntent()) }
         anonymousLoginCardView.setOnClickListener { startActivity(Intent(this, AnonymousLoginDemoActivity::class.java)) }
-        trafficCardView.setOnClickListener { startActivity(Intent(this, TrafficDemoActivity::class.java)) }
         telemetryCardView.setOnClickListener { startActivity(Intent(this, TelemetryDemoActivity::class.java)) }
         briefingCardView.setOnClickListener {
             val flightPlanId = PreferenceManager.getDefaultSharedPreferences(this).getString(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, null)
