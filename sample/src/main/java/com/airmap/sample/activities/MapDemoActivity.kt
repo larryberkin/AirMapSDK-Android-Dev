@@ -22,7 +22,6 @@ import com.airmap.sample.fragments.RulesetsFragment
 class MapDemoActivity : MyLocationMapActivity() {
 
     companion object {
-        @JvmStatic
         fun Context.MapDemoIntent() = Intent(this, MapDemoActivity::class.java)
     }
 

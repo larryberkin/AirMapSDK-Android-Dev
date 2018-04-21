@@ -27,7 +27,6 @@ import java.util.*
 class FlightBriefDemoActivity : BaseActivity() {
 
     companion object {
-        @JvmStatic
         fun Context.FlightBriefIntent(flightPlanId: String): Intent {
             return Intent(this, FlightBriefDemoActivity::class.java).putExtra(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, flightPlanId)
         }
