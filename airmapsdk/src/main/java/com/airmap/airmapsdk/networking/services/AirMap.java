@@ -159,7 +159,7 @@ public final class AirMap {
             config = new JSONObject(json);
             apiKey = getConfig().getJSONObject("airmap").getString("api_key");
         } catch (IOException | JSONException | NullPointerException e) {
-            throw new RuntimeException("Please ensure you have your airmap.config.json file in your /assets directory");
+            throw new RuntimeException("Please ensure you have your airmap.config.json file in your /assets directory", e);
         }
         client = new AirMapClient();
     }
