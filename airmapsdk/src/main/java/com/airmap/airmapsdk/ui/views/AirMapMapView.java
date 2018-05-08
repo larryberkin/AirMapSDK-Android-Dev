@@ -30,6 +30,7 @@ import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.MappingService;
 import com.airmap.airmapsdk.util.Utils;
+import com.mapbox.geojson.BoundingBox;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Geometry;
 import com.mapbox.geojson.Point;
@@ -41,7 +42,6 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
-import com.mapbox.services.commons.models.Position;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -414,33 +414,15 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
     private void zoomToFeatureIfNecessary(Feature featureClicked) {
         try {
             LatLngBounds cameraBounds = getMap().getProjection().getVisibleRegion().latLngBounds;
-            LatLngBounds.Builder advisoryLatLngsBuilder = new LatLngBounds.Builder();
             boolean zoom = false;
+
             Geometry geometry = featureClicked.geometry();
+            BoundingBox bbox = geometry.bbox();
+            LatLngBounds featureBounds = LatLngBounds.from(bbox.northeast().latitude(), bbox.northeast().longitude(), bbox.southwest().latitude(), bbox.southwest().longitude());
 
-            if (featureClicked.getGeometry().getCoordinates() instanceof ArrayList) {
-                List<Position> positions = Utils.getPositionsFromFeature((ArrayList) featureClicked.getGeometry().getCoordinates());
-                for (Position position : positions) {
-                    LatLng latLng = new LatLng(position.getLatitude(), position.getLongitude());
-                    advisoryLatLngsBuilder.include(latLng);
-                    if (!cameraBounds.contains(latLng)) {
-                        Timber.d("Camera position doesn't contain point");
-                        zoom = true;
-                    }
-                }
-            } else if (geometry instanceof Point) {
-                Point point = (Point) geometry;
-                LatLng latLng = new LatLng(point.latitude(), point.longitude());
-                advisoryLatLngsBuilder.include(latLng);
-                if (!cameraBounds.contains(latLng)) {
-                    Timber.d("Camera position doesn't contain point");
-                    zoom = true;
-                }
-            }
-
-            if (zoom) {
+            if (!cameraBounds.contains(featureBounds)) {
                 int padding = Utils.dpToPixels(getContext(), 72).intValue();
-                getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(advisoryLatLngsBuilder.build(), padding));
+                getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(featureBounds, padding));
             }
         } catch (ClassCastException e) {
             Timber.e(e,"Unable to get feature geometry");

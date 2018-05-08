@@ -52,13 +52,15 @@ dependencies {
     implementation "com.android.support:support-v13:$supportLibraryVersion"
 
     // Play Services
-    api "com.google.android.gms:play-services-location:$playServicesVersion"
+    api 'com.google.android.gms:play-services-location:15.0.1'
 
     // Mapbox
-    api 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.1'
-    api 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0-beta.2'
-    api 'com.mapbox.mapboxsdk:mapbox-android-services:2.2.10'
-    api 'com.mapbox.mapboxsdk:mapbox-android-ui:2.2.10'
+    api 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.1.1'
+    api 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0'
+    api 'com.mapbox.mapboxsdk:mapbox-sdk-core:3.1.0'
+    api 'com.mapbox.mapboxsdk:mapbox-sdk-geojson:3.1.0'
+    api 'com.mapbox.mapboxsdk:mapbox-sdk-services:3.1.0'
+    api 'com.mapbox.mapboxsdk:mapbox-sdk-turf:3.1.0'
 
     // Shared libraries
     api 'joda-time:joda-time:2.9.9'

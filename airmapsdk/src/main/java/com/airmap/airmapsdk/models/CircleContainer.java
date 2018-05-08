@@ -4,6 +4,10 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.airmap.airmapsdk.R;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Point;
+import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -14,11 +18,6 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.style.sources.Source;
-import com.mapbox.services.commons.geojson.Feature;
-import com.mapbox.services.commons.geojson.LineString;
-import com.mapbox.services.commons.geojson.Point;
-import com.mapbox.services.commons.geojson.Polygon;
-import com.mapbox.services.commons.models.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,28 +37,28 @@ public class CircleContainer extends Container {
         this.radius = radius;
         this.points = calculateCirclePoints(center, radius);
 
-        List<Position> positions = latLngsToPositions(points);
-        List<List<Position>> coordinates = new ArrayList<>();
+        List<Point> positions = latLngsToPositions(points);
+        List<List<Point>> coordinates = new ArrayList<>();
         coordinates.add(positions);
 
-        List<Position> lineString = new ArrayList<>(positions);
+        List<Point> lineString = new ArrayList<>(positions);
         lineString.add(positions.get(0));
 
         // if polygon layer doesn't exist, create and add to map
         if (map.getLayer(POINT_LAYER) == null) {
-            Source pointSource = new GeoJsonSource(POINT_SOURCE, Feature.fromGeometry(Point.fromCoordinates(Position.fromLngLat(center.getLongitude(), center.getLatitude()))));
+            Source pointSource = new GeoJsonSource(POINT_SOURCE, Feature.fromGeometry(Point.fromLngLat(center.getLongitude(), center.getLatitude())));
             map.addSource(pointSource);
             Layer pointLayer = new SymbolLayer(POINT_LAYER, POINT_SOURCE)
                 .withProperties(PropertyFactory.iconImage(CORNER_IMAGE));
             map.addLayer(pointLayer);
 
-            Source polygonSource = new GeoJsonSource(POLYGON_SOURCE, Feature.fromGeometry(Polygon.fromCoordinates(coordinates)));
+            Source polygonSource = new GeoJsonSource(POLYGON_SOURCE, Feature.fromGeometry(Polygon.fromLngLats(coordinates)));
             map.addSource(polygonSource);
             FillLayer polygonLayer = new FillLayer(POLYGON_LAYER, POLYGON_SOURCE)
                     .withProperties(PropertyFactory.fillColor(ContextCompat.getColor(context, R.color.airmap_aqua)), PropertyFactory.fillOpacity(0.5f));
             map.addLayerBelow(polygonLayer, POINT_LAYER);
 
-            Source polylineSource = new GeoJsonSource(POLYLINE_SOURCE, Feature.fromGeometry(LineString.fromCoordinates(lineString)));
+            Source polylineSource = new GeoJsonSource(POLYLINE_SOURCE, Feature.fromGeometry(LineString.fromLngLats(lineString)));
             map.addSource(polylineSource);
             Layer polylineLayer = new LineLayer(POLYLINE_LAYER, POLYLINE_SOURCE)
                     .withProperties(PropertyFactory.lineColor(ContextCompat.getColor(context, R.color.airmap_navy)), PropertyFactory.lineOpacity(0.9f));
@@ -68,13 +67,13 @@ public class CircleContainer extends Container {
         // otherwise, update source
         } else {
             GeoJsonSource polygonSource = map.getSourceAs(POLYGON_SOURCE);
-            polygonSource.setGeoJson(Feature.fromGeometry(Polygon.fromCoordinates(coordinates)));
+            polygonSource.setGeoJson(Feature.fromGeometry(Polygon.fromLngLats(coordinates)));
 
             FillLayer polygonFill = map.getLayerAs(Container.POLYGON_LAYER);
             polygonFill.setProperties(PropertyFactory.fillColor(ContextCompat.getColor(context, R.color.airmap_aqua)));
 
             GeoJsonSource polylineSource = map.getSourceAs(POLYLINE_SOURCE);
-            polylineSource.setGeoJson(Feature.fromGeometry(LineString.fromCoordinates(lineString)));
+            polylineSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(lineString)));
         }
     }
 
@@ -82,24 +81,24 @@ public class CircleContainer extends Container {
         this.center = center;
         this.points = calculateCirclePoints(center, radius);
 
-        List<Position> positions = latLngsToPositions(points);
-        List<List<Position>> coordinates = new ArrayList<>();
+        List<Point> positions = latLngsToPositions(points);
+        List<List<Point>> coordinates = new ArrayList<>();
         coordinates.add(positions);
 
-        List<Position> lineString = new ArrayList<>(positions);
+        List<Point> lineString = new ArrayList<>(positions);
         lineString.add(positions.get(0));
 
         GeoJsonSource pointSource = map.getSourceAs(POINT_SOURCE);
-        pointSource.setGeoJson(Feature.fromGeometry(Point.fromCoordinates(Position.fromLngLat(center.getLongitude(), center.getLatitude()))));
+        pointSource.setGeoJson(Feature.fromGeometry(Point.fromLngLat(center.getLongitude(), center.getLatitude())));
 
         GeoJsonSource polygonSource = map.getSourceAs(POLYGON_SOURCE);
-        polygonSource.setGeoJson(Feature.fromGeometry(Polygon.fromCoordinates(coordinates)));
+        polygonSource.setGeoJson(Feature.fromGeometry(Polygon.fromLngLats(coordinates)));
 
         FillLayer polygonFill = map.getLayerAs(Container.POLYGON_LAYER);
         polygonFill.setProperties(PropertyFactory.fillColor(ContextCompat.getColor(context, R.color.airmap_aqua)));
 
         GeoJsonSource polylineSource = map.getSourceAs(POLYLINE_SOURCE);
-        polylineSource.setGeoJson(Feature.fromGeometry(LineString.fromCoordinates(lineString)));
+        polylineSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(lineString)));
     }
 
     @Override

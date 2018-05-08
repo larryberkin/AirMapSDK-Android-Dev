@@ -5,11 +5,11 @@ import android.util.DisplayMetrics;
 
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.util.AnnotationsFactory;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.services.commons.models.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +43,10 @@ public abstract class Container {
         map.addImage(INTERSECTION_IMAGE, AnnotationsFactory.getBitmapForDrawable(context, R.drawable.intersection_circle));
     }
 
-    protected List<Position> latLngsToPositions(List<LatLng> latLngs) {
-        List<Position> positions = new ArrayList<>();
+    protected List<Point> latLngsToPositions(List<LatLng> latLngs) {
+        List<Point> positions = new ArrayList<>();
         for (LatLng latLng : latLngs) {
-            positions.add(Position.fromLngLat(latLng.getLongitude(), latLng.getLatitude()));
+            positions.add(Point.fromLngLat(latLng.getLongitude(), latLng.getLatitude()));
         }
         return positions;
     }

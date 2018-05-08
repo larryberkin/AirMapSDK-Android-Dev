@@ -5,6 +5,11 @@ import android.support.v4.content.ContextCompat;
 
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.util.PointMath;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.MultiPoint;
+import com.mapbox.geojson.Point;
+import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -15,11 +20,6 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.style.sources.Source;
-import com.mapbox.services.commons.geojson.Feature;
-import com.mapbox.services.commons.geojson.LineString;
-import com.mapbox.services.commons.geojson.MultiPoint;
-import com.mapbox.services.commons.geojson.Polygon;
-import com.mapbox.services.commons.models.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,19 +42,19 @@ public class LineContainer extends Container {
         this.polygon = polygon;
         this.midpoints = PointMath.getMidpointsFromLatLngs(path);
 
-        List<Position> positions = latLngsToPositions(path);
-        List<Position> midPositions = latLngsToPositions(midpoints);
-        List<Position> lineString = new ArrayList<>(positions);
+        List<Point> positions = latLngsToPositions(path);
+        List<Point> midPositions = latLngsToPositions(midpoints);
+        List<Point> lineString = new ArrayList<>(positions);
 
         // if polygon layer doesn't exist, create and add to map
         if (map.getLayer(POINT_LAYER) == null) {
-            Source pointSource = new GeoJsonSource(POINT_SOURCE, Feature.fromGeometry(MultiPoint.fromCoordinates(positions)));
+            Source pointSource = new GeoJsonSource(POINT_SOURCE, Feature.fromGeometry(MultiPoint.fromLngLats(positions)));
             map.addSource(pointSource);
             Layer pointLayer = new SymbolLayer(POINT_LAYER, POINT_SOURCE)
                     .withProperties(PropertyFactory.iconImage(CORNER_IMAGE));
             map.addLayer(pointLayer);
 
-            Source midpointSource = new GeoJsonSource(MIDPOINT_SOURCE, Feature.fromGeometry(MultiPoint.fromCoordinates(midPositions)));
+            Source midpointSource = new GeoJsonSource(MIDPOINT_SOURCE, Feature.fromGeometry(MultiPoint.fromLngLats(midPositions)));
             map.addSource(midpointSource);
             Layer midpointLayer = new SymbolLayer(MIDPOINT_LAYER, MIDPOINT_SOURCE)
                     .withProperties(PropertyFactory.iconImage(MIDPOINT_IMAGE));
@@ -66,7 +66,7 @@ public class LineContainer extends Container {
                     .withProperties(PropertyFactory.fillColor(ContextCompat.getColor(context, R.color.airmap_aqua)), PropertyFactory.fillOpacity(0.5f));
             map.addLayerBelow(polygonLayer, POINT_LAYER);
 
-            Source polylineSource = new GeoJsonSource(POLYLINE_SOURCE, Feature.fromGeometry(LineString.fromCoordinates(lineString)));
+            Source polylineSource = new GeoJsonSource(POLYLINE_SOURCE, Feature.fromGeometry(LineString.fromLngLats(lineString)));
             map.addSource(polylineSource);
             Layer polylineLayer = new LineLayer(POLYLINE_LAYER, POLYLINE_SOURCE)
                     .withProperties(PropertyFactory.lineColor(ContextCompat.getColor(context, R.color.airmap_navy)), PropertyFactory.lineOpacity(0.9f));
@@ -75,10 +75,10 @@ public class LineContainer extends Container {
             // otherwise, update source
         } else {
             GeoJsonSource pointsSource = map.getSourceAs(POINT_SOURCE);
-            pointsSource.setGeoJson(Feature.fromGeometry(MultiPoint.fromCoordinates(positions)));
+            pointsSource.setGeoJson(Feature.fromGeometry(MultiPoint.fromLngLats(positions)));
 
             GeoJsonSource midpointsSource = map.getSourceAs(MIDPOINT_SOURCE);
-            midpointsSource.setGeoJson(Feature.fromGeometry(MultiPoint.fromCoordinates(midPositions)));
+            midpointsSource.setGeoJson(Feature.fromGeometry(MultiPoint.fromLngLats(midPositions)));
 
             GeoJsonSource polygonSource = map.getSourceAs(POLYGON_SOURCE);
             polygonSource.setGeoJson(Feature.fromGeometry(polygon));
@@ -87,16 +87,16 @@ public class LineContainer extends Container {
             polygonFill.setProperties(PropertyFactory.fillColor(ContextCompat.getColor(context, R.color.airmap_aqua)));
 
             GeoJsonSource polylineSource = map.getSourceAs(POLYLINE_SOURCE);
-            polylineSource.setGeoJson(Feature.fromGeometry(LineString.fromCoordinates(lineString)));
+            polylineSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(lineString)));
         }
     }
 
     @Override
     public LatLngBounds getLatLngBoundsForZoom() {
         LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
-        for (List<Position> list : polygon.getCoordinates()) {
-            for (Position position : list) {
-                latLngBounds.include(new LatLng(position.getLatitude(), position.getLongitude()));
+        for (List<Point> list : polygon.coordinates()) {
+            for (Point position : list) {
+                latLngBounds.include(new LatLng(position.latitude(), position.longitude()));
             }
         }
 
