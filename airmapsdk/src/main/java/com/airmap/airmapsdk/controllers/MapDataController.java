@@ -81,13 +81,13 @@ public class MapDataController {
     private void setupSubscriptions(AirMapMapView.Configuration configuration) {
         // observes changes to jurisdictions (map bounds) to query rulesets for the region
         Observable<Map<String, AirMapRuleset>> jurisdictionsObservable = jurisdictionsPublishSubject.asObservable()
+                .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<AirMapPolygon, Boolean>() {
                     @Override
                     public Boolean call(AirMapPolygon polygon) {
                         return map != null && map.getMap() != null;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<AirMapPolygon>() {
                     @Override
                     public void call(AirMapPolygon polygon) {
@@ -96,7 +96,6 @@ public class MapDataController {
                         }
                     }
                 })
-                .observeOn(Schedulers.io())
                 .flatMap(getJurisdictions())
                 .filter(new Func1<List<AirMapJurisdiction>, Boolean>() {
                     @Override
@@ -204,7 +203,6 @@ public class MapDataController {
                     }
                 })
                 .flatMap(convertRulesetsToAdvisories())
-                .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(new Func1<Throwable, AirMapAirspaceStatus>() {
                     @Override
                     public AirMapAirspaceStatus call(Throwable throwable) {
@@ -278,7 +276,7 @@ public class MapDataController {
                         subscriber.onCompleted();
                     }
                 })
-                .retryWhen(new RetryWithDelay(4, 400))
+                .retryWhen(new RetryWithDelay(4, 400), AndroidSchedulers.mainThread())
                 .onErrorReturn(new Func1<Throwable, List<AirMapJurisdiction>>() {
                     @Override
                     public List<AirMapJurisdiction> call(Throwable throwable) {

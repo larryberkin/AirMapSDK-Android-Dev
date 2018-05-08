@@ -4,18 +4,26 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.airmap.airmapsdk.AirMapException;
 import com.airmap.airmapsdk.Analytics;
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.controllers.MapDataController;
 import com.airmap.airmapsdk.controllers.MapStyleController;
+import com.airmap.airmapsdk.models.CircleContainer;
+import com.airmap.airmapsdk.models.Container;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdk.models.status.AirMapAdvisory;
 import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
@@ -405,15 +413,15 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
 
     private void zoomToFeatureIfNecessary(Feature featureClicked) {
         try {
-            LatLngBounds cameraBounds = map.getProjection().getVisibleRegion().latLngBounds;
+            LatLngBounds cameraBounds = getMap().getProjection().getVisibleRegion().latLngBounds;
             LatLngBounds.Builder advisoryLatLngsBuilder = new LatLngBounds.Builder();
             boolean zoom = false;
             Geometry geometry = featureClicked.geometry();
 
-            if (geometry instanceof Polygon) {
-                List<Point> points = Utils.flatten(((Polygon) geometry).coordinates());
-                for (Point point : points) {
-                    LatLng latLng = new LatLng(point.latitude(), point.longitude());
+            if (featureClicked.getGeometry().getCoordinates() instanceof ArrayList) {
+                List<Position> positions = Utils.getPositionsFromFeature((ArrayList) featureClicked.getGeometry().getCoordinates());
+                for (Position position : positions) {
+                    LatLng latLng = new LatLng(position.getLatitude(), position.getLongitude());
                     advisoryLatLngsBuilder.include(latLng);
                     if (!cameraBounds.contains(latLng)) {
                         Timber.d("Camera position doesn't contain point");
@@ -432,7 +440,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
 
             if (zoom) {
                 int padding = Utils.dpToPixels(getContext(), 72).intValue();
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(advisoryLatLngsBuilder.build(), padding));
+                getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(advisoryLatLngsBuilder.build(), padding));
             }
         } catch (ClassCastException e) {
             Timber.e(e,"Unable to get feature geometry");
@@ -500,7 +508,12 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
         }
     }
 
+    @UiThread
     public MapboxMap getMap() {
+        if (Looper.getMainLooper() != Looper.myLooper()) {
+            Timber.e("*** AirMapMapView accessed from a thread other than the UI-thread:" + Thread.currentThread());
+            Analytics.report(new Exception("AirMapMapView accessed from a thread other than the UI-thread: " + Thread.currentThread()));
+        }
         return map;
     }
 
@@ -620,6 +633,78 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
             super(Type.MANUAL);
 
             this.selectedRulesets = selectedRulesets;
+        }
+    }
+
+    public static abstract class DragListener implements View.OnTouchListener {
+
+        private boolean isDragging;
+        private LatLng originLatLng;
+
+        public abstract void onDrag(PointF toPointF, LatLng toLatLng, LatLng fromLatLng);
+
+        public abstract void onFinishedDragging(PointF point, LatLng toLatLng, LatLng fromLatLng);
+
+        @Override
+        public final boolean onTouch(View v, MotionEvent event) {
+            if (event != null) {
+                if (event.getPointerCount() > 1) {
+                    //Don't drag if there are multiple fingers on screen
+                    return false;
+                }
+                float screenDensity = v.getContext().getResources().getDisplayMetrics().density;
+                PointF tapPoint = new PointF(event.getX(), event.getY());
+                float toleranceSides = 8 * screenDensity;
+                float toleranceTopBottom = 8 * screenDensity;
+                float averageIconWidth = 32 * screenDensity;
+                float averageIconHeight = 32 * screenDensity;
+                RectF tapRect = new RectF(tapPoint.x - averageIconWidth / 2 - toleranceSides,
+                        tapPoint.y - averageIconHeight / 2 - toleranceTopBottom,
+                        tapPoint.x + averageIconWidth / 2 + toleranceSides,
+                        tapPoint.y + averageIconHeight / 2 + toleranceTopBottom);
+
+                AirMapMapView mapView = (AirMapMapView) v;
+                MapboxMap map = mapView.getMap();
+
+                List<Feature> features = map.queryRenderedFeatures(tapRect, Container.POINT_LAYER, Container.MIDPOINT_LAYER);
+                if (!features.isEmpty() || isDragging) {
+                    boolean doneDragging = event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL;
+                    map.getUiSettings().setScrollGesturesEnabled(doneDragging);
+                    map.getUiSettings().setZoomGesturesEnabled(doneDragging);
+
+                    if (doneDragging) {
+                        // only finish drag if started with down on marker
+                        if (isDragging) {
+                            LatLng latLng = map.getProjection().fromScreenLocation(tapPoint);
+                            onFinishedDragging(tapPoint, latLng, originLatLng);
+                            originLatLng = null;
+                            isDragging = false;
+                        } else {
+                            map.getUiSettings().setScrollGesturesEnabled(true);
+                            map.getUiSettings().setZoomGesturesEnabled(true);
+                            return false;
+                        }
+                    } else {
+                        // starts with down press on marker
+                        LatLng latLng = map.getProjection().fromScreenLocation(tapPoint);
+                        if (event.getAction() == MotionEvent.ACTION_DOWN && originLatLng == null) {
+                            originLatLng = latLng;
+                            isDragging = true;
+                        }
+
+                        // only drag if started with down on marker
+                        if (isDragging) {
+                            onDrag(tapPoint, latLng, originLatLng);
+                        } else {
+                            map.getUiSettings().setScrollGesturesEnabled(true);
+                            map.getUiSettings().setZoomGesturesEnabled(true);
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

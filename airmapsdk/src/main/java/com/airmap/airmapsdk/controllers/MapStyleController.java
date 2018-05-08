@@ -268,10 +268,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
     public void highlight(@NonNull Feature feature, AirMapAdvisory advisory) {
         // remove old highlight
-        if (highlightLayer != null) {
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
-            highlightLayer.setFilter(filter);
-        }
+        unhighlight();
 
         // add new highlight
         String sourceId = feature.getStringProperty("ruleset_id");
@@ -294,10 +291,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         String type = feature.getStringProperty("category");
 
         // remove old highlight
-        if (highlightLayer != null) {
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
-            highlightLayer.setFilter(filter);
-        }
+        unhighlight();
 
         // add new highlight
         String sourceId = feature.getStringProperty("ruleset_id");
@@ -317,8 +311,24 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
     public void unhighlight() {
         if (highlightLayer != null) {
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
-            highlightLayer.setFilter(filter);
+//            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
+//            highlightLayer.setFilter(filter);
+
+            try {
+                LineLayer oldHighlightLayer = map.getMap().getLayerAs(highlightLayer.getId());
+                if (oldHighlightLayer != null) {
+                    Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+                    oldHighlightLayer.setFilter(filter);
+                }
+            } catch (RuntimeException e) {
+                for (Layer l : map.getMap().getLayers()) {
+                    if (l instanceof LineLayer) {
+                        Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+                        ((LineLayer) l).setFilter(filter);
+                    }
+                }
+                Analytics.report(e);
+            }
         }
     }
 
