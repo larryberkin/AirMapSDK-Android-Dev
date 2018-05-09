@@ -43,6 +43,15 @@ import static com.airmap.airmapsdk.networking.services.MappingService.AirMapMapT
 import static com.airmap.airmapsdk.networking.services.MappingService.AirMapMapTheme.Light;
 import static com.airmap.airmapsdk.networking.services.MappingService.AirMapMapTheme.Satellite;
 import static com.airmap.airmapsdk.networking.services.MappingService.AirMapMapTheme.Standard;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.*;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.all;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.any;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.eq;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.gt;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.lt;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.not;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.number;
 
 public class MapStyleController implements MapView.OnMapChangedListener {
 
@@ -171,18 +180,14 @@ public class MapStyleController implements MapView.OnMapChangedListener {
                 Layer layer = map.getMap().getLayerAs(layerStyle.id);
                 if (layerStyle instanceof AirMapFillLayerStyle) {
                     FillLayer newLayer = (FillLayer) layerStyle.toMapboxLayer(layer, sourceId);
-                    if (newLayer.getId().contains("airmap|tfr")) {
-                        addTfrFilter(newLayer);
-                    } else if (newLayer.getId().contains("notam")) {
-                        addNotamFilter(newLayer);
+                    if (newLayer.getId().contains("airmap|tfr") || newLayer.getId().contains("notam")) {
+                        addTemporalFilter(newLayer, 4);
                     }
                     map.getMap().addLayerAbove(newLayer, layerStyle.id);
                 } else if (layerStyle instanceof AirMapLineLayerStyle) {
                     LineLayer newLayer = (LineLayer) layerStyle.toMapboxLayer(layer, sourceId);
-                    if (newLayer.getId().contains("airmap|tfr")) {
-                        addTfrFilter(newLayer);
-                    } else if (newLayer.getId().contains("notam")) {
-                        addNotamFilter(newLayer);
+                    if (newLayer.getId().contains("airmap|tfr") || newLayer.getId().contains("notam")) {
+                        addTemporalFilter(newLayer, 4);
                     }
                     map.getMap().addLayerAbove(newLayer, layerStyle.id);
                 } else if (layerStyle instanceof AirMapSymbolLayerStyle) {
@@ -197,7 +202,7 @@ public class MapStyleController implements MapView.OnMapChangedListener {
             highlightLayer.setProperties(PropertyFactory.lineColor("#f9e547"));
             highlightLayer.setProperties(PropertyFactory.lineWidth(4f));
             highlightLayer.setProperties(PropertyFactory.lineOpacity(0.9f));
-            Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
+            Expression filter = all(eq(get("id"), "x"));
 
             try {
                 highlightLayer.setFilter(filter);
@@ -212,29 +217,27 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         }
     }
 
-    private void addTfrFilter(Layer layer) {
-        long now = System.currentTimeMillis() / 1000;
-        long in4Hrs = now + (4 * 60 * 60);
-        Expression validNowFilter = Expression.all(Expression.lt(Expression.get("start"), now), Expression.gt(Expression.get("end"), now));
-        Expression startsSoonFilter = Expression.all(Expression.gt(Expression.get("start"), now), Expression.lt(Expression.get("start"), in4Hrs));
-        Expression permanent = Expression.eq(Expression.get("permanent"), true);
-        Expression hasNoEnd = Expression.all(Expression.not(Expression.has("end")), Expression.not(Expression.has("base")));
-        Expression filter = Expression.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
-        if (layer instanceof FillLayer) {
-            ((FillLayer) layer).setFilter(filter);
-        } else if (layer instanceof LineLayer) {
-            ((LineLayer) layer).setFilter(filter);
-        }
-    }
+    private void addTemporalFilter(Layer layer, int hours) {
+        Long now = System.currentTimeMillis() / 1000;
+        Long in4Hrs = now + (hours * 60 * 60);
+        Expression validNowFilter = all(
+                gt(number(get("start")), now),
+                lt(number(get("end")), now)
+        );
+        Expression startsSoonFilter = all(
+                gt(number(get("start")), now),
+                lt(number(get("start")), in4Hrs)
+        );
+        Expression permanent = eq(
+                get("permanent"),
+                true
+        );
+        Expression hasNoEnd = all(
+                not(has("end")),
+                not(has("base"))
+        );
+        Expression filter = any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
 
-    private void addNotamFilter(Layer layer) {
-        long now = System.currentTimeMillis() / 1000;
-        long in4Hrs = now + (4 * 60 * 60);
-        Expression validNowFilter = Expression.all(Expression.lt(Expression.get("start"), now), Expression.gt(Expression.get("end"), now));
-        Expression startsSoonFilter = Expression.all(Expression.gt(Expression.get("start"), now), Expression.lt(Expression.get("start"), in4Hrs));
-        Expression permanent = Expression.eq(Expression.get("permanent"), true);
-        Expression hasNoEnd = Expression.all(Expression.not(Expression.has("end")), Expression.not(Expression.has("base")));
-        Expression filter = Expression.any(validNowFilter, startsSoonFilter, permanent, hasNoEnd);
         if (layer instanceof FillLayer) {
             ((FillLayer) layer).setFilter(filter);
         } else if (layer instanceof LineLayer) {
@@ -279,9 +282,9 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         Expression filter;
         try {
             int airspaceId = Integer.parseInt(advisory.getId());
-            filter = Expression.any(Expression.eq(Expression.get("id"), advisory.getId()), Expression.eq(Expression.get("id"), airspaceId));
+            filter = any(eq(get("id"), advisory.getId()), eq(get("id"), airspaceId));
         } catch (NumberFormatException e) {
-            filter = Expression.any(Expression.eq(Expression.get("id"), advisory.getId()));
+            filter = any(eq(get("id"), advisory.getId()));
         }
         highlightLayer.setFilter(filter);
     }
@@ -302,9 +305,9 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         Expression filter;
         try {
             int airspaceId = Integer.parseInt(id);
-            filter = Expression.any(Expression.eq(Expression.get("id"), id), Expression.eq(Expression.get("id"), airspaceId));
+            filter = any(eq(get("id"), id), eq(get("id"), airspaceId));
         } catch (NumberFormatException e) {
-            filter = Expression.any(Expression.eq(Expression.get("id"), id));
+            filter = any(eq(get("id"), id));
         }
         highlightLayer.setFilter(filter);
     }
@@ -314,13 +317,13 @@ public class MapStyleController implements MapView.OnMapChangedListener {
             try {
                 LineLayer oldHighlightLayer = map.getMap().getLayerAs(highlightLayer.getId());
                 if (oldHighlightLayer != null) {
-                    Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
+                    Expression filter = all(eq(get("id"), "x"));
                     highlightLayer.setFilter(filter);
                 }
             } catch (RuntimeException e) {
                 for (Layer l : map.getMap().getLayers()) {
                     if (l instanceof LineLayer) {
-                        Expression filter = Expression.all(Expression.eq(Expression.get("id"), "x"));
+                        Expression filter = all(eq(get("id"), "x"));
                         ((LineLayer) l).setFilter(filter);
                     }
                 }
