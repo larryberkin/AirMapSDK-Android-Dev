@@ -13,8 +13,12 @@ import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.models.Coordinate;
 import com.airmap.airmapsdk.networking.callbacks.AirMapCallback;
 import com.airmap.airmapsdk.networking.services.AirMap;
+import com.mapbox.geojson.Geometry;
+import com.mapbox.geojson.Point;
+import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.annotations.PolygonOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -503,6 +507,17 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static LatLngBounds getLatLngBounds(Geometry geometry) {
+        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+        if (geometry instanceof Polygon) {
+            List<Point> perimeter = ((Polygon) geometry).outer().coordinates();
+            for (Point p : perimeter) {
+                bounds.include(new LatLng(p.latitude(), p.longitude()));
+            }
+        }
+        return bounds.build();
     }
 
     public static boolean useGPSForLocation(Context context) {

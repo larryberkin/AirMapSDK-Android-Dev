@@ -414,11 +414,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
     private void zoomToFeatureIfNecessary(Feature featureClicked) {
         try {
             LatLngBounds cameraBounds = getMap().getProjection().getVisibleRegion().latLngBounds;
-            boolean zoom = false;
-
-            Geometry geometry = featureClicked.geometry();
-            BoundingBox bbox = geometry.bbox();
-            LatLngBounds featureBounds = LatLngBounds.from(bbox.northeast().latitude(), bbox.northeast().longitude(), bbox.southwest().latitude(), bbox.southwest().longitude());
+            LatLngBounds featureBounds = Utils.getLatLngBounds(featureClicked.geometry());
 
             if (!cameraBounds.contains(featureBounds)) {
                 int padding = Utils.dpToPixels(getContext(), 72).intValue();
