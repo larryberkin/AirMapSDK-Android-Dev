@@ -47,31 +47,25 @@ public class BriefingEvaluator {
         }
 
         List<Map.Entry<AirMapRule.Status, List<AirMapRule>>> entries = new ArrayList<>(rulesMap.entrySet());
-        Collections.sort(entries, new Comparator<Map.Entry<AirMapRule.Status, List<AirMapRule>>>() {
-            @Override
-            public int compare(Map.Entry<AirMapRule.Status, List<AirMapRule>> o1, Map.Entry<AirMapRule.Status, List<AirMapRule>> o2) {
-                if (o1.getKey().intValue() > o2.getKey().intValue()) {
-                    return 1;
-                } else if (o2.getKey().intValue() > o1.getKey().intValue()) {
-                    return -1;
-                }
-                return 0;
+        Collections.sort(entries, (o1, o2) -> {
+            if (o1.getKey().intValue() > o2.getKey().intValue()) {
+                return 1;
+            } else if (o2.getKey().intValue() > o1.getKey().intValue()) {
+                return -1;
             }
+            return 0;
         });
 
         LinkedHashMap<AirMapRule.Status, List<AirMapRule>> sortedRulesMap = new LinkedHashMap<>();
         for (Map.Entry<AirMapRule.Status, List<AirMapRule>> entry : entries) {
             List<AirMapRule> rules = entry.getValue();
-            Collections.sort(rules, new Comparator<AirMapRule>() {
-                @Override
-                public int compare(AirMapRule o1, AirMapRule o2) {
-                    if (o1.getDisplayOrder() > o2.getDisplayOrder()) {
-                        return 1;
-                    } else if (o2.getDisplayOrder() > o1.getDisplayOrder()) {
-                        return -1;
-                    }
-                    return o1.toString().compareTo(o2.toString());
+            Collections.sort(rules, (o1, o2) -> {
+                if (o1.getDisplayOrder() > o2.getDisplayOrder()) {
+                    return 1;
+                } else if (o2.getDisplayOrder() > o1.getDisplayOrder()) {
+                    return -1;
                 }
+                return o1.toString().compareTo(o2.toString());
             });
             sortedRulesMap.put(entry.getKey(), rules);
         }
@@ -132,10 +126,10 @@ public class BriefingEvaluator {
     public static LinkedHashMap<AirMapRule.Status,List<AirMapRule>> getRulesWithFlightFeatures(AirMapRuleset ruleset, AirMapEvaluation evaluation) {
         LinkedHashMap<AirMapRule.Status,List<AirMapRule>> ruleStatusMap = new LinkedHashMap<>();
         // pre-populate status for correct order
-        ruleStatusMap.put(AirMapRule.Status.Conflicting, new ArrayList<AirMapRule>());
-        ruleStatusMap.put(AirMapRule.Status.MissingInfo, new ArrayList<AirMapRule>());
-        ruleStatusMap.put(AirMapRule.Status.InformationRules, new ArrayList<AirMapRule>());
-        ruleStatusMap.put(AirMapRule.Status.NotConflicting, new ArrayList<AirMapRule>());
+        ruleStatusMap.put(AirMapRule.Status.Conflicting, new ArrayList<>());
+        ruleStatusMap.put(AirMapRule.Status.MissingInfo, new ArrayList<>());
+        ruleStatusMap.put(AirMapRule.Status.InformationRules, new ArrayList<>());
+        ruleStatusMap.put(AirMapRule.Status.NotConflicting, new ArrayList<>());
 
         for (AirMapRule rule : ruleset.getRules()) {
             List<AirMapRule> rules = new ArrayList<>();

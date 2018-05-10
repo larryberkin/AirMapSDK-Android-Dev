@@ -22,30 +22,15 @@ public class ThrottleablePublishSubject<T> {
     public Observable<T> asObservable() {
         Observable<ObserverItem> unthrottledObservable = publishSubject
                 .subscribeOn(Schedulers.io())
-                .filter(new Func1<ObserverItem, Boolean>() {
-                    @Override
-                    public Boolean call(ObserverItem observerItem) {
-                        return observerItem.type == Type.Unthrottled;
-                    }
-                });
+                .filter(observerItem -> observerItem.type == Type.Unthrottled);
 
         Observable<ObserverItem> throttledObservable = publishSubject
                 .subscribeOn(Schedulers.io())
-                .filter(new Func1<ObserverItem, Boolean>() {
-                    @Override
-                    public Boolean call(ObserverItem observerItem) {
-                        return observerItem.type == Type.Throttled;
-                    }
-                })
+                .filter(observerItem -> observerItem.type == Type.Throttled)
                 .throttleWithTimeout(750, TimeUnit.MILLISECONDS);
 
         return Observable.merge(throttledObservable, unthrottledObservable)
-                .map(new Func1<ObserverItem, T>() {
-                    @Override
-                    public T call(ObserverItem observerItem) {
-                        return observerItem.data;
-                    }
-                });
+                .map(observerItem -> observerItem.data);
     }
 
     public void onNext(T item) {

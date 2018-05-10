@@ -86,31 +86,23 @@ public class AirMapLocationEngine extends LocationEngine {
 
     public void flush() {
         Task flushTask = fusedLocationClient.flushLocations();
-        flushTask.addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                Timber.d("flush successful: " + task.isSuccessful());
-            }
-        });
+        flushTask.addOnCompleteListener(task -> Timber.d("flush successful: %s", task.isSuccessful()));
     }
 
     public void getLastKnownLocation() {
         Task<Location> locationTask = fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        Timber.d("getLastLocationTask success: " + location);
-                        if (location != null) {
-                            for (LocationEngineListener listener : locationListeners) {
-                                listener.onLocationChanged(location);
-                            }
+                .addOnSuccessListener(location -> {
+                    Timber.d("getLastLocationTask success: %s", location);
+                    if (location != null) {
+                        for (LocationEngineListener listener : locationListeners) {
+                            listener.onLocationChanged(location);
                         }
                     }
                 });
 
         if (locationTask.isComplete()) {
             if (locationTask.getResult() != null) {
-                Timber.d("already has result: " + locationTask.getResult());
+                Timber.d("already has result: %s", locationTask.getResult());
                 for (LocationEngineListener listener : locationListeners) {
                     listener.onLocationChanged(locationTask.getResult());
                 }
@@ -132,7 +124,7 @@ public class AirMapLocationEngine extends LocationEngine {
 
     @Override
     public void requestLocationUpdates() {
-        Timber.d("locationRequestLocationUpdates w/ priority: " + locationRequest.getPriority());
+        Timber.d("locationRequestLocationUpdates w/ priority: %s", locationRequest.getPriority());
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
     }
 
