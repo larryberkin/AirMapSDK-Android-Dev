@@ -16,7 +16,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.mapbox.services.android.telemetry.location.LocationEngine;
 import com.mapbox.services.android.telemetry.location.LocationEngineListener;
-import com.mapbox.services.android.telemetry.location.LocationEnginePriority;
+
+import java.lang.ref.WeakReference;
 
 import timber.log.Timber;
 
@@ -24,12 +25,20 @@ public class AirMapLocationEngine extends LocationEngine {
 
     private static AirMapLocationEngine instance;
 
+    private WeakReference<Context> context;
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
 
     private AirMapLocationEngine(Context context) {
         super();
+
+        this.context = new WeakReference<>(context);
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(250);
+        locationRequest.setFastestInterval(250);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         locationCallback = new LocationCallback() {
             @Override
