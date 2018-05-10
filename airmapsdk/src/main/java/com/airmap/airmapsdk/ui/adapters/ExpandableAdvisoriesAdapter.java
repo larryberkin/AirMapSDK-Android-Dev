@@ -72,25 +72,22 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
         for (MappingService.AirMapAirspaceType type : og.keySet()) {
             for (AirMapAdvisory advisory : og.get(type)) {
                 Pair<MappingService.AirMapAirspaceType, AirMapColor> key = new Pair<>(type, advisory.getColor());
-                List<AirMapAdvisory> list = dataTemp.containsKey(key) ? dataTemp.get(key) : new ArrayList<AirMapAdvisory>();
+                List<AirMapAdvisory> list = dataTemp.containsKey(key) ? dataTemp.get(key) : new ArrayList<>();
                 list.add(advisory);
                 dataTemp.put(key, list);
             }
         }
         List<Pair<MappingService.AirMapAirspaceType, AirMapColor>> keys = new ArrayList<>(dataTemp.keySet());
         // Sort based on color
-        Collections.sort(keys, new Comparator<Pair<MappingService.AirMapAirspaceType, AirMapColor>>() {
-            @Override
-            public int compare(Pair<MappingService.AirMapAirspaceType, AirMapColor> p1, Pair<MappingService.AirMapAirspaceType, AirMapColor> p2) {
-                if (p1.second == p2.second) return p1.first.toString().compareTo(p2.first.toString());
-                if (p1.second == AirMapColor.Red) return -1;
-                if (p2.second == AirMapColor.Red) return 1;
-                if (p1.second == AirMapColor.Orange) return -1;
-                if (p2.second == AirMapColor.Orange) return 1;
-                if (p1.second == AirMapColor.Yellow) return -1;
-                if (p2.second == AirMapColor.Yellow) return 1;
-                return 0;
-            }
+        Collections.sort(keys, (p1, p2) -> {
+            if (p1.second == p2.second) return p1.first.toString().compareTo(p2.first.toString());
+            if (p1.second == AirMapColor.Red) return -1;
+            if (p2.second == AirMapColor.Red) return 1;
+            if (p1.second == AirMapColor.Orange) return -1;
+            if (p2.second == AirMapColor.Orange) return 1;
+            if (p1.second == AirMapColor.Yellow) return -1;
+            if (p2.second == AirMapColor.Yellow) return 1;
+            return 0;
         });
         LinkedHashMap<Pair<MappingService.AirMapAirspaceType, AirMapColor>, List<AirMapAdvisory>> data = new LinkedHashMap<>();
         for (Pair<MappingService.AirMapAirspaceType, AirMapColor> key : keys) {
@@ -157,18 +154,15 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
                         }
 
                         if (!TextUtils.isEmpty(tfr.getUrl())) {
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Analytics.logEvent(Analytics.Page.ADVISORIES, Analytics.Action.tap, Analytics.Label.TFR_DETAILS);
+                            holder.itemView.setOnClickListener(v -> {
+                                Analytics.logEvent(Analytics.Page.ADVISORIES, Analytics.Action.tap, Analytics.Label.TFR_DETAILS);
 
-                                    String url = tfr.getUrl();
-                                    if (!url.contains("http") && !url.contains("https")) {
-                                        url = "http://" + url;
-                                    }
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                    checkAndStartIntent(holder.itemView.getContext(), intent);
+                                String url = tfr.getUrl();
+                                if (!url.contains("http") && !url.contains("https")) {
+                                    url = "http://" + url;
                                 }
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                checkAndStartIntent(holder.itemView.getContext(), intent);
                             });
                         }
                         break;
@@ -195,21 +189,13 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
 
                         if (!TextUtils.isEmpty(airport.getPhone())) {
                             ((AdvisoryViewHolder) holder).infoTextView.setTextColor(ContextCompat.getColor(((AdvisoryViewHolder) holder).infoTextView.getContext(), R.color.airmap_aqua));
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    call(holder.itemView.getContext(), advisory.getName(), airport.getPhone());
-                                }
-                            });
+                            holder.itemView.setOnClickListener(v -> call(holder.itemView.getContext(), advisory.getName(), airport.getPhone()));
                         } else if (advisory.getOptionalProperties() != null) {
                             if (!TextUtils.isEmpty(advisory.getOptionalProperties().getUrl())) {
                                 info = advisory.getOptionalProperties().getUrl();
-                                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(advisory.getOptionalProperties().getUrl()));
-                                        checkAndStartIntent(holder.itemView.getContext(), intent);
-                                    }
+                                holder.itemView.setOnClickListener(v -> {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(advisory.getOptionalProperties().getUrl()));
+                                    checkAndStartIntent(holder.itemView.getContext(), intent);
                                 });
                             }
 
@@ -228,12 +214,7 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
 
                         if (!TextUtils.isEmpty(heliport.getPhoneNumber())) {
                             ((AdvisoryViewHolder) holder).infoTextView.setTextColor(ContextCompat.getColor(((AdvisoryViewHolder) holder).infoTextView.getContext(), R.color.airmap_aqua));
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    call(holder.itemView.getContext(), advisory.getName(), heliport.getPhoneNumber());
-                                }
-                            });
+                            holder.itemView.setOnClickListener(v -> call(holder.itemView.getContext(), advisory.getName(), heliport.getPhoneNumber()));
                         }
                         break;
                     }
@@ -248,18 +229,15 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
                         info = dateFormat.format(notam.getStartTime()) + " - " + dateFormat.format(notam.getEndTime());
 
                         if (!TextUtils.isEmpty(notam.getUrl())) {
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Analytics.logEvent(Analytics.Page.ADVISORIES, Analytics.Action.tap, Analytics.Label.TFR_DETAILS);
+                            holder.itemView.setOnClickListener(v -> {
+                                Analytics.logEvent(Analytics.Page.ADVISORIES, Analytics.Action.tap, Analytics.Label.TFR_DETAILS);
 
-                                    String url = notam.getUrl();
-                                    if (!url.contains("http") && !url.contains("https")) {
-                                        url = "http://" + url;
-                                    }
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                    checkAndStartIntent(holder.itemView.getContext(), intent);
+                                String url = notam.getUrl();
+                                if (!url.contains("http") && !url.contains("https")) {
+                                    url = "http://" + url;
                                 }
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                checkAndStartIntent(holder.itemView.getContext(), intent);
                             });
                         }
                         break;
@@ -281,16 +259,13 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
                         if (advisory.getOptionalProperties() != null) {
                             if (!TextUtils.isEmpty(advisory.getOptionalProperties().getUrl())) {
                                 info = advisory.getOptionalProperties().getUrl();
-                                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        String url = advisory.getOptionalProperties().getUrl();
-                                        if (!url.contains("http") && !url.contains("https")) {
-                                            url = "http://" + url;
-                                        }
-                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                        holder.itemView.getContext().startActivity(intent);
+                                holder.itemView.setOnClickListener(v -> {
+                                    String url = advisory.getOptionalProperties().getUrl();
+                                    if (!url.contains("http") && !url.contains("https")) {
+                                        url = "http://" + url;
                                     }
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                    holder.itemView.getContext().startActivity(intent);
                                 });
                             }
 
@@ -312,16 +287,13 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
 
             if (advisory.getOptionalProperties() != null) {
                 if (!TextUtils.isEmpty(advisory.getOptionalProperties().getUrl())) {
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String url = advisory.getOptionalProperties().getUrl();
-                            if (!url.contains("http") && !url.contains("https")) {
-                                url = "http://" + url;
-                            }
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                            holder.itemView.getContext().startActivity(intent);
+                    holder.itemView.setOnClickListener(v -> {
+                        String url = advisory.getOptionalProperties().getUrl();
+                        if (!url.contains("http") && !url.contains("https")) {
+                            url = "http://" + url;
                         }
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        holder.itemView.getContext().startActivity(intent);
                     });
 
                     ((AdvisoryViewHolder) holder).linkButton.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.font_white), PorterDuff.Mode.SRC_ATOP);
@@ -357,14 +329,11 @@ public class ExpandableAdvisoriesAdapter extends ExpandableRecyclerAdapter<Pair<
         new AlertDialog.Builder(context)
                 .setTitle(name)
                 .setMessage(context.getString(R.string.do_you_want_to_call, name))
-                .setPositiveButton(R.string.call, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
-                        boolean handled = checkAndStartIntent(context, intent);
-                        if (!handled) {
-                            Toast.makeText(context, R.string.no_dialer_found, Toast.LENGTH_SHORT).show();
-                        }
+                .setPositiveButton(R.string.call, (dialogInterface, i) -> {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+                    boolean handled = checkAndStartIntent(context, intent);
+                    if (!handled) {
+                        Toast.makeText(context, R.string.no_dialer_found, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)

@@ -217,13 +217,10 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.error_loading_map_title)
                         .setMessage(R.string.error_loading_map_message)
-                        .setPositiveButton(R.string.error_loading_map_button, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // open settings and kill this activity
-                                startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
-                                finish();
-                            }
+                        .setPositiveButton(R.string.error_loading_map_button, (dialog, which) -> {
+                            // open settings and kill this activity
+                            startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
+                            finish();
                         })
                         .setNegativeButton(android.R.string.cancel, null)
                         .show();
@@ -243,22 +240,14 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.error_loading_map_title)
                         .setMessage(R.string.error_loading_map_network_message)
-                        .setPositiveButton(R.string.error_loading_map_network_button, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                isMapFailureDialogShowing = false;
-                                // open settings and kill this activity
-                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                                finish();
-                            }
+                        .setPositiveButton(R.string.error_loading_map_network_button, (dialog, which) -> {
+                            isMapFailureDialogShowing = false;
+                            // open settings and kill this activity
+                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                            finish();
                         })
                         .setNegativeButton(android.R.string.cancel, null)
-                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                isMapFailureDialogShowing = false;
-                            }
-                        })
+                        .setOnDismissListener(dialogInterface -> isMapFailureDialogShowing = false)
                         .show();
 
                 isMapFailureDialogShowing = true;
@@ -338,45 +327,38 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
                 .build();
 
         Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(this).checkLocationSettings(settingsRequest);
-        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                if (!requestLocationPermissionIfNeeded()) {
-                    return;
-                }
+        task.addOnSuccessListener(this, locationSettingsResponse -> {
+            if (!requestLocationPermissionIfNeeded()) {
+                return;
+            }
 
-                // All location settings are satisfied. The client can initialize
-                // location requests here.
-                if (locationEngine != null) {
-                    locationEngine.getLastLocation();
-                    locationEngine.requestLocationUpdates();
-                } else if (getMapView().getMap() != null) {
-                    setupLocationEngine();
-                }
+            // All location settings are satisfied. The client can initialize
+            // location requests here.
+            if (locationEngine != null) {
+                locationEngine.getLastLocation();
+                locationEngine.requestLocationUpdates();
+            } else if (getMapView().getMap() != null) {
+                setupLocationEngine();
             }
         });
 
-        task.addOnFailureListener(this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (e instanceof ResolvableApiException) {
-                    if (isLocationDialogShowing) {
-                        return;
-                    }
+        task.addOnFailureListener(this, e -> {
+            if (e instanceof ResolvableApiException) {
+                if (isLocationDialogShowing) {
+                    return;
+                }
 
-                    // Location settings are not satisfied, but this can be fixed
-                    // by showing the user a dialog.
-                    try {
-                        // Show the dialog by calling startResolutionForResult(),
-                        // and check the result in onActivityResult().
-                        ResolvableApiException resolvable = (ResolvableApiException) e;
-                        resolvable.startResolutionForResult(MyLocationMapActivity.this, REQUEST_TURN_ON_LOCATION);
+                // Location settings are not satisfied, but this can be fixed
+                // by showing the user a dialog.
+                try {
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    ResolvableApiException resolvable = (ResolvableApiException) e;
+                    resolvable.startResolutionForResult(MyLocationMapActivity.this, REQUEST_TURN_ON_LOCATION);
 
-                        isLocationDialogShowing = true;
-                    } catch (IntentSender.SendIntentException sendEx) {
-                        // Ignore the error.
-                    }
+                    isLocationDialogShowing = true;
+                } catch (IntentSender.SendIntentException sendEx) {
+                    // Ignore the error.
                 }
             }
         });

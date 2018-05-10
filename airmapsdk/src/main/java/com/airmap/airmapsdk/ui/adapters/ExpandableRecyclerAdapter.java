@@ -32,18 +32,15 @@ public abstract class ExpandableRecyclerAdapter<P,C> extends RecyclerView.Adapte
         switch (getItemViewType(position)) {
             case PARENT_VIEW_TYPE: {
                 final P parent = (P) getItem(position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!expandedParents.contains(parent)) {
-                            expandedParents.add(parent);
-                            toggleExpandingViewHolder(holder, true);
-                            notifyItemRangeInserted(holder.getAdapterPosition() + 1, dataMap.get(parent).size());
-                        } else {
-                            expandedParents.remove(parent);
-                            toggleExpandingViewHolder(holder, false);
-                            notifyItemRangeRemoved(holder.getAdapterPosition() + 1, dataMap.get(parent).size());
-                        }
+                holder.itemView.setOnClickListener(v -> {
+                    if (!expandedParents.contains(parent)) {
+                        expandedParents.add(parent);
+                        toggleExpandingViewHolder(holder, true);
+                        notifyItemRangeInserted(holder.getAdapterPosition() + 1, dataMap.get(parent).size());
+                    } else {
+                        expandedParents.remove(parent);
+                        toggleExpandingViewHolder(holder, false);
+                        notifyItemRangeRemoved(holder.getAdapterPosition() + 1, dataMap.get(parent).size());
                     }
                 });
 

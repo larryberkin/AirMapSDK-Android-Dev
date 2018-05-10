@@ -180,20 +180,17 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
 
     @Override
     public void getMapAsync(final OnMapReadyCallback callback) {
-        super.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(MapboxMap mapboxMap) {
-                map = mapboxMap;
-                map.addOnMapClickListener(AirMapMapView.this);
-                map.getUiSettings().setLogoGravity(Gravity.BOTTOM | Gravity.END); // Move to bottom right
-                map.getUiSettings().setAttributionGravity(Gravity.BOTTOM | Gravity.END); // Move to bottom right
-                map.setPrefetchesTiles(true);
-                mapStyleController.onMapReady();
-                if (callback != null) {
-                    callback.onMapReady(mapboxMap);
-                }
-
+        super.getMapAsync(mapboxMap -> {
+            map = mapboxMap;
+            map.addOnMapClickListener(AirMapMapView.this);
+            map.getUiSettings().setLogoGravity(Gravity.BOTTOM | Gravity.END); // Move to bottom right
+            map.getUiSettings().setAttributionGravity(Gravity.BOTTOM | Gravity.END); // Move to bottom right
+            map.setPrefetchesTiles(true);
+            mapStyleController.onMapReady();
+            if (callback != null) {
+                callback.onMapReady(mapboxMap);
             }
+
         });
     }
 
@@ -597,8 +594,8 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
         public DynamicConfiguration(@Nullable Set<String> preferredRulesetIds, @Nullable Set<String> unpreferredRulesetIds, boolean enableRecommendedRulesets) {
             super(Type.DYNAMIC);
 
-            this.preferredRulesetIds = preferredRulesetIds != null ? preferredRulesetIds : new HashSet<String>();
-            this.unpreferredRulesetIds = unpreferredRulesetIds != null ? unpreferredRulesetIds : new HashSet<String>();
+            this.preferredRulesetIds = preferredRulesetIds != null ? preferredRulesetIds : new HashSet<>();
+            this.unpreferredRulesetIds = unpreferredRulesetIds != null ? unpreferredRulesetIds : new HashSet<>();
             this.enableRecommendedRulesets = enableRecommendedRulesets;
         }
     }
