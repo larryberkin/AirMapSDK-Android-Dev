@@ -15,7 +15,6 @@ buildscript {
     }
 
     ext.supportLibraryVersion = '27.1.1'
-    ext.playServicesVersion = '15.0.0'
 }
 
 allprojects {
