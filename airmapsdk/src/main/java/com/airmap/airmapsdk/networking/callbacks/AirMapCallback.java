@@ -8,21 +8,11 @@ import com.airmap.airmapsdk.AirMapException;
 public abstract class AirMapCallback<T> {
 
     public final void success(final T response) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                onSuccess(response);
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> onSuccess(response));
     }
 
     public final void error(final AirMapException e) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                onError(e);
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> onError(e));
     }
 
     /**
