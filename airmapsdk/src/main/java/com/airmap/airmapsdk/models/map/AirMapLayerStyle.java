@@ -3,11 +3,8 @@ package com.airmap.airmapsdk.models.map;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 
-import com.google.gson.JsonParser;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.Layer;
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
-import com.mapbox.mapboxsdk.style.layers.PropertyValue;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +31,6 @@ public abstract class AirMapLayerStyle {
         sourceLayer = optString(json, "source-layer");
         type = optString(json, "type");
         minZoom = (float) json.optDouble("minzoom", 0);
-        Timber.d("LayerStyle: %s %s %s %s %f", id, source, sourceLayer, type, minZoom);
 
         interactive = json.optBoolean("interactive", false);
 
@@ -54,11 +50,9 @@ public abstract class AirMapLayerStyle {
 
         Expression filter;
         String operator = optString(filterJsonArray, 0);
-        Timber.d("operator: %s", operator);
         final Object[] operands = new Object[filterJsonArray.length() - 1];
         for (int i = 0; i < operands.length; i++) {
             operands[i] = filterJsonArray.opt(i + 1);
-            Timber.d("operand[%d]: %s", i, operands[i]);
         }
 
         Object operand1 = filterJsonArray.opt(1);
@@ -142,7 +136,6 @@ public abstract class AirMapLayerStyle {
 
     public static Expression getFillColorFunction(JSONObject fillColor) {
         String property = optString(fillColor, "property");
-        Timber.d("property: %s", property);
         String type = optString(fillColor, "type");
         String defaultColor = optString(fillColor, "default", "#000000");
         JSONArray stopsArray = fillColor.optJSONArray("stops");
@@ -154,7 +147,6 @@ public abstract class AirMapLayerStyle {
                     stops = new Expression.Stop[stopsArray.length()];
                     for (int i = 0; i < stopsArray.length(); i++) {
                         JSONArray stopArray = stopsArray.optJSONArray(i);
-                        Timber.d("stopArray: %s", stopArray.toString());
                         if (stopArray != null) {
                             Object value1 = stopArray.opt(0);
                             Object value2 = stopArray.opt(1);

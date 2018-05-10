@@ -7,7 +7,6 @@ def libVersion = '2.0.0-beta.6'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 27
@@ -37,7 +36,7 @@ android {
 }
 
 dependencies {
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.18.0'
     testImplementation 'org.robolectric:robolectric:3.8'

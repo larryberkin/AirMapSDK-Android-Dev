@@ -15,7 +15,7 @@ buildscript {
     }
 
     ext.supportLibraryVersion = '27.1.1'
-    ext.playServicesVersion = '12.0.1'
+    ext.playServicesVersion = '15.0.0'
 }
 
 allprojects {
@@ -23,7 +23,6 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        mavenLocal()
     }
 
     configurations.all {
@@ -33,8 +32,6 @@ allprojects {
                         && details.requested.name != 'multidex'
                         && details.requested.name != 'multidex-instrumentation') {
                     details.useVersion supportLibraryVersion
-                } else if (details.requested.group == 'com.google.firebase' || details.requested.group == 'com.google.android.gms') {
-                    details.useVersion playServicesVersion
                 }
             }
         }
