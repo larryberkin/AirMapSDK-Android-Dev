@@ -27,12 +27,7 @@ public class VoidCallback extends GenericBaseOkHttpCallback {
         try {
             jsonString = response.body().string();
         } catch (final IOException e) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Utils.error(listener, e);
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> Utils.error(listener, e));
             return;
         }
         response.body().close();
@@ -44,20 +39,10 @@ public class VoidCallback extends GenericBaseOkHttpCallback {
         }
         if (!response.isSuccessful() || !Utils.statusSuccessful(result)) {
             final JSONObject resultJSON = result;
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    Utils.error(listener, response.code(), resultJSON);
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> Utils.error(listener, response.code(), resultJSON));
         } else {
             //noinspection unchecked
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onSuccess(null);
-                }
-            });
+            new Handler(Looper.getMainLooper()).post(() -> listener.onSuccess(null));
         }
     }
 }

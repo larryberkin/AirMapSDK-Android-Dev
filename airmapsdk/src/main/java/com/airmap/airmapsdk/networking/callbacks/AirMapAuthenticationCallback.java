@@ -42,24 +42,14 @@ public class AirMapAuthenticationCallback extends AuthenticationCallback {
             public void onSuccess(final AirMapPilot response) {
                 Timber.d("get pilot succeeded");
 
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onSuccess(response);
-                    }
-                });
+                activity.runOnUiThread(() -> callback.onSuccess(response));
             }
 
             @Override
             public void onError(final AirMapException e) {
                 Timber.e(e, "get pilot failed");
 
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        callback.onError(e);
-                    }
-                });
+                activity.runOnUiThread(() -> callback.onError(e));
             }
         });
 

@@ -30,46 +30,28 @@ public class FlightPlanDataController extends MapDataController {
 
     @Override
     protected Func1<AirMapPolygon, Observable<List<AirMapJurisdiction>>> getJurisdictions() {
-        return new Func1<AirMapPolygon, Observable<List<AirMapJurisdiction>>>() {
-            @Override
-            public Observable<List<AirMapJurisdiction>> call(final AirMapPolygon polygon) {
-                return Observable.create(new Observable.OnSubscribe<List<AirMapJurisdiction>>() {
-                    @Override
-                    public void call(final Subscriber<? super List<AirMapJurisdiction>> subscriber) {
-                        final Call statusCall = AirMap.getJurisdictions(polygon, new AirMapCallback<List<AirMapJurisdiction>>() {
-                            @Override
-                            public void onSuccess(final List<AirMapJurisdiction> response) {
-                                subscriber.onNext(response);
-                                subscriber.onCompleted();
-                            }
+        return polygon -> Observable.create((Observable.OnSubscribe<List<AirMapJurisdiction>>) subscriber -> {
+            final Call statusCall = AirMap.getJurisdictions(polygon, new AirMapCallback<List<AirMapJurisdiction>>() {
+                @Override
+                public void onSuccess(final List<AirMapJurisdiction> response) {
+                    subscriber.onNext(response);
+                    subscriber.onCompleted();
+                }
 
-                            @Override
-                            public void onError(AirMapException e) {
-                                if (polygon == null) {
-                                    subscriber.onNext(null);
-                                    subscriber.onCompleted();
-                                } else {
-                                    subscriber.onError(e);
-                                }
-                            }
-                        });
+                @Override
+                public void onError(AirMapException e) {
+                    if (polygon == null) {
+                        subscriber.onNext(null);
+                        subscriber.onCompleted();
+                    } else {
+                        subscriber.onError(e);
+                    }
+                }
+            });
 
-                        subscriber.add(Subscriptions.create(new Action0() {
-                            @Override
-                            public void call() {
-                                statusCall.cancel();
-                            }
-                        }));
-                    }
-                })
-                .onErrorResumeNext(new Func1<Throwable, Observable<? extends List<AirMapJurisdiction>>>() {
-                    @Override
-                    public Observable<? extends List<AirMapJurisdiction>> call(Throwable throwable) {
-                        return Observable.just(null);
-                    }
-                });
-            }
-        };
+            subscriber.add(Subscriptions.create(statusCall::cancel));
+        })
+        .onErrorResumeNext(throwable -> Observable.just(null));
     }
 
     @Override

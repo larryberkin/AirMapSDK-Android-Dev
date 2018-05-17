@@ -32,29 +32,14 @@ abstract class GenericBaseOkHttpCallback implements okhttp3.Callback {
     public abstract void onResponse(Call call, Response response);
 
     protected void success(final Object response) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                listener.onSuccess(response);
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> listener.onSuccess(response));
     }
 
     protected void failed(final Exception e) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Utils.error(listener, e);
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> Utils.error(listener, e));
     }
 
     protected void failed(final int code, final JSONObject jsonObject) {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Utils.error(listener, code, jsonObject);
-            }
-        });
+        new Handler(Looper.getMainLooper()).post(() -> Utils.error(listener, code, jsonObject));
     }
 }

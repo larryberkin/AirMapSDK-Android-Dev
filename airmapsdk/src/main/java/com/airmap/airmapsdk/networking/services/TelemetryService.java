@@ -117,108 +117,45 @@ public class TelemetryService extends BaseService {
 
     private void setupBindings() {
         Observable<Session> session = telemetry
-                .map(new Func1<Pair<String, Message>, String>() {
-                    @Override
-                    public String call(Pair<String, Message> pair) {
-                        return pair.first;
-                    }
-                })
+                .map(pair -> pair.first)
                 .distinctUntilChanged()
-                .flatMap(new Func1<String, Observable<Session>>() {
-                    @Override
-                    public Observable<Session> call(final String flightId) {
-                        return FlightService.getCommKey(flightId)
-                                .doOnError(new Action1<Throwable>() {
-                                    @Override
-                                    public void call(Throwable throwable) {
-                                        Timber.e(throwable, "getCommKey failed");
-                                    }
-                                })
-                                .onErrorResumeNext(Observable.<AirMapComm>empty())
-                                .map(new Func1<AirMapComm, Session>() {
-                                    @Override
-                                    public Session call(AirMapComm airMapComm) {
-                                        return new Session(flightId, airMapComm, null);
-                                    }
-                                })
-                                .subscribeOn(Schedulers.io());
-                    }
-                });
+                .flatMap((Func1<String, Observable<Session>>) flightId -> FlightService.getCommKey(flightId)
+                        .doOnError(throwable -> Timber.e(throwable, "getCommKey failed"))
+                        .onErrorResumeNext(Observable.<AirMapComm>empty())
+                        .map(airMapComm -> new Session(flightId, airMapComm, null))
+                        .subscribeOn(Schedulers.io()));
 
         Observable<Pair<Session, Message>> flightMessages = Observable
-                .combineLatest(session, telemetry, new Func2<Session, Pair<String, Message>, Pair<Session, Pair<String, Message>>>() {
-                    @Override
-                    public Pair<Session, Pair<String, Message>> call(Session s, Pair<String, Message> p) {
-                        return new Pair<>(s, p);
-                    }
+                .combineLatest(session, telemetry, Pair::new)
+                .filter(p -> {
+                    String sessionFlight = p.first.flightId;
+                    String telemetryFlight = p.second.first;
+                    return sessionFlight.equals(telemetryFlight);
                 })
-                .filter(new Func1<Pair<Session, Pair<String, Message>>, Boolean>() {
-                    @Override
-                    public Boolean call(Pair<Session, Pair<String, Message>> p) {
-                        String sessionFlight = p.first.flightId;
-                        String telemetryFlight = p.second.first;
-                        return sessionFlight.equals(telemetryFlight);
-                    }
-                })
-                .map(new Func1<Pair<Session, Pair<String, Message>>, Pair<Session, Message>>() {
-                    @Override
-                    public Pair<Session, Message> call(Pair<Session, Pair<String, Message>> pair) {
-                        return new Pair<>(pair.first, pair.second.second);
-                    }
-                });
+                .map(pair -> new Pair<>(pair.first, pair.second.second));
 
         Observable<Pair<Session, Message>> position = flightMessages
-                .filter(new Func1<Pair<Session, Message>, Boolean>() {
-                    @Override
-                    public Boolean call(Pair<Session, Message> p) {
-                        return p.second instanceof Telemetry.Position;
-                    }
-                })
+                .filter(p -> p.second instanceof Telemetry.Position)
                 .sample(Observable.interval(POSITION_FREQUENCY, TimeUnit.MILLISECONDS));
 
         Observable<Pair<Session, Message>> attitude = flightMessages
-                .filter(new Func1<Pair<Session, Message>, Boolean>() {
-                    @Override
-                    public Boolean call(Pair<Session, Message> p) {
-                        return p.second instanceof Telemetry.Attitude;
-                    }
-                })
+                .filter(p -> p.second instanceof Telemetry.Attitude)
                 .sample(Observable.interval(ATTITUDE_FREQUENCY, TimeUnit.MILLISECONDS));
 
         Observable<Pair<Session, Message>> speed = flightMessages
-                .filter(new Func1<Pair<Session, Message>, Boolean>() {
-                    @Override
-                    public Boolean call(Pair<Session, Message> p) {
-                        return p.second instanceof Telemetry.Speed;
-                    }
-                })
+                .filter(p -> p.second instanceof Telemetry.Speed)
                 .sample(Observable.interval(SPEED_FREQUENCY, TimeUnit.MILLISECONDS));
 
         Observable<Pair<Session, Message>> barometer = flightMessages
-                .filter(new Func1<Pair<Session, Message>, Boolean>() {
-                    @Override
-                    public Boolean call(Pair<Session, Message> p) {
-                        return p.second instanceof Telemetry.Barometer;
-                    }
-                })
+                .filter(p -> p.second instanceof Telemetry.Barometer)
                 .sample(Observable.interval(BAROMETER_FREQUENCY, TimeUnit.MILLISECONDS));
 
         Subscription latestMessages = Observable.merge(position, attitude, speed, barometer)
                 .buffer(1, TimeUnit.SECONDS, 20)
-                .doOnNext(new Action1<List<Pair<Session, Message>>>() {
-                    @Override
-                    public void call(List<Pair<Session, Message>> sessionMessages) {
-                        sendMessages(sessionMessages);
-                    }
-                })
+                .doOnNext(this::sendMessages)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(Actions.empty(), new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Timber.e(throwable, "latestMessages Error");
-                    }
-                });
+                .subscribe(Actions.empty(), throwable -> Timber.e(throwable, "latestMessages Error"));
 
     }
 

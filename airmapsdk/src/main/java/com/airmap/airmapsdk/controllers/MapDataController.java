@@ -82,146 +82,85 @@ public class MapDataController {
         // observes changes to jurisdictions (map bounds) to query rulesets for the region
         Observable<Map<String, AirMapRuleset>> jurisdictionsObservable = jurisdictionsPublishSubject.asObservable()
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter(new Func1<AirMapPolygon, Boolean>() {
-                    @Override
-                    public Boolean call(AirMapPolygon polygon) {
-                        return map != null && map.getMap() != null;
-                    }
-                })
-                .doOnNext(new Action1<AirMapPolygon>() {
-                    @Override
-                    public void call(AirMapPolygon polygon) {
-                        if (callback != null) {
-                            callback.onAdvisoryStatusLoading();
-                        }
+                .filter(polygon -> map != null && map.getMap() != null)
+                .doOnNext(polygon -> {
+                    if (callback != null) {
+                        callback.onAdvisoryStatusLoading();
                     }
                 })
                 .flatMap(getJurisdictions())
-                .filter(new Func1<List<AirMapJurisdiction>, Boolean>() {
-                    @Override
-                    public Boolean call(List<AirMapJurisdiction> jurisdictions) {
-                        return jurisdictions != null && !jurisdictions.isEmpty();
-                    }
-                })
-                .doOnNext(new Action1<List<AirMapJurisdiction>>() {
-                    @Override
-                    public void call(List<AirMapJurisdiction> jurisdictions) {
-                        hasJurisdictions = true;
-                    }
-                })
-                .map(new Func1<List<AirMapJurisdiction>, Pair<Map<String, AirMapRuleset>, List<AirMapJurisdiction>>>() {
-                    @Override
-                    public Pair<Map<String, AirMapRuleset>, List<AirMapJurisdiction>> call(List<AirMapJurisdiction> jurisdictions) {
-                        Map<String, AirMapRuleset> jurisdictionRulesets = new HashMap<>();
+                .filter(jurisdictions -> jurisdictions != null && !jurisdictions.isEmpty())
+                .doOnNext(jurisdictions -> hasJurisdictions = true)
+                .map(jurisdictions -> {
+                    Map<String, AirMapRuleset> jurisdictionRulesets = new HashMap<>();
 
-                        for (AirMapJurisdiction jurisdiction : jurisdictions) {
-                            for (AirMapRuleset ruleset : jurisdiction.getRulesets()) {
-                                jurisdictionRulesets.put(ruleset.getId(), ruleset);
-                            }
+                    for (AirMapJurisdiction jurisdiction : jurisdictions) {
+                        for (AirMapRuleset ruleset : jurisdiction.getRulesets()) {
+                            jurisdictionRulesets.put(ruleset.getId(), ruleset);
                         }
-                        Timber.i("Jurisdictions loaded: %s", TextUtils.join(",", jurisdictionRulesets.keySet()));
+                    }
+                    Timber.i("Jurisdictions loaded: %s", TextUtils.join(",", jurisdictionRulesets.keySet()));
 
-                        return new Pair<>(jurisdictionRulesets, jurisdictions);
-                    }
+                    return new Pair<>(jurisdictionRulesets, jurisdictions);
                 })
-                .map(new Func1<Pair<Map<String, AirMapRuleset>, List<AirMapJurisdiction>>, Map<String, AirMapRuleset>>() {
-                    @Override
-                    public Map<String, AirMapRuleset> call(Pair<Map<String, AirMapRuleset>, List<AirMapJurisdiction>> pair) {
-                        return pair.first;
-                    }
-                });
+                .map(pair -> pair.first);
 
         // observes changes to preferred rulesets to trigger advisories fetch
         Observable<AirMapMapView.Configuration> configurationObservable = configurationPublishSubject
                 .startWith(configuration)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Action1<AirMapMapView.Configuration>() {
-                    @Override
-                    public void call(AirMapMapView.Configuration configuration) {
-                        if (callback != null) {
-                            callback.onAdvisoryStatusLoading();
-                        }
+                .doOnNext(eachConfig -> {
+                    if (callback != null) {
+                        callback.onAdvisoryStatusLoading();
+                    }
 
-                        switch (configuration.type) {
-                            case AUTOMATIC:
-                                Timber.i("AirMapMapView updated to automatic configuration");
-                                break;
-                            case DYNAMIC:
-                                Timber.i("AirMapMapView updated to dynamic configuration w/ preferred rulesets: %s", TextUtils.join(",", ((AirMapMapView.DynamicConfiguration) configuration).preferredRulesetIds));
-                                break;
-                            case MANUAL:
-                                Timber.i("AirMapMapView updated to manual configuration w/ preferred rulesets: %s", TextUtils.join(",", ((AirMapMapView.ManualConfiguration) configuration).selectedRulesets));
-                                break;
-                        }
+                    switch (eachConfig.type) {
+                        case AUTOMATIC:
+                            Timber.i("AirMapMapView updated to automatic configuration");
+                            break;
+                        case DYNAMIC:
+                            Timber.i("AirMapMapView updated to dynamic configuration w/ preferred rulesets: %s", TextUtils.join(",", ((AirMapMapView.DynamicConfiguration) eachConfig).preferredRulesetIds));
+                            break;
+                        case MANUAL:
+                            Timber.i("AirMapMapView updated to manual configuration w/ preferred rulesets: %s", TextUtils.join(",", ((AirMapMapView.ManualConfiguration) eachConfig).selectedRulesets));
+                            break;
                     }
                 });
 
         // combines preferred rulesets and available rulesets changes
         // to calculate selected rulesets and advisories
         rulesetsSubscription = Observable.combineLatest(jurisdictionsObservable, configurationObservable,
-                new Func2<Map<String, AirMapRuleset>, AirMapMapView.Configuration, Pair<List<AirMapRuleset>, List<AirMapRuleset>>>() {
-                    @Override
-                    public Pair<List<AirMapRuleset>, List<AirMapRuleset>> call(Map<String, AirMapRuleset> availableRulesetsMap, AirMapMapView.Configuration configuration) {
-                        Timber.i("combine available rulesets & configuration");
-                        List<AirMapRuleset> availableRulesets = new ArrayList<>(availableRulesetsMap.values());
-                        List<AirMapRuleset> selectedRulesets = RulesetsEvaluator.computeSelectedRulesets(availableRulesets, configuration);
+                (availableRulesetsMap, configuration1) -> {
+                    Timber.i("combine available rulesets & configuration");
+                    List<AirMapRuleset> availableRulesets = new ArrayList<>(availableRulesetsMap.values());
+                    List<AirMapRuleset> selectedRulesets = RulesetsEvaluator.computeSelectedRulesets(availableRulesets, configuration1);
 
-                        return new Pair<>(availableRulesets, selectedRulesets);
-                    }
+                    return new Pair<>(availableRulesets, selectedRulesets);
                 })
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter(new Func1<Pair<List<AirMapRuleset>, List<AirMapRuleset>>, Boolean>() {
-                    @Override
-                    public Boolean call(Pair<List<AirMapRuleset>, List<AirMapRuleset>> rulesets) {
-                        return rulesets != null;
-                    }
-                })
-                .doOnNext(new Action1<Pair<List<AirMapRuleset>, List<AirMapRuleset>>>() {
-                    @Override
-                    public void call(Pair<List<AirMapRuleset>, List<AirMapRuleset>> pair) {
-                        Timber.i("Computed rulesets: %s", TextUtils.join(",", pair.second));
-                        List<AirMapRuleset> availableRulesetsList = CopyCollections.copy(pair.first);
-                        List<AirMapRuleset> selectedRulesetsList = CopyCollections.copy(pair.second);
-                        List<AirMapRuleset> previouslySelectedRulesetsList = CopyCollections.copy(selectedRulesets);
+                .filter(rulesets -> rulesets != null)
+                .doOnNext(pair -> {
+                    Timber.i("Computed rulesets: %s", TextUtils.join(",", pair.second));
+                    List<AirMapRuleset> availableRulesetsList = CopyCollections.copy(pair.first);
+                    List<AirMapRuleset> selectedRulesetsList = CopyCollections.copy(pair.second);
+                    List<AirMapRuleset> previouslySelectedRulesetsList = CopyCollections.copy(selectedRulesets);
 
-                        callback.onRulesetsUpdated(availableRulesetsList, selectedRulesetsList, previouslySelectedRulesetsList);
-                        availableRulesets = pair.first;
-                        selectedRulesets = pair.second;
-                    }
+                    callback.onRulesetsUpdated(availableRulesetsList, selectedRulesetsList, previouslySelectedRulesetsList);
+                    availableRulesets = pair.first;
+                    selectedRulesets = pair.second;
                 })
-                .map(new Func1<Pair<List<AirMapRuleset>, List<AirMapRuleset>>, List<AirMapRuleset>>() {
-                    @Override
-                    public List<AirMapRuleset> call(Pair<List<AirMapRuleset>, List<AirMapRuleset>> pair) {
-                        return pair.second;
-                    }
-                })
-                .filter(new Func1<List<AirMapRuleset>, Boolean>() {
-                    @Override
-                    public Boolean call(List<AirMapRuleset> rulesets) {
-                        return fetchAdvisories;
-                    }
-                })
+                .map(pair -> pair.second)
+                .filter(rulesets -> fetchAdvisories)
                 .flatMap(convertRulesetsToAdvisories())
-                .onErrorReturn(new Func1<Throwable, AirMapAirspaceStatus>() {
-                    @Override
-                    public AirMapAirspaceStatus call(Throwable throwable) {
-                        Timber.e(throwable, "onErrorReturn");
-                        return null;
-                    }
+                .onErrorReturn(throwable -> {
+                    Timber.e(throwable, "onErrorReturn");
+                    return null;
                 })
-                .subscribe(new Action1<AirMapAirspaceStatus>() {
-                    @Override
-                    public void call(AirMapAirspaceStatus advisoryStatus) {
-                        airspaceStatus = advisoryStatus;
-                        callback.onAdvisoryStatusUpdated(advisoryStatus);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        Timber.e(throwable, "Unknown error on jurisdictions observable");
-                    }
-                });
+                .subscribe(advisoryStatus -> {
+                    airspaceStatus = advisoryStatus;
+                    callback.onAdvisoryStatusUpdated(advisoryStatus);
+                }, throwable -> Timber.e(throwable, "Unknown error on jurisdictions observable"));
     }
 
     public void onMapLoaded() {
@@ -233,59 +172,45 @@ public class MapDataController {
     }
 
     public void onMapFinishedRendering() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!hasJurisdictions) {
-                    onMapLoaded();
-                }
+        new Handler().postDelayed(() -> {
+            if (!hasJurisdictions) {
+                onMapLoaded();
             }
         }, 500);
     }
 
     protected Func1<AirMapPolygon, Observable<List<AirMapJurisdiction>>> getJurisdictions() {
-        return new Func1<AirMapPolygon, Observable<List<AirMapJurisdiction>>>() {
-            @Override
-            public Observable<List<AirMapJurisdiction>> call(AirMapPolygon polygon) {
-                return Observable.create(new Observable.OnSubscribe<List<AirMapJurisdiction>>() {
-                    @Override
-                    public void call(final Subscriber<? super List<AirMapJurisdiction>> subscriber) {
+        return polygon -> Observable.create((Observable.OnSubscribe<List<AirMapJurisdiction>>) subscriber -> {
 
-                        // query map for jurisdictions
-                        List<Feature> features = map.getMap().queryRenderedFeatures(new RectF(map.getLeft(), map.getTop(), map.getRight(), map.getBottom()), "jurisdictions");
+            // query map for jurisdictions
+            List<Feature> features = map.getMap().queryRenderedFeatures(new RectF(map.getLeft(), map.getTop(), map.getRight(), map.getBottom()), "jurisdictions");
 
-                        if (features.isEmpty()) {
-                            Timber.d("Features are empty");
-                            hasJurisdictions = false;
-                            subscriber.onError(new Throwable("Features are empty"));
-                        }
-
-                        List<AirMapJurisdiction> jurisdictions = new ArrayList<>();
-                        for (Feature feature : features) {
-                            try {
-                                JsonObject propertiesJSON = feature.properties();
-                                JSONObject jurisdictionJSON = new JSONObject(propertiesJSON.get("jurisdiction").getAsString());
-
-                                jurisdictions.add(new AirMapJurisdiction(jurisdictionJSON));
-                            } catch (JSONException e) {
-                                Timber.e(e, "Unable to get jurisdiction json");
-                            }
-                        }
-
-                        subscriber.onNext(jurisdictions);
-                        subscriber.onCompleted();
-                    }
-                })
-                .retryWhen(new RetryWithDelay(4, 400), AndroidSchedulers.mainThread())
-                .onErrorReturn(new Func1<Throwable, List<AirMapJurisdiction>>() {
-                    @Override
-                    public List<AirMapJurisdiction> call(Throwable throwable) {
-                        Timber.w(throwable, "Ran out of attempts to query jurisdictions");
-                        return null;
-                    }
-                });
+            if (features.isEmpty()) {
+                Timber.d("Features are empty");
+                hasJurisdictions = false;
+                subscriber.onError(new Throwable("Features are empty"));
             }
-        };
+
+            List<AirMapJurisdiction> jurisdictions = new ArrayList<>();
+            for (Feature feature : features) {
+                try {
+                    JsonObject propertiesJSON = feature.properties();
+                    JSONObject jurisdictionJSON = new JSONObject(propertiesJSON.get("jurisdiction").getAsString());
+
+                    jurisdictions.add(new AirMapJurisdiction(jurisdictionJSON));
+                } catch (JSONException e) {
+                    Timber.e(e, "Unable to get jurisdiction json");
+                }
+            }
+
+            subscriber.onNext(jurisdictions);
+            subscriber.onCompleted();
+        })
+        .retryWhen(new RetryWithDelay(4, 400), AndroidSchedulers.mainThread())
+        .onErrorReturn(throwable -> {
+            Timber.w(throwable, "Ran out of attempts to query jurisdictions");
+            return null;
+        });
     }
 
     /**
@@ -294,18 +219,8 @@ public class MapDataController {
      * @return
      */
     private Func1<List<AirMapRuleset>, Observable<AirMapAirspaceStatus>> convertRulesetsToAdvisories() {
-        return new Func1<List<AirMapRuleset>, Observable<AirMapAirspaceStatus>>() {
-            @Override
-            public Observable<AirMapAirspaceStatus> call(List<AirMapRuleset> selectedRulesets) {
-                return getAdvisories(selectedRulesets, getPolygon())
-                        .onErrorResumeNext(new Func1<Throwable, Observable<? extends AirMapAirspaceStatus>>() {
-                            @Override
-                            public Observable<? extends AirMapAirspaceStatus> call(Throwable throwable) {
-                                return Observable.just(null);
-                            }
-                        });
-            }
-        };
+        return selectedRulesets -> getAdvisories(selectedRulesets, getPolygon())
+                .onErrorResumeNext(throwable -> Observable.just(null));
     }
 
     protected AirMapPolygon getPolygon() {
@@ -323,42 +238,34 @@ public class MapDataController {
     }
 
     private Observable<AirMapAirspaceStatus> getAdvisories(final List<AirMapRuleset> rulesets, final AirMapPolygon polygon) {
-        return Observable.create(new Observable.OnSubscribe<AirMapAirspaceStatus>() {
-            @Override
-            public void call(final Subscriber<? super AirMapAirspaceStatus> subscriber) {
-                Date start = new Date();
-                Date end = new Date(start.getTime() + (4 * 60 * 60 * 1000));
+        return Observable.create(subscriber -> {
+            Date start = new Date();
+            Date end = new Date(start.getTime() + (4 * 60 * 60 * 1000));
 
-                List<String> rulesetIds = new ArrayList<>();
-                for (AirMapRuleset ruleset : rulesets) {
-                    rulesetIds.add(ruleset.getId());
+            List<String> rulesetIds = new ArrayList<>();
+            for (AirMapRuleset ruleset : rulesets) {
+                rulesetIds.add(ruleset.getId());
+            }
+
+            final Call statusCall = AirMap.getAirspaceStatus(polygon, rulesetIds, start, end, new AirMapCallback<AirMapAirspaceStatus>() {
+                @Override
+                public void onSuccess(final AirMapAirspaceStatus response) {
+                    subscriber.onNext(response);
+                    subscriber.onCompleted();
                 }
 
-                final Call statusCall = AirMap.getAirspaceStatus(polygon, rulesetIds, start, end, new AirMapCallback<AirMapAirspaceStatus>() {
-                    @Override
-                    public void onSuccess(final AirMapAirspaceStatus response) {
-                        subscriber.onNext(response);
+                @Override
+                public void onError(AirMapException e) {
+                    if (rulesets == null || rulesets.isEmpty()) {
+                        subscriber.onNext(null);
                         subscriber.onCompleted();
+                    } else {
+                        subscriber.onError(e);
                     }
+                }
+            });
 
-                    @Override
-                    public void onError(AirMapException e) {
-                        if (rulesets == null || rulesets.isEmpty()) {
-                            subscriber.onNext(null);
-                            subscriber.onCompleted();
-                        } else {
-                            subscriber.onError(e);
-                        }
-                    }
-                });
-
-                subscriber.add(Subscriptions.create(new Action0() {
-                    @Override
-                    public void call() {
-                        statusCall.cancel();
-                    }
-                }));
-            }
+            subscriber.add(Subscriptions.create(statusCall::cancel));
         });
     }
 
