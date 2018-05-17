@@ -9,6 +9,8 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.mapbox.services.android.telemetry.location.AndroidLocationEngine;
 import com.mapbox.services.android.telemetry.location.LocationEngine;
 import com.mapbox.services.android.telemetry.location.LocationEngineListener;
+import com.mapbox.services.android.telemetry.location.LocationEnginePriority;
+import com.mapbox.services.android.telemetry.location.LostLocationEngine;
 
 import timber.log.Timber;
 
@@ -18,11 +20,15 @@ public class AirMapLocationEngineCompat extends LocationEngine {
 
     public AirMapLocationEngineCompat(Context context) {
         boolean hasGooglePlayServices = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
-        locationEngine = hasGooglePlayServices ? AirMapLocationEngine.getLocationEngine(context) : AndroidLocationEngine.getLocationEngine(context);
+        locationEngine = hasGooglePlayServices ? AirMapLocationEngine.getLocationEngine(context) : BetterLostLocationEngine.getLocationEngine(context);
     }
 
     public void setupLocationEngine() {
         locationEngine.activate();
+        locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
+        locationEngine.setFastestInterval(250);
+        locationEngine.setInterval(250);
+        locationEngine.setSmallestDisplacement(0);
     }
 
     public LocationEngine getLocationEngine() {

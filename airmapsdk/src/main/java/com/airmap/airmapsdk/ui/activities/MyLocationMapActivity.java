@@ -132,6 +132,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
     public void onConnected() {
         Timber.e("LocationEngine onConnected");
         if (requestLocationPermissionIfNeeded()) {
+            Timber.e("LocationEngine requestUpdates");
             locationEngineCompat.requestLocationUpdates();
         }
     }
@@ -157,6 +158,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
             if (locationEngineCompat.getLastLocation() != null) {
                 zoomTo(locationEngineCompat.getLastLocation(), force);
             } else {
+                locationEngineCompat.requestLocationUpdates();
                 locationEngineCompat.getLastKnownLocation();
                 turnOnLocation();
             }
@@ -283,10 +285,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
 
         locationEngineCompat = new AirMapLocationEngineCompat(this);
         locationEngineCompat.setupLocationEngine();
-//        locationEngine = AirMapLocationEngine.getLocationEngine(this);
-//        locationEngine.setLocationRequest(locationRequest);
         locationEngineCompat.addLocationEngineListener(this);
-//        locationEngineCompat.activate();
 
         Timber.e("Setting up location engine");
 
@@ -315,6 +314,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
             return false;
         }
 
+        Timber.e("passes location permission check");
         return true;
     }
 
