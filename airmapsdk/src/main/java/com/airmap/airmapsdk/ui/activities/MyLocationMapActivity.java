@@ -47,7 +47,8 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
     private static final int REQUEST_LOCATION_PERMISSION = 7737;
     private static final int REQUEST_TURN_ON_LOCATION = 8849;
 
-    private LocationLayerPlugin locationLayerPlugin;
+    protected LocationLayerPlugin locationLayerPlugin;
+
     private AirMapLocationEngineCompat locationEngineCompat;
 
     private boolean hasLoadedMyLocation;
