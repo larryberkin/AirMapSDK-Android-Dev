@@ -21,6 +21,7 @@ public class AirMapPilot implements Serializable, AirMapBaseModel {
     private String username;
     private String pictureUrl;
     private String phone;
+    private String anonymizedId;
     private AirMapPilotVerificationStatus verificationStatus;
     private AirMapPilotMetaData userMetaData;
     private AirMapPilotMetaData appMetaData;
@@ -43,6 +44,7 @@ public class AirMapPilot implements Serializable, AirMapBaseModel {
             setPhone(optString(json, "phone"));
             setPictureUrl(optString(json, "picture_url"));
             setUsername(optString(json, "username"));
+            setAnonymizedId(optString(json, "anonymized_id"));
             setVerificationStatus(new AirMapPilotVerificationStatus(json.optJSONObject("verification_status")));
             setUserMetaData(new AirMapPilotMetaData(json.optJSONObject("user_metadata")));
             setAppMetaData(new AirMapPilotMetaData(json.optJSONObject("app_metadata")));
@@ -180,6 +182,14 @@ public class AirMapPilot implements Serializable, AirMapBaseModel {
 
     public boolean isPhoneVerified() {
         return !TextUtils.isEmpty(phone) && verificationStatus != null && verificationStatus.isPhone();
+    }
+
+    public String getAnonymizedId() {
+        return anonymizedId;
+    }
+
+    public void setAnonymizedId(String anonymizedId) {
+        this.anonymizedId = anonymizedId;
     }
 
     /**

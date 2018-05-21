@@ -42,7 +42,7 @@ import com.mapbox.services.android.telemetry.location.LocationEngineListener;
 
 import timber.log.Timber;
 
-public abstract class MyLocationMapActivity extends AppCompatActivity implements LocationEngineListener, AirMapMapView.OnMapLoadListener {
+public abstract class MyLocationMapActivity extends AppCompatActivity implements LocationEngineListener {
 
     private static final int REQUEST_LOCATION_PERMISSION = 7737;
     private static final int REQUEST_TURN_ON_LOCATION = 8849;
@@ -50,6 +50,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
     protected LocationLayerPlugin locationLayerPlugin;
 
     private AirMapLocationEngineCompat locationEngineCompat;
+    private AirMapMapView.OnMapLoadListener mapLoadListener;
 
     private boolean hasLoadedMyLocation;
     private boolean isLocationDialogShowing;
@@ -59,9 +60,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (getMapView() != null) {
-            getMapView().addOnMapLoadListener(this);
-        }
+        setupMapLoadListener();
 
         requestLocationPermissionIfNeeded();
     }
@@ -70,9 +69,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
     public void onRestart() {
         super.onRestart();
 
-        if (getMapView() != null) {
-            getMapView().addOnMapLoadListener(this);
-        }
+        setupMapLoadListener();
     }
 
     @SuppressLint("MissingPermission")
@@ -97,8 +94,8 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
             locationEngineCompat.removeLocationUpdates();
         }
 
-        if (getMapView() != null) {
-            getMapView().removeOnMapLoadListener(this);
+        if (getMapView() != null && mapLoadListener != null) {
+            getMapView().removeOnMapLoadListener(mapLoadListener);
         }
     }
 
@@ -186,95 +183,105 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
         }
     }
 
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onMapLoaded() {
-        if (hasLoadedMyLocation) {
+    private void setupMapLoadListener() {
+        // mapview not set yet
+        if (getMapView() == null) {
             return;
         }
-        Timber.i("onMapLoaded");
 
-        // use saved location is there is one
-        float savedLatitude = PreferenceManager.getDefaultSharedPreferences(this)
-                .getFloat(AirMapConstants.LAST_LOCATION_LATITUDE, 0);
-        float savedLongitude = PreferenceManager.getDefaultSharedPreferences(this)
-                .getFloat(AirMapConstants.LAST_LOCATION_LONGITUDE, 0);
-        if (savedLatitude != 0 && savedLongitude != 0) {
-            getMapView().getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(savedLatitude, savedLongitude), 13));
-        }
-
-        setupLocationEngine();
-    }
-
-    @Override
-    public void onMapFailed(AirMapMapView.MapFailure failure) {
-        switch (failure) {
-            case INACCURATE_DATE_TIME_FAILURE:
-                // record issue in firebase & logs
-                Analytics.report(new Exception("Mapbox map failed to load due to invalid date/time"));
-                Timber.e("Mapbox map failed to load due to invalid date/time");
-
-                // ask user to enable "Automatic Date/Time"
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.error_loading_map_title)
-                        .setMessage(R.string.error_loading_map_message)
-                        .setPositiveButton(R.string.error_loading_map_button, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // open settings and kill this activity
-                                startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
-                                finish();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .show();
-                break;
-            case NETWORK_CONNECTION_FAILURE:
-                // record issue in firebase & logs
-                String log = Utils.getMapboxLogs();
-                Analytics.report(new Exception("Mapbox map failed to load due to no network connection: " + log));
-                Timber.e("Mapbox map failed to load due to no network connection");
-
-                // check if dialog is already showing
-                if (isMapFailureDialogShowing) {
+        mapLoadListener = new AirMapMapView.OnMapLoadListener() {
+            @Override
+            public void onMapLoaded() {
+                if (hasLoadedMyLocation) {
                     return;
                 }
+                Timber.i("onMapLoaded");
 
-                // ask user to turn on wifi/LTE
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.error_loading_map_title)
-                        .setMessage(R.string.error_loading_map_network_message)
-                        .setPositiveButton(R.string.error_loading_map_network_button, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                isMapFailureDialogShowing = false;
-                                // open settings and kill this activity
-                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                                finish();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                isMapFailureDialogShowing = false;
-                            }
-                        })
-                        .show();
+                // use saved location is there is one
+                float savedLatitude = PreferenceManager.getDefaultSharedPreferences(MyLocationMapActivity.this)
+                        .getFloat(AirMapConstants.LAST_LOCATION_LATITUDE, 0);
+                float savedLongitude = PreferenceManager.getDefaultSharedPreferences(MyLocationMapActivity.this)
+                        .getFloat(AirMapConstants.LAST_LOCATION_LONGITUDE, 0);
+                if (savedLatitude != 0 && savedLongitude != 0) {
+                    getMapView().getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(savedLatitude, savedLongitude), 13));
+                }
 
-                isMapFailureDialogShowing = true;
+                setupLocationEngine();
+            }
 
-                break;
-            case UNKNOWN_FAILURE:
-            default:
-                // record issue in firebase & logs
-                String logs = Utils.getMapboxLogs();
-                Analytics.report(new Exception("Mapbox map failed to load due to unknown reason: " + logs));
-                Timber.e("Mapbox map failed to load due to unknown reason: %s", logs);
+            @Override
+            public void onMapFailed(AirMapMapView.MapFailure failure) {
+                switch (failure) {
+                    case INACCURATE_DATE_TIME_FAILURE:
+                        // record issue in firebase & logs
+                        Analytics.report(new Exception("Mapbox map failed to load due to invalid date/time"));
+                        Timber.e("Mapbox map failed to load due to invalid date/time");
 
-                //TODO: show generic error to user?
-                break;
-        }
+                        // ask user to enable "Automatic Date/Time"
+                        new AlertDialog.Builder(MyLocationMapActivity.this)
+                                .setTitle(R.string.error_loading_map_title)
+                                .setMessage(R.string.error_loading_map_message)
+                                .setPositiveButton(R.string.error_loading_map_button, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // open settings and kill this activity
+                                        startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .show();
+                        break;
+                    case NETWORK_CONNECTION_FAILURE:
+                        // record issue in firebase & logs
+                        String log = Utils.getMapboxLogs();
+                        Analytics.report(new Exception("Mapbox map failed to load due to no network connection: " + log));
+                        Timber.e("Mapbox map failed to load due to no network connection");
+
+                        // check if dialog is already showing
+                        if (isMapFailureDialogShowing) {
+                            return;
+                        }
+
+                        // ask user to turn on wifi/LTE
+                        new AlertDialog.Builder(MyLocationMapActivity.this)
+                                .setTitle(R.string.error_loading_map_title)
+                                .setMessage(R.string.error_loading_map_network_message)
+                                .setPositiveButton(R.string.error_loading_map_network_button, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        isMapFailureDialogShowing = false;
+                                        // open settings and kill this activity
+                                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialogInterface) {
+                                        isMapFailureDialogShowing = false;
+                                    }
+                                })
+                                .show();
+
+                        isMapFailureDialogShowing = true;
+
+                        break;
+                    case UNKNOWN_FAILURE:
+                    default:
+                        // record issue in firebase & logs
+                        String logs = Utils.getMapboxLogs();
+                        Analytics.report(new Exception("Mapbox map failed to load due to unknown reason: " + logs));
+                        Timber.e("Mapbox map failed to load due to unknown reason: %s", logs);
+
+                        //TODO: show generic error to user?
+                        break;
+                }
+            }
+        };
+
+        getMapView().addOnMapLoadListener(mapLoadListener);
     }
 
     @SuppressLint("MissingPermission")
@@ -283,27 +290,17 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
             return;
         }
 
-        locationEngineCompat = new AirMapLocationEngineCompat(this);
-        locationEngineCompat.setupLocationEngine();
-        locationEngineCompat.addLocationEngineListener(this);
-
-        Timber.e("Setting up location engine");
-
-        try {
-            // Only add the source if it doesn't already exist
-            if (getMapView().getMap().getSource("mapbox-location-source") == null) {
-                locationLayerPlugin = new LocationLayerPlugin(getMapView(), getMapView().getMap(), locationEngineCompat.getLocationEngine(), R.style.CustomLocationLayer);
-            }
-
-            if (requestLocationPermissionIfNeeded() && locationLayerPlugin != null) {
-                locationLayerPlugin.setLocationLayerEnabled(LocationLayerMode.TRACKING);
-            }
-        } catch (CannotAddLayerException | CannotAddSourceException e) {
-            Timber.e(e, "Unable to add location layer");
-            Analytics.report(e);
+        Timber.d("setupLocationEngine");
+        if (locationEngineCompat != null) {
+            Timber.w("already has location engine");
+            return;
         }
+        locationEngineCompat = new AirMapLocationEngineCompat(this);
+        locationEngineCompat.addLocationEngineListener(this);
+        locationEngineCompat.activate();
 
-        Timber.e("Last location: " + locationEngineCompat.getLastLocation());
+        locationLayerPlugin = new LocationLayerPlugin(getMapView(), getMapView().getMap(), locationEngineCompat, R.style.CustomLocationLayer);
+        locationLayerPlugin.setLocationLayerEnabled(LocationLayerMode.TRACKING);
 
         turnOnLocation();
     }
@@ -405,6 +402,6 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
     protected abstract AirMapMapView getMapView();
 
     public void setMapView(AirMapMapView mapView) {
-        mapView.addOnMapLoadListener(this);
+        setupMapLoadListener();
     }
 }
