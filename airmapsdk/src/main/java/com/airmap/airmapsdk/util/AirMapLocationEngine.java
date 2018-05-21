@@ -23,8 +23,6 @@ import timber.log.Timber;
 
 public class AirMapLocationEngine extends LocationEngine {
 
-    private static AirMapLocationEngine instance;
-
     private WeakReference<Context> context;
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationClient;
@@ -67,10 +65,7 @@ public class AirMapLocationEngine extends LocationEngine {
     }
 
     public static synchronized AirMapLocationEngine getLocationEngine(Context context) {
-        if (instance == null) {
-            instance = new AirMapLocationEngine(context.getApplicationContext());
-        }
-        return instance;
+        return new AirMapLocationEngine(context.getApplicationContext());
     }
 
     public void setLocationRequest(LocationRequest locationRequest) {

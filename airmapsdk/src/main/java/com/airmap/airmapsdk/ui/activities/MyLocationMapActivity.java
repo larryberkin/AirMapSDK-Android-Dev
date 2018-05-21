@@ -92,6 +92,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
 
         if (locationEngineCompat != null) {
             locationEngineCompat.removeLocationUpdates();
+            locationEngineCompat.deactivate();
         }
 
         if (getMapView() != null && mapLoadListener != null) {
@@ -187,6 +188,10 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
         // mapview not set yet
         if (getMapView() == null) {
             return;
+        }
+
+        if (mapLoadListener != null) {
+            getMapView().removeOnMapLoadListener(mapLoadListener);
         }
 
         mapLoadListener = new AirMapMapView.OnMapLoadListener() {
