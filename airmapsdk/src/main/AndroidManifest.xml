@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!--Required by MQTT library-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!--Required by MQTT library-->
 
+    <uses-feature android:name="android.hardware.location" android:required="true"/>
     <uses-feature android:name="android.hardware.location.network" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 

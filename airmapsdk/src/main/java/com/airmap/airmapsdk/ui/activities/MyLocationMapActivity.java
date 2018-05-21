@@ -158,6 +158,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
             if (locationEngineCompat.getLastLocation() != null) {
                 zoomTo(locationEngineCompat.getLastLocation(), force);
             } else {
+                locationEngineCompat.requestLocationUpdates();
                 locationEngineCompat.getLastKnownLocation();
                 turnOnLocation();
             }
@@ -284,10 +285,7 @@ public abstract class MyLocationMapActivity extends AppCompatActivity implements
 
         locationEngineCompat = new AirMapLocationEngineCompat(this);
         locationEngineCompat.setupLocationEngine();
-//        locationEngine = AirMapLocationEngine.getLocationEngine(this);
-//        locationEngine.setLocationRequest(locationRequest);
         locationEngineCompat.addLocationEngineListener(this);
-//        locationEngineCompat.activate();
 
         Timber.e("Setting up location engine");
 
