@@ -3,6 +3,7 @@ package com.airmap.airmapsdk.models;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import com.airmap.airmapsdk.Analytics;
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.util.AnnotationsFactory;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -61,6 +62,12 @@ public abstract class Container {
     }
 
     public final void zoomTo(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
+        for (LatLng latLng : getLatLngBoundsForZoom().toLatLngs()) {
+            if (Double.isNaN(latLng.getLatitude()) || Double.isNaN(latLng.getLongitude())) {
+                Analytics.report(new Exception("Latitude/Longitude must not be NaN"));
+                return;
+            }
+        }
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(getLatLngBoundsForZoom(), paddingLeft, paddingTop, paddingRight, paddingBottom), 200);
     }
 

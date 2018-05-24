@@ -168,95 +168,259 @@
   <string name="cardinal_direction_wnw">西北西</string>
   <!-- Abbreviation for West South West -->
   <string name="cardinal_direction_wsw">西南西</string>
+  <!-- Forgot password -->
   <string name="com_auth0_lock_action_forgot_password">パスワードを忘れた場合</string>
+  <!-- tos & privacy -->
   <string name="com_auth0_lock_sign_up_terms">サービス規約とプライバシーポリシーに同意する必要があります</string>
+  <!-- forgot password email sent -->
   <string name="com_auth0_lock_db_change_password_message_success">Eメールを送信しました、ご確認ください。</string>
+  <!-- User logged in -->
   <string name="com_auth0_lock_database_login_success_message">ログイン完了</string>
+  <!-- Login Switch -->
   <string name="com_auth0_lock_mode_log_in">ログイン</string>
+  <!-- Signup Switch -->
   <string name="com_auth0_lock_mode_sign_up">サインアップ</string>
+  <!-- Social separator -->
   <string name="com_auth0_lock_forms_separator">or</string>
+  <!-- User signed up -->
   <string name="com.auth0.lock.database.signup.success.message">サインアップ完了</string>
+  <!-- Cancel -->
   <string name="com.auth0.lock.database.tos.sheet.cancel">キャンセル</string>
+  <!-- Privacy -->
   <string name="com.auth0.lock.database.tos.sheet.privacy">プライバシーポリシー</string>
+  <!-- ToS -->
   <string name="com.auth0.lock.database.tos.sheet.title">サービス規約</string>
+  <!-- enter corporate credentials -->
   <string name="com.auth0.lock.enterprise.sso.message">法人のCredentialを入力してください</string>
+  <!-- enter corporate credentials of domain %@{email domain} -->
   <string name="com.auth0.lock.enterprise.sso.message_at">%1$s に法人のCredentialを入力してください</string>
+  <!-- SSO Header -->
   <string name="com.auth0.lock.enterprise.sso.title">シングルサインオンが有効</string>
+  <!-- user is blocked -->
   <string name="com.auth0.lock.error.authentication.blocked_user">ユーザはブロックされています</string>
+  <!-- Generic login error -->
   <string name="com.auth0.lock.error.authentication.fallback">ログインの処理中にエラーが発生しました</string>
+  <!-- invalid_user_password -->
   <string name="com_auth0_lock_db_login_error_invalid_credentials_message">メールアドレスまたはパスワードが違います</string>
+  <!-- a0.mfa_invalid_code -->
   <string name="com.auth0.lock.error.authentication.mfa_invalid_code">コードが間違っています</string>
+  <!-- No valid connection -->
   <string name="com.auth0.lock.error.authentication.no_connection">このユーザの接続確認ができませんでした</string>
+  <!-- password_change_required -->
   <string name="com.auth0.lock.error.authentication.password_change_required">パスワードが無効になっています。パスワードを変更してください。</string>
+  <!-- password_leaked -->
   <string name="com.auth0.lock.error.authentication.password_leaked">ログインがブロックされました。このパスワードは他のウェブサイトに流出している可能性があります。ブロックの解除方法をメールで送信しました。</string>
+  <!-- too_many_attempts -->
   <string name="com.auth0.lock.error.authentication.too_many_attempts">ログインに連続して失敗したためアカウントがブロックされました</string>
+  <!-- Generic error -->
   <string name="com_auth0_lock_unrecoverable_error_title">不明なエラーが発生しました\nテクニカルサポートに連絡してください</string>
+  <!-- Generic password error -->
   <string name="com_auth0_lock_db_message_change_password_error">パスワードの変更に失敗しました</string>
+  <!-- At least N characters -->
   <string name="com_auth0_lock_password_strength_chars_length">%d 文字以上が必要</string>
+  <!-- At least n groups -->
   <string name="com.auth0.lock.error.password.contain_at_least">次のうち %d 種類が必要</string>
+  <!-- Lowercase letters -->
   <string name="com_auth0_lock_password_strength_lowercase_letters">小文字（a-z）</string>
+  <!-- Must no be empty -->
   <string name="com.auth0.lock.error.password.non_empty">パスワード入力が必要</string>
+  <!-- No more than %@{count} identical characters in a row (e.g., \"%@{identical sample}\" not allowed) -->
   <string name="com_auth0_lock_password_strength_identical_chars">%1$d 文字以上同じ文字は不可（例：%2$s ）</string>
+  <!-- Numbers -->
   <string name="com_auth0_lock_password_strength_numbers">数字（0-9）</string>
+  <!-- N groups -->
   <string name="com_auth0_lock_password_strength_title_must_have">含むべき文字：</string>
+  <!-- Special Characters -->
   <string name="com_auth0_lock_password_strength_special_chars">記号（!@#$%^&amp;*）</string>
+  <!-- Uppercase letters -->
   <string name="com_auth0_lock_password_strength_uppercase_letters">大文字（A-Z）</string>
+  <!-- Passwordless link invalid. -->
   <string name="com.auth0.lock.error.passwordless.invalid_link">リンクに問題があります、他のものを試してください。</string>
+  <!-- Passwordless sign ups disabled. -->
   <string name="com.auth0.lock.error.passwordless.signup_disabled">このアカウントでのサインアップはブロックされています。管理者に問い合わせてください。</string>
+  <!-- Recoverable error button -->
   <string name="com.auth0.lock.error.recoverable.button">リトライ</string>
+  <!-- Recoverable error message -->
   <string name="com.auth0.lock.error.recoverable.message">インターネット接続を確認してください</string>
+  <!-- Recoverable error title -->
   <string name="com.auth0.lock.error.recoverable.title">ログインボックスを読み込めませんでした</string>
+  <!-- Generic sign up error -->
   <string name="com_auth0_lock_db_sign_up_error_message">サインアップ中にエラーが発生しました</string>
+  <!-- invalid_password -->
   <string name="com_auth0_lock_input_error_password">パスワードが不適切です。上記ルールをご確認ください。</string>
+  <!-- password_dictionary_error -->
   <string name="com.auth0.lock.error.signup.password_dictionary_error">推測しやすいパスワードです</string>
+  <!-- password_history -->
   <string name="com_auth0_lock_db_signup_password_already_used_error_message">前のパスワードと同じものは使えません</string>
+  <!-- password_no_user_info_error -->
   <string name="com.auth0.lock.error.signup.password_no_user_info_error">パスワードにユーザー情報が含まれています。</string>
+  <!-- password_strength_error -->
   <string name="com_auth0_lock_db_signup_password_not_strong_error_message">パスワードが弱すぎます。</string>
+  <!-- user_exists -->
   <string name="com_auth0_lock_db_signup_user_already_exists_error_message">このユーザーはすでに存在します。ログイン画面からログインしてください。</string>
+  <!-- Unrecoverable error button -->
   <string name="com.auth0.lock.error.unrecoverable.button">問い合わせ</string>
+  <!-- Default error -->
   <string name="com.auth0.lock.error.unrecoverable.default">不明なエラーが発生しました。\nテクニカルサポートに連絡してください。</string>
+  <!-- Invalid client or domain -->
   <string name="com.auth0.lock.error.unrecoverable.invalid_credentials">Auth0 Credential、Client ID、ドメイン、のいずれかが不正です。</string>
+  <!-- Your options configuration failed with: %@{error} -->
   <string name="com.auth0.lock.error.unrecoverable.invalid_options">オプション設定に失敗しました ：%1$s</string>
+  <!-- Unrecoverable error message -->
   <string name="com.auth0.lock.error.unrecoverable.message">ログインボックス設定の解決中に予期せぬエラーが発生しました</string>
+  <!-- Unrecoverable error message -->
   <string name="com.auth0.lock.error.unrecoverable.message.no_action">ログインボックス設定の解決中に予期せぬエラーが発生しました。サポートに連絡してください。</string>
+  <!-- No connections -->
   <string name="com.auth0.lock.error.unrecoverable.no_connections">このクライアントで有効な認証方式がありません。クライアントのセットアップを確認してください。</string>
+  <!-- Unrecoverable error title -->
   <string name="com.auth0.lock.error.unrecoverable.title">リクエストを解決できません</string>
+  <!-- Forgot Password message -->
   <string name="com_auth0_lock_forgot_message">メールアドレスと新しいパスワードを入力してください。確認のためEメールを送信します。</string>
+  <!-- Forgot Password title -->
   <string name="com_auth0_lock_title_change_password">パスワードをリセット</string>
+  <!-- Header Title -->
   <string name="com.auth0.lock.header.default_title">Auth0</string>
+  <!-- invalid email -->
   <string name="com_auth0_lock_input_error_email">有効なメールアドレスをご利用ください</string>
+  <!-- Email placeholder -->
   <string name="com_auth0_lock_hint_email">メールアドレス</string>
+  <!-- Username or Email placeholder -->
   <string name="com.auth0.lock.input.email_username.placeholder">ユーザー名／メールアドレス</string>
+  <!-- empty input -->
   <string name="com.auth0.lock.input.empty.error">空にはできません</string>
+  <!-- generic input error -->
   <string name="com.auth0.lock.input.generic.error">無効です</string>
+  <!-- invalid otp -->
   <string name="com.auth0.lock.input.otp.error">有効な数字でなければいけません</string>
+  <!-- OTP placeholder -->
   <string name="com.auth0.lock.input.otp.placeholder">コード</string>
+  <!-- Password placeholder -->
   <string name="com_auth0_lock_hint_password">パスワード</string>
+  <!-- invalid phone -->
   <string name="com.auth0.lock.input.phone.error">有効な電話番号を入力してください</string>
+  <!-- Phone placeholder -->
   <string name="com.auth0.lock.input.phone.placeholder">電話番号</string>
+  <!-- policy violation -->
   <string name="com.auth0.lock.input.policy.error">パスワードがポリシーを満たしていません</string>
-  <string name="com.auth0.lock.input.username.error">%1$d から %2$d の英数字と _ (アンダーバー)のみ含めることができます</string>
+  <!-- invalid username -->
+  <string name="com.auth0.lock.input.username.error">%d から %d の英数字と _ (アンダーバー)のみ含めることができます</string>
+  <!-- Username placeholder -->
   <string name="com.auth0.lock.input.username.placeholder">ユーザー名</string>
+  <!-- Multifactor message -->
   <string name="com.auth0.lock.multifactor.message">あなたのアプリで生成した確認コードを入力してください</string>
+  <!-- Multifactor title -->
   <string name="com.auth0.lock.multifactor.title">2段階認証</string>
+  <!-- Country tableview navigation header -->
   <string name="com.auth0.lock.passwordless.sms.country.header">国を選択してください</string>
+  <!-- CountryCodes TableView searchbar placeholder -->
   <string name="com.auth0.lock.passwordless.sms.country.search">検索</string>
+  <!-- Amazon -->
   <string name="com.auth0.lock.strategy.localized.amazon">AMAZON</string>
+  <!-- Aol -->
   <string name="com.auth0.lock.strategy.localized.aol">AOL</string>
+  <!-- Baidu -->
+  <string name="com.auth0.lock.strategy.localized.baidu">百度</string>
+  <!-- Bitbucket -->
+  <string name="com.auth0.lock.strategy.localized.bitbucket">BITBUCKET</string>
+  <!-- Dropbox -->
+  <string name="com.auth0.lock.strategy.localized.dropbox">DROPBOX</string>
+  <!-- Dwolla -->
+  <string name="com.auth0.lock.strategy.localized.dwolla">DWOLLA</string>
+  <!-- Ebay -->
+  <string name="com.auth0.lock.strategy.localized.ebay">EBAY</string>
+  <!-- Evernote -->
+  <string name="com.auth0.lock.strategy.localized.evernote">EVERNOTE</string>
+  <!-- EvernoteSandbox -->
+  <string name="com.auth0.lock.strategy.localized.evernote_sandbox">EVERNOTE (SANDBOX)</string>
+  <!-- Exact -->
+  <string name="com.auth0.lock.strategy.localized.exact">EXACT</string>
+  <!-- Facebook -->
+  <string name="com.auth0.lock.strategy.localized.facebook">FACEBOOK</string>
+  <!-- Fitbit -->
+  <string name="com.auth0.lock.strategy.localized.fitbit">FITBIT</string>
+  <!-- Github -->
+  <string name="com.auth0.lock.strategy.localized.github">GITHUB</string>
+  <!-- Google -->
+  <string name="com.auth0.lock.strategy.localized.google">GOOGLE</string>
+  <!-- Instagram -->
+  <string name="com.auth0.lock.strategy.localized.instagram">INSTAGRAM</string>
+  <!-- Linkedin -->
+  <string name="com.auth0.lock.strategy.localized.linkedin">LINKEDIN</string>
+  <!-- Microsoft -->
+  <string name="com.auth0.lock.strategy.localized.microsoft">MICROSOFT ACCOUNT</string>
+  <!-- Miicard -->
+  <string name="com.auth0.lock.strategy.localized.miicard">MIICARD</string>
+  <!-- Paypal -->
+  <string name="com.auth0.lock.strategy.localized.paypal">PAYPAL</string>
+  <!-- PaypalSandbox -->
+  <string name="com.auth0.lock.strategy.localized.paypal_sandbox">PAYPAL (SANDBOX)</string>
+  <!-- PlanningCenter -->
+  <string name="com.auth0.lock.strategy.localized.planning_center">PLANNING CENTER</string>
+  <!-- RenRen -->
+  <string name="com.auth0.lock.strategy.localized.renren">人人</string>
+  <!-- Salesforce -->
+  <string name="com.auth0.lock.strategy.localized.salesforce">SALESFORCE</string>
+  <!-- SalesforceCommunity -->
+  <string name="com.auth0.lock.strategy.localized.salesforce_community">SALESFORCE COMMUNITY</string>
+  <!-- SalesforceSandbox -->
+  <string name="com.auth0.lock.strategy.localized.salesforce_sandbox">SALESFORCE (SANDBOX)</string>
+  <!-- Shopify -->
+  <string name="com.auth0.lock.strategy.localized.shopify">SHOPIFY</string>
+  <!-- Soundcloud -->
+  <string name="com.auth0.lock.strategy.localized.soundcloud">SOUNDCLOUD</string>
+  <!-- TheCity -->
+  <string name="com.auth0.lock.strategy.localized.the_city">THE CITY</string>
+  <!-- TheCitySandbox -->
+  <string name="com.auth0.lock.strategy.localized.the_city_sandbox">THE CITY (SANDBOX)</string>
+  <!-- ThirtySevenSignals -->
+  <string name="com.auth0.lock.strategy.localized.thirty_seven_signals">37 SIGNALS</string>
+  <!-- Twitter -->
+  <string name="com.auth0.lock.strategy.localized.twitter">TWITTER</string>
+  <!-- Vkontakte -->
+  <string name="com.auth0.lock.strategy.localized.vkontakte">VKONTAKTE</string>
+  <!-- Weibo -->
+  <string name="com.auth0.lock.strategy.localized.weibo">WEIBO</string>
+  <!-- Wordpress -->
+  <string name="com.auth0.lock.strategy.localized.wordpress">WORDPRESS</string>
+  <!-- Yahoo -->
+  <string name="com.auth0.lock.strategy.localized.yahoo">YAHOO!</string>
+  <!-- Yammer -->
+  <string name="com.auth0.lock.strategy.localized.yammer">YAMMER</string>
+  <!-- Yandex -->
+  <string name="com.auth0.lock.strategy.localized.yandex">YANDEX</string>
+  <!-- Log in with %@{strategy} -->
   <string name="com_auth0_lock_social_log_in">%1$s でログイン</string>
+  <!-- Sign up with %@{strategy} -->
   <string name="com_auth0_lock_social_sign_up">%1$s でサインアップ</string>
+  <!-- Login Button title -->
   <string name="com_auth0_lock_action_log_in">ログイン</string>
+  <!-- Send 2fa code -->
   <string name="com.auth0.lock.submit.send_code.title">送信</string>
+  <!-- Send Email button title -->
   <string name="com_auth0_lock_action_send_email">送信</string>
+  <!-- Signup Button title -->
   <string name="com_auth0_lock_action_sign_up">サインアップ</string>
+  <!-- Passwordless code reminder action -->
   <string name="com.auth0.passwordless.code.reminder">コードを取得していますか？</string>
+  <!-- Passwordless code sent by email to %@{identifier} -->
   <string name="com.auth0.passwordless.email.code.sent">%1$s にコードを送信しました</string>
+  <!-- Passwordless email title -->
   <string name="com.auth0.passwordless.email.title">メールアドレスを入力してください</string>
+  <!-- Passwordless email title with social -->
   <string name="com.auth0.passwordless.email.title.social">または、メールアドレスを入力してください。</string>
+  <!-- Passwordless link reminder action -->
   <string name="com.auth0.passwordless.link.reminder">リンクを受信していますか？</string>
+  <!-- Passwordless link sent to %@{identifier} -->
   <string name="com.auth0.passwordless.link.sent">サインインするためのリンクを %1$s へ送りました</string>
+  <!-- Passwordless code sent by sms to %@{identifier} -->
   <string name="com.auth0.passwordless.sms.code.sent">%1$s へ確認コードをSMSで送信しました</string>
+  <!-- CountryCodes TableViewCell detail %@{phoneCode} -->
+  <string name="com.auth0.passwordless.sms.country.cell.detail">%1$s</string>
+  <!-- CountryCodes TableViewCell label %@{localizedName} -->
+  <string name="com.auth0.passwordless.sms.country.cell.label">%1$s</string>
+  <!-- Passwordless sms title -->
   <string name="com.auth0.passwordless.sms.title">サインインに使用する電話番号を入力してください</string>
+  <!-- Passwordless sms title with social -->
   <string name="com.auth0.passwordless.sms.title.social">または、サインインに使用する電話番号を入力してください。</string>
   <!-- Class = "UILabel"; text = "Make & Model"; ObjectID = "XDN-d5-eoX"; Note = "CREATE_AIRCRAFT_MAKE_AND_MODEL|Label for the row label that displays the Make and Model of an aircraft"; AirMapUIObjectId = "XDN-d5-eoX.text"; -->
   <string name="create_aircraft_make_and_model">型とモデル</string>
@@ -266,6 +430,10 @@
   <string name="create_aircraft_save_button">保存</string>
   <!-- Class = "UINavigationItem"; title = "Create Aircraft"; ObjectID = "Z9F-I6-niw"; Note = "CREATE_AIRCRAFT_TITLE|Title for the view where you can create a new aircraft"; AirMapUIObjectId = "Z9F-I6-niw.title"; -->
   <string name="create_aircraft">ドローンを作成</string>
+  <!-- Request cancelled error -->
+  <string name="error_cancelled">完了前にリクエストがキャンセルされました</string>
+  <!-- A conflict exists with the attempted request -->
+  <string name="error_conflict">コンフリクトが存在します</string>
   <!-- A generic server error message with an associated error code -->
   <string name="error_generic_format">サーバーエラーが発生しました。(%s)</string>
   <!-- Response serialization failure error -->
@@ -372,7 +540,10 @@
   <!-- No comment provided by engineer. -->
   <string name="gcdasyncudpsocketsendtimeouterror">送信がタイムアウト</string>
   <!-- Invalid amount of jwt parts -->
+  <!-- Invalid amount of jwt parts -->
   <!-- Invalid JWT token base64Url value -->
+  <!-- Invalid JWT token base64Url value -->
+  <!-- Invalid JSON value inside base64Url -->
   <!-- Invalid JSON value inside base64Url -->
   <!-- The request with the authority will be reviewed manually sometime after the flight plan is submitted -->
   <string name="manual_authorization">申請後、承認をお待ちください。</string>
