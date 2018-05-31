@@ -35,13 +35,13 @@ public class AirMapLocationEngine extends LocationEngine {
             @Override
             public void onLocationAvailability(LocationAvailability locationAvailability) {
                 super.onLocationAvailability(locationAvailability);
-                Timber.e("onLocationAvailability: " + locationAvailability);
+                Timber.d("onLocationAvailability: " + locationAvailability);
             }
 
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                Timber.e("onLocationResult: " + locationResult);
+                Timber.d("onLocationResult: " + locationResult);
 
                 if (locationResult != null && !locationResult.getLocations().isEmpty()) {
                     Location location = locationResult.getLocations().get(0);
@@ -70,13 +70,13 @@ public class AirMapLocationEngine extends LocationEngine {
 
     @Override
     public void activate() {
-        Timber.e("activate");
+        Timber.d("activate");
         requestLocationUpdates();
     }
 
     @Override
     public void deactivate() {
-        Timber.e("deactivate");
+        Timber.d("deactivate");
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
@@ -90,7 +90,7 @@ public class AirMapLocationEngine extends LocationEngine {
         flushTask.addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
-                Timber.e("flush successful: " + task.isSuccessful());
+                Timber.d("flush successful: " + task.isSuccessful());
             }
         });
     }
@@ -100,7 +100,7 @@ public class AirMapLocationEngine extends LocationEngine {
                 .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        Timber.e("getLastLocationTask success: " + location);
+                        Timber.d("getLastLocationTask success: " + location);
                         if (location != null) {
                             for (LocationEngineListener listener : locationListeners) {
                                 listener.onLocationChanged(location);
@@ -111,7 +111,7 @@ public class AirMapLocationEngine extends LocationEngine {
 
         if (locationTask.isComplete()) {
             if (locationTask.getResult() != null) {
-                Timber.e("already has result: " + locationTask.getResult());
+                Timber.d("already has result: " + locationTask.getResult());
                 for (LocationEngineListener listener : locationListeners) {
                     listener.onLocationChanged(locationTask.getResult());
                 }
@@ -133,13 +133,13 @@ public class AirMapLocationEngine extends LocationEngine {
 
     @Override
     public void requestLocationUpdates() {
-        Timber.e("locationRequestLocationUpdates w/ priority: " + locationRequest.getPriority());
+        Timber.d("locationRequestLocationUpdates w/ priority: " + locationRequest.getPriority());
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
     }
 
     @Override
     public void removeLocationUpdates() {
-        Timber.e("removeLocationUpdates");
+        Timber.d("removeLocationUpdates");
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 

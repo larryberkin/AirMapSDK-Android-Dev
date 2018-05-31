@@ -52,7 +52,8 @@ public class MapStyleController implements MapView.OnMapChangedListener {
     private MappingService.AirMapMapTheme currentTheme;
     private MapStyle mapStyle;
     private Callback callback;
-    private LineLayer highlightLayer;
+
+    private String highlightLayerId;
 
     public MapStyleController(AirMapMapView map, @Nullable MappingService.AirMapMapTheme mapTheme, Callback callback) {
         this.map = map;
@@ -153,8 +154,8 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         } else {
             String urlTemplates = AirMap.getRulesetTileUrlTemplate(sourceId, layers);
             TileSet tileSet = new TileSet("2.2.0", urlTemplates);
-            tileSet.setMaxZoom(15f);
-            tileSet.setMinZoom(7f);
+            tileSet.setMaxZoom(12f);
+            tileSet.setMinZoom(8f);
             VectorSource tileSource = new VectorSource(sourceId, tileSet);
             map.getMap().addSource(tileSource);
         }
@@ -260,8 +261,8 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
         // remove highlight
         map.getMap().removeLayer("airmap|highlight|line|" + sourceId);
-        if (highlightLayer != null && highlightLayer.getId().equals("airmap|highlight|line|" + sourceId)) {
-            highlightLayer = null;
+        if (highlightLayerId != null && highlightLayerId.equals("airmap|highlight|line|" + sourceId)) {
+            highlightLayerId = null;
         }
 
         map.getMap().removeSource(sourceId);
@@ -269,14 +270,12 @@ public class MapStyleController implements MapView.OnMapChangedListener {
 
     public void highlight(@NonNull Feature feature, AirMapAdvisory advisory) {
         // remove old highlight
-        if (highlightLayer != null) {
-            Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
-            highlightLayer.setFilter(filter);
-        }
+        unhighlight();
 
         // add new highlight
         String sourceId = feature.getStringProperty("ruleset_id");
-        highlightLayer = map.getMap().getLayerAs("airmap|highlight|line|" + sourceId);
+        highlightLayerId = "airmap|highlight|line|" + sourceId;
+        LineLayer highlightLayer = map.getMap().getLayerAs(highlightLayerId);
         highlightLayer.setSourceLayer(sourceId + "_" + advisory.getType().toString());
 
         // feature's airspace_id can be an int or string (tile server bug), so match on either
@@ -295,14 +294,12 @@ public class MapStyleController implements MapView.OnMapChangedListener {
         String type = feature.getStringProperty("category");
 
         // remove old highlight
-        if (highlightLayer != null) {
-            Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
-            highlightLayer.setFilter(filter);
-        }
+        unhighlight();
 
         // add new highlight
         String sourceId = feature.getStringProperty("ruleset_id");
-        highlightLayer = map.getMap().getLayerAs("airmap|highlight|line|" + sourceId);
+        highlightLayerId = "airmap|highlight|line|" + sourceId;
+        LineLayer highlightLayer = map.getMap().getLayerAs(highlightLayerId);
         highlightLayer.setSourceLayer(sourceId + "_" + type);
 
         // feature's airspace_id can be an int or string (tile server bug), so match on either
@@ -317,9 +314,22 @@ public class MapStyleController implements MapView.OnMapChangedListener {
     }
 
     public void unhighlight() {
-        if (highlightLayer != null) {
-            Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
-            highlightLayer.setFilter(filter);
+        if (highlightLayerId != null) {
+            try {
+                LineLayer oldHighlightLayer = map.getMap().getLayerAs(highlightLayerId);
+                if (oldHighlightLayer != null) {
+                    Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+                    oldHighlightLayer.setFilter(filter);
+                }
+            } catch (RuntimeException e) {
+                for (Layer l : map.getMap().getLayers()) {
+                    if (l instanceof LineLayer) {
+                        Filter.Statement filter = Filter.all(Filter.eq("id", "x"));
+                        ((LineLayer) l).setFilter(filter);
+                    }
+                }
+                Analytics.report(e);
+            }
         }
     }
 

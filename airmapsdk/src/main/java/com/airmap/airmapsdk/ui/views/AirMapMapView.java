@@ -4,18 +4,23 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.airmap.airmapsdk.AirMapException;
 import com.airmap.airmapsdk.Analytics;
 import com.airmap.airmapsdk.R;
 import com.airmap.airmapsdk.controllers.MapDataController;
 import com.airmap.airmapsdk.controllers.MapStyleController;
+import com.airmap.airmapsdk.models.Container;
 import com.airmap.airmapsdk.models.rules.AirMapRuleset;
 import com.airmap.airmapsdk.models.status.AirMapAdvisory;
 import com.airmap.airmapsdk.models.status.AirMapAirspaceStatus;
@@ -45,6 +50,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
 
     private MapStyleController mapStyleController;
     private MapDataController mapDataController;
+    private AdvisorySelector advisorySelector;
 
     // optional callbacks
     private List<OnMapLoadListener> mapLoadListeners;
@@ -105,6 +111,8 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
         mapDataChangeListeners = new ArrayList<>();
         advisoryClickListeners = new ArrayList<>();
 
+        advisorySelector = new AdvisorySelector();
+
         // default data controller
         mapDataController = new MapDataController(this, configuration);
 
@@ -150,7 +158,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
      */
     public void rotateMapTheme() {
         // check if map is ready yet
-        if (map == null) {
+        if (map == null || advisorySelector.isBusy()) {
             return;
         }
         mapStyleController.rotateMapTheme();
@@ -161,7 +169,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
      */
     public void setMapTheme(MappingService.AirMapMapTheme theme) {
         // check if map is ready yet
-        if (map == null) {
+        if (map == null || advisorySelector.isBusy()) {
             return;
         }
         mapStyleController.updateMapTheme(theme);
@@ -250,159 +258,34 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
 
     @Override
     public void onMapClick(@NonNull LatLng point) {
-        if (advisoryClickListeners == null || advisoryClickListeners.isEmpty() || map.getCameraPosition().zoom < 11) {
+        if (advisoryClickListeners == null || advisoryClickListeners.isEmpty() || map.getCameraPosition().zoom < 11 || advisorySelector.isBusy()) {
             return;
         }
 
-        PointF clickPoint = map.getProjection().toScreenLocation(point);
-        int slop = Utils.dpToPixels(getContext(), 10).intValue();
-        RectF clickRect = new RectF(clickPoint.x - slop, clickPoint.y - slop, clickPoint.x + slop, clickPoint.y + slop);
-        Filter.Statement filter = Filter.has("id");
-
-        final List<Feature> selectedFeatures = map.queryRenderedFeatures(clickRect, filter);
-        if (selectedFeatures.isEmpty()) {
-            return;
-        }
-
-        List<AirMapAdvisory> allAdvisories = mapDataController.getCurrentAdvisories();
-
-        Feature featureClicked = null;
-        AirMapAdvisory advisoryClicked = null;
-        Set<AirMapAdvisory> filteredAdvisories = new HashSet<>();
-
-        for (Feature feature : selectedFeatures) {
-            if (allAdvisories == null) {
-                break;
-            }
-
-            for (AirMapAdvisory advisory : allAdvisories) {
-                if (advisory.getId().equals(feature.getStringProperty("id"))) {
-                    // set as the clicked advisory based on size/importance
-                    if (advisoryClicked == null || hasHigherPriority(advisory, advisoryClicked)) {
-                        featureClicked = feature;
-                        advisoryClicked = advisory;
-
+        Timber.e("onMapClick");
+        advisorySelector.selectAdvisoriesAt(point, this, new AdvisorySelector.Callback() {
+            @Override
+            public void onAdvisorySelected(Feature featureClicked, AirMapAdvisory advisoryClicked, Set<AirMapAdvisory> advisoriesSelected) {
+                if (featureClicked != null) {
+                    for (AirMapMapView.OnAdvisoryClickListener advisoryClickListener : advisoryClickListeners) {
+                        advisoryClickListener.onAdvisoryClicked(advisoryClicked, new ArrayList<>(advisoriesSelected));
                     }
-                    filteredAdvisories.add(advisory);
+                    // draw yellow outline & zoom
+                    mapStyleController.highlight(featureClicked, advisoryClicked);
+                    zoomToFeatureIfNecessary(featureClicked);
                 }
+                Timber.e("onAdvisorySelected");
             }
-        }
-
-        // if feature has matching advisory
-        if (featureClicked != null) {
-            // draw yellow outline & zoom
-            mapStyleController.highlight(featureClicked, advisoryClicked);
-            zoomToFeatureIfNecessary(featureClicked);
-
-            for (AirMapMapView.OnAdvisoryClickListener advisoryClickListener : advisoryClickListeners) {
-                advisoryClickListener.onAdvisoryClicked(advisoryClicked, new ArrayList<>(filteredAdvisories));
-            }
-
-        // if feature doesn't have matching advisory, wait
-        } else {
-            // highlight the feature
-            for (Feature feature : selectedFeatures) {
-                // set as the clicked advisory based on size/importance
-                if (featureClicked == null || hasHigherPriority(feature, featureClicked)) {
-                    featureClicked = feature;
-                }
-            }
-            mapStyleController.highlight(featureClicked);
-
-            Timber.w("Feature clicked doesn't have matching advisory yet");
-
-            // if advisory is missing, show loading until advisories loaded
-            for (AirMapMapView.OnAdvisoryClickListener advisoryClickListener : advisoryClickListeners) {
-                advisoryClickListener.onAdvisoryClicked(null, null);
-            }
-
-            // callback for when advisories are loaded
-            addOnMapDataChangedListener(new OnMapDataChangeListener() {
-                int count = 0;
-                @Override
-                public void onRulesetsChanged(List<AirMapRuleset> availableRulesets, List<AirMapRuleset> selectedRulesets) {}
-
-                @Override
-                public void onAdvisoryStatusChanged(AirMapAirspaceStatus status) {
-                    Feature featureClicked = null;
-                    AirMapAdvisory advisoryClicked = null;
-                    Set<AirMapAdvisory> filteredAdvisories = new HashSet<>();
-
-                    for (Feature feature : selectedFeatures) {
-                        if (status == null || status.getAdvisories() == null || status.getAdvisories().isEmpty()) {
-                            break;
-                        }
-
-                        for (AirMapAdvisory advisory : status.getAdvisories()) {
-                            if (advisory.getId().equals(feature.getStringProperty("id"))) {
-                                // set as the clicked advisory based on size/importance
-                                if (advisoryClicked == null || hasHigherPriority(advisory, advisoryClicked)) {
-                                    featureClicked = feature;
-                                    advisoryClicked = advisory;
-                                }
-
-                                filteredAdvisories.add(advisory);
-                            }
-                        }
-                    }
-
-                    if (featureClicked != null) {
-                        Timber.w("Matching advisory found for feature");
-                        mapStyleController.highlight(featureClicked, advisoryClicked);
-                        zoomToFeatureIfNecessary(featureClicked);
-
-                        for (AirMapMapView.OnAdvisoryClickListener advisoryClickListener : advisoryClickListeners) {
-                            advisoryClickListener.onAdvisoryClicked(advisoryClicked, new ArrayList<>(filteredAdvisories));
-                        }
-
-                        removeOnMapDataChangedListener(this);
-                    } else {
-                        if (count > 3) {
-                            removeOnMapDataChangedListener(this);
-                        }
-                    }
-
-                    count++;
-                }
-
-                @Override
-                public void onAdvisoryStatusLoading() {}
-            });
-        }
+        });
     }
 
-    private boolean hasHigherPriority(AirMapAdvisory advisory, AirMapAdvisory selectedAdvisory) {
-        switch (selectedAdvisory.getType()) {
-            case Emergencies:
-            case School:
-            case Fires:
-            case Prison:
-            case Wildfires:
-            case PowerPlant:
-                return false;
-            default:
-                return true;
-        }
-    }
-
-    private boolean hasHigherPriority(Feature feature, Feature selectedFeature) {
-        String type = selectedFeature.getStringProperty("category");
-        switch (type) {
-            case "emergency":
-            case "school":
-            case "fire":
-            case "prison":
-            case "wildfire":
-            case "power_plant":
-                return false;
-            default:
-                return true;
-        }
+    List<AirMapAdvisory> getCurrentAdvisories() {
+        return mapDataController.getCurrentAdvisories();
     }
 
     private void zoomToFeatureIfNecessary(Feature featureClicked) {
         try {
-            LatLngBounds cameraBounds = map.getProjection().getVisibleRegion().latLngBounds;
+            LatLngBounds cameraBounds = getMap().getProjection().getVisibleRegion().latLngBounds;
             LatLngBounds.Builder advisoryLatLngsBuilder = new LatLngBounds.Builder();
             boolean zoom = false;
 
@@ -428,7 +311,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
 
             if (zoom) {
                 int padding = Utils.dpToPixels(getContext(), 72).intValue();
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(advisoryLatLngsBuilder.build(), padding));
+                getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(advisoryLatLngsBuilder.build(), padding));
             }
         } catch (ClassCastException e) {
             Timber.e(e,"Unable to get feature geometry");
@@ -439,7 +322,7 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
     public void highlight(AirMapAdvisory advisory) {
         RectF mapRectF = new RectF(getLeft(), getTop(), getRight(), getBottom());
         Filter.Statement filter = Filter.has("id");
-        List<Feature> selectedFeatures = map.queryRenderedFeatures(mapRectF, filter);
+        List<Feature> selectedFeatures = getMap().queryRenderedFeatures(mapRectF, filter);
 
         for (Feature feature : selectedFeatures) {
             if (advisory.getId().equals(feature.getStringProperty("id"))) {
@@ -496,7 +379,12 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
         }
     }
 
+    @UiThread
     public MapboxMap getMap() {
+        if (Looper.getMainLooper() != Looper.myLooper()) {
+            Timber.e("*** AirMapMapView accessed from a thread other than the UI-thread:" + Thread.currentThread());
+            Analytics.report(new Exception("AirMapMapView accessed from a thread other than the UI-thread: " + Thread.currentThread()));
+        }
         return map;
     }
 
@@ -616,6 +504,78 @@ public class AirMapMapView extends MapView implements MapView.OnMapChangedListen
             super(Type.MANUAL);
 
             this.selectedRulesets = selectedRulesets;
+        }
+    }
+
+    public static abstract class DragListener implements View.OnTouchListener {
+
+        private boolean isDragging;
+        private LatLng originLatLng;
+
+        public abstract void onDrag(PointF toPointF, LatLng toLatLng, LatLng fromLatLng);
+
+        public abstract void onFinishedDragging(PointF point, LatLng toLatLng, LatLng fromLatLng);
+
+        @Override
+        public final boolean onTouch(View v, MotionEvent event) {
+            if (event != null) {
+                if (event.getPointerCount() > 1) {
+                    //Don't drag if there are multiple fingers on screen
+                    return false;
+                }
+                float screenDensity = v.getContext().getResources().getDisplayMetrics().density;
+                PointF tapPoint = new PointF(event.getX(), event.getY());
+                float toleranceSides = 8 * screenDensity;
+                float toleranceTopBottom = 8 * screenDensity;
+                float averageIconWidth = 32 * screenDensity;
+                float averageIconHeight = 32 * screenDensity;
+                RectF tapRect = new RectF(tapPoint.x - averageIconWidth / 2 - toleranceSides,
+                        tapPoint.y - averageIconHeight / 2 - toleranceTopBottom,
+                        tapPoint.x + averageIconWidth / 2 + toleranceSides,
+                        tapPoint.y + averageIconHeight / 2 + toleranceTopBottom);
+
+                AirMapMapView mapView = (AirMapMapView) v;
+                MapboxMap map = mapView.getMap();
+
+                List<Feature> features = map.queryRenderedFeatures(tapRect, Container.POINT_LAYER, Container.MIDPOINT_LAYER);
+                if (!features.isEmpty() || isDragging) {
+                    boolean doneDragging = event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL;
+                    map.getUiSettings().setScrollGesturesEnabled(doneDragging);
+                    map.getUiSettings().setZoomGesturesEnabled(doneDragging);
+
+                    if (doneDragging) {
+                        // only finish drag if started with down on marker
+                        if (isDragging) {
+                            LatLng latLng = map.getProjection().fromScreenLocation(tapPoint);
+                            onFinishedDragging(tapPoint, latLng, originLatLng);
+                            originLatLng = null;
+                            isDragging = false;
+                        } else {
+                            map.getUiSettings().setScrollGesturesEnabled(true);
+                            map.getUiSettings().setZoomGesturesEnabled(true);
+                            return false;
+                        }
+                    } else {
+                        // starts with down press on marker
+                        LatLng latLng = map.getProjection().fromScreenLocation(tapPoint);
+                        if (event.getAction() == MotionEvent.ACTION_DOWN && originLatLng == null) {
+                            originLatLng = latLng;
+                            isDragging = true;
+                        }
+
+                        // only drag if started with down on marker
+                        if (isDragging) {
+                            onDrag(tapPoint, latLng, originLatLng);
+                        } else {
+                            map.getUiSettings().setScrollGesturesEnabled(true);
+                            map.getUiSettings().setZoomGesturesEnabled(true);
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

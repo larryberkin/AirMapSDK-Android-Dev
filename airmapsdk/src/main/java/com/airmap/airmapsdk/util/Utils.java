@@ -481,7 +481,8 @@ public class Utils {
                     }
                 }
             }
-            return builder.substring(0, Math.min(1000, builder.length() - 2));
+            
+            return builder.length() > 2 ? builder.substring(0, Math.min(1000, builder.length() - 2)) : "";
         } catch (IOException e) {
             Timber.e(e, "getMapboxLogs failed");
             return "";

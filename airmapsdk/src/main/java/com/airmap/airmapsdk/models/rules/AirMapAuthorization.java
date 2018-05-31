@@ -1,5 +1,6 @@
 package com.airmap.airmapsdk.models.rules;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.airmap.airmapsdk.models.AirMapBaseModel;
@@ -41,6 +42,7 @@ public class AirMapAuthorization implements AirMapBaseModel, Serializable{
     }
 
     private Status status;
+    @Nullable
     private AirMapAuthority authority;
     private String description;
     private String message;
@@ -68,6 +70,7 @@ public class AirMapAuthorization implements AirMapBaseModel, Serializable{
         this.status = status;
     }
 
+    @Nullable
     public AirMapAuthority getAuthority() {
         return authority;
     }

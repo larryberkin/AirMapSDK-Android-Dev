@@ -36,6 +36,11 @@
   <string name="error_getting_permit">許可証取得に失敗しました</string>
   <string name="error_getting_profile">プロフィール取得に失敗しました</string>
   <string name="error_getting_wallet">許可証取得に失敗しました</string>
+  <string name="error_loading_map_button">日時を更新</string>
+  <string name="error_loading_map_message">地図を正しく読み込むためには日時が正しく設定されていることが必要です。端末の日時が自動に設定されていることを確認してください。</string>
+  <string name="error_loading_map_network_button">ネットワークを確認してください</string>
+  <string name="error_loading_map_network_message">地図を正しく読み込むためにはインターネットへの接続が必要です。端末がネットワークに接続していることを確認してください。</string>
+  <string name="error_loading_map_title">地図の読み込みに失敗しました</string>
   <string name="error_models_for_mfrs">選択されたドローンメーカーのモデル取得に失敗しました</string>
   <string name="error_resending_email">確認メールの再送に失敗しました</string>
   <string name="error_updating_profile">プロフィール更新に失敗しました</string>
@@ -71,6 +76,7 @@
   <string name="optional">任意</string>
   <string name="permit_status">状況: %1$s</string>
   <string name="phone_number">電話番号</string>
+  <string name="phone_verification_mismatch">確認コードが一致しません。新しい確認コードをSMSで再送しますか？</string>
   <string name="pick_one">ひとつ選択</string>
   <string name="police_station">交番</string>
   <string name="powerline">送電線</string>
@@ -90,6 +96,7 @@
   <string name="select_manufacturer">ドローンメーカーを選択</string>
   <string name="select_model">モデルを選択</string>
   <string name="sent_email">Eメールを送信しました</string>
+  <string name="setting_location_provider">location_provider</string>
   <string name="stadium">スタジアム</string>
   <string name="state">都道府県</string>
   <string name="subprefecture">支庁</string>
@@ -116,10 +123,4 @@
   <string name="wind">風</string>
   <string name="yes">はい</string>
   <string name="you_have_selected_permits_of_total_required">このフライトに必要な %1$d／%2$d 個の 許可証を選択しました。</string>
-
-  <string name="error_loading_map_button">日時を更新する</string>
-  <string name="error_loading_map_message">マップをロードするにはデバイスの日時設定が正確である必要があります。デバイスの日時が自動設定になっていることを確かめてください。</string>
-  <string name="error_loading_map_network_button">地図読み込み不可。インターネット接続を確認。</string>
-  <string name="error_loading_map_network_message">地図データを読み込むにはインターネット接続が必要です。WiFiやLTEに正しく接続しているか確認してください。</string>
-  <string name="error_loading_map_title">マップのロードエラー</string>
 </resources>

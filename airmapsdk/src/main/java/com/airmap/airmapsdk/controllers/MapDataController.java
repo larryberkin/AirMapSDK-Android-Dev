@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import rx.Observable;
@@ -82,7 +81,6 @@ public class MapDataController {
     private void setupSubscriptions(AirMapMapView.Configuration configuration) {
         // observes changes to jurisdictions (map bounds) to query rulesets for the region
         Observable<Map<String, AirMapRuleset>> jurisdictionsObservable = jurisdictionsPublishSubject.asObservable()
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<AirMapPolygon, Boolean>() {
                     @Override
@@ -136,7 +134,6 @@ public class MapDataController {
         // observes changes to preferred rulesets to trigger advisories fetch
         Observable<AirMapMapView.Configuration> configurationObservable = configurationPublishSubject
                 .startWith(configuration)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<AirMapMapView.Configuration>() {
                     @Override
@@ -172,7 +169,7 @@ public class MapDataController {
                         return new Pair<>(availableRulesets, selectedRulesets);
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<Pair<List<AirMapRuleset>, List<AirMapRuleset>>, Boolean>() {
                     @Override
@@ -206,7 +203,6 @@ public class MapDataController {
                     }
                 })
                 .flatMap(convertRulesetsToAdvisories())
-                .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(new Func1<Throwable, AirMapAirspaceStatus>() {
                     @Override
                     public AirMapAirspaceStatus call(Throwable throwable) {
@@ -281,7 +277,7 @@ public class MapDataController {
                         subscriber.onCompleted();
                     }
                 })
-                .retryWhen(new RetryWithDelay(4, 400))
+                .retryWhen(new RetryWithDelay(4, 400), AndroidSchedulers.mainThread())
                 .onErrorReturn(new Func1<Throwable, List<AirMapJurisdiction>>() {
                     @Override
                     public List<AirMapJurisdiction> call(Throwable throwable) {

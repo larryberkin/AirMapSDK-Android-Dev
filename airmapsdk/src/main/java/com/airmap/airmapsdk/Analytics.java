@@ -32,6 +32,12 @@ public class Analytics {
         }
     }
 
+    public static void logDebug(String key, String value) {
+        if (tracker != null) {
+            tracker.logDebug(key, value);
+        }
+    }
+
     public static class Page {
         public static final String CREATE_FLIGHT = "Create_Flight";
         public static final String POINT_CREATE_FLIGHT = "Create_Flight_Point";
