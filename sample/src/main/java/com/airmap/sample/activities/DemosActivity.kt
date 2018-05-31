@@ -53,11 +53,7 @@ class DemosActivity : BaseActivity() {
         telemetryCardView.setOnClickListener { startActivity(TelemetryDemoIntent()) }
         briefingCardView.setOnClickListener {
             val flightPlanId = PreferenceManager.getDefaultSharedPreferences(this).getString(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, null)
-            if (flightPlanId != null) {
-                startActivity(FlightBriefIntent(flightPlanId))
-            } else {
-                toast("Please create a flight plan first")
-            }
+            flightPlanId?.let { startActivity(FlightBriefIntent(it)) } ?: toast("Please create a flight plan first")
         }
         loginCardView.setOnClickListener {
             AirMap.showLogin(this, object : LoginCallback {
