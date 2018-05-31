@@ -1,5 +1,7 @@
 package com.airmap.sample.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -16,6 +18,10 @@ import java.util.UUID
 import timber.log.Timber
 
 class AnonymousLoginDemoActivity : AppCompatActivity() {
+
+    companion object {
+        fun Context.AnonymousLoginIntent() = Intent(this, AnonymousLoginDemoActivity::class.java)
+    }
 
     private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private val statusTextView by lazy { findViewById<TextView>(R.id.status_text_view) }

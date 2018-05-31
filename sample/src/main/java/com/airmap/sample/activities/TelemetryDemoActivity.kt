@@ -1,6 +1,8 @@
 package com.airmap.sample.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.graphics.PointF
 import android.graphics.RectF
 import android.os.Bundle
@@ -26,6 +28,10 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import timber.log.Timber
 
 class TelemetryDemoActivity : BaseActivity() {
+
+    companion object {
+        fun Context.TelemetryDemoIntent() = Intent(this, TelemetryDemoActivity::class.java)
+    }
 
     private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private val mapView by lazy { findViewById<MapView>(R.id.map_view) }

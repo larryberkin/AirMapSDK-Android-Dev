@@ -15,9 +15,11 @@ import com.airmap.airmapsdk.networking.callbacks.LoginCallback
 import com.airmap.airmapsdk.networking.services.AirMap
 import com.airmap.airmapsdk.util.AirMapConstants
 import com.airmap.sample.R
+import com.airmap.sample.activities.AnonymousLoginDemoActivity.Companion.AnonymousLoginIntent
 import com.airmap.sample.activities.FlightBriefDemoActivity.Companion.FlightBriefIntent
 import com.airmap.sample.activities.FlightPlanDemoActivity.Companion.FlightPlanDemoIntent
 import com.airmap.sample.activities.MapDemoActivity.Companion.MapDemoIntent
+import com.airmap.sample.activities.TelemetryDemoActivity.Companion.TelemetryDemoIntent
 import com.airmap.sample.activities.TrafficDemoActivity.Companion.TrafficDemoIntent
 
 import timber.log.Timber
@@ -47,8 +49,8 @@ class DemosActivity : BaseActivity() {
         mapCardView.setOnClickListener { startActivity(MapDemoIntent()) }
         flightPlanCardView.setOnClickListener { startActivity(FlightPlanDemoIntent()) }
         trafficCardView.setOnClickListener { startActivity(TrafficDemoIntent()) }
-        anonymousLoginCardView.setOnClickListener { startActivity(Intent(this, AnonymousLoginDemoActivity::class.java)) }
-        telemetryCardView.setOnClickListener { startActivity(Intent(this, TelemetryDemoActivity::class.java)) }
+        anonymousLoginCardView.setOnClickListener { startActivity(AnonymousLoginIntent()) }
+        telemetryCardView.setOnClickListener { startActivity(TelemetryDemoIntent()) }
         briefingCardView.setOnClickListener {
             val flightPlanId = PreferenceManager.getDefaultSharedPreferences(this).getString(AirMapConstants.FLIGHT_PLAN_ID_EXTRA, null)
             if (flightPlanId != null) {
